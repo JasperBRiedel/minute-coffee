@@ -79,10 +79,10 @@ input {
 
 .coffee-card p {
     overflow: hidden;
-    height: 10em;
+    max-height: 10em;
 }
 
-.coffee-card a {
+.link-button, .coffee-card a {
     display: block;
     padding: 5px;
     text-decoration: none;
@@ -92,10 +92,35 @@ input {
     border: black 1px solid;
     width: 100%;
     box-sizing: border-box;
+    font-size: 20px;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+.form-grid {
+    align-self: start;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
 }
 
 @media screen and (max-width: 700px) {
+    
+    main {
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
     .coffee-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .checkout-layout {
         grid-template-columns: 1fr;
     }
 }

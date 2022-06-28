@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include("partials/head.ejs") %>
-    <title>Minute Coffee</title>
+    <title>Minute Coffee - Drinks</title>
 </head>
 <body>
     <main>
@@ -17,7 +17,7 @@
                     <img src="img/coffee.jpg" alt="Takeaway coffee cup">
                     <h2><%= product.name %></h2>
                     <p><%= product.description %></p>
-                    <a href="buy_product?id=<%= product.id %>">Buy</a>
+                    <a href="product_checkout?id=<%= product.product_id %>">Buy</a>
                 </article>
             <% } %>
         </section>

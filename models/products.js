@@ -4,8 +4,8 @@ export function getAllProducts() {
     return db_conn.query("SELECT * FROM products")
 }
 
-export function getProductById(id) {
-    return db_conn.query("SELECT * FROM products WHERE id = ?", [id])
+export function getProductById(product_id) {
+    return db_conn.query("SELECT * FROM products WHERE product_id = ?", [product_id])
 }
 
 export function getProductsBySearch(search_term) {
@@ -22,14 +22,14 @@ export function createProduct(name, stock, description, last_updated_by_user_id)
     `, [name, stock, description, last_updated_by_user_id])
 }
 
-export function updateProductById(id, name, stock, description, last_updated_by_user_id) {
+export function updateProductById(product_id, name, stock, description, last_updated_by_user_id) {
     return db_conn.query(`
         UPDATE products
         SET name = ?, stock = ?, description = ?, last_updated_by_user_id = ?
-        WHERE id = ?
-    `, [name, stock, description, last_updated_by_user_id, id])
+        WHERE product_id = ?
+    `, [name, stock, description, last_updated_by_user_id, product_id])
 }
 
-export function deleteProductById(id) {
-    return db_conn.query("DELETE FROM products WHERE id = ?", [id])
+export function deleteProductById(product_id) {
+    return db_conn.query("DELETE FROM products WHERE product_id = ?", [product_id])
 }

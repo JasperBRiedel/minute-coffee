@@ -18,6 +18,11 @@ app.use(session({
 // Enable the ejs view engine
 app.set("view engine", "ejs")
 
+// Enable support for URL-encoded request bodies (form posts)
+app.use(express.urlencoded({
+    extended: true,
+}))
+
 // Redirect request to root to the products page
 app.get("/", (request, response) => {
     response.status(301).redirect("/product_list")
@@ -29,6 +34,8 @@ app.use(express.static("static"))
 // Hook up each controller 
 import productController from "./controllers/products.js"
 app.use(productController)
+import orderController from "./controllers/orders.js"
+app.use(orderController)
 
 // Start the listening for requests
 app.listen(port, () => {
