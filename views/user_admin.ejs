@@ -45,15 +45,16 @@
                         value="<%= edit_user.last_name %>"
                     />
                     <label for="access-role">Access Role</label>
-                    <select
-                        name="access_role"
-                        id="access-role"
-                        value="<%= edit_user.access_role %>"
-                    >
+                    <select name="access_role" id="access-role">
                         <option value="admin">Admin</option>
                         <option value="stock">Stock</option>
                         <option value="sales">Sales</option>
                     </select>
+                    <script>
+                        // This is a hack to set the selected option of the select box above
+                        document.getElementById("access-role").value =
+                            "<%= edit_user.access_role %>";
+                    </script>
                     <label for="username">Username:</label>
                     <input
                         type="text"
