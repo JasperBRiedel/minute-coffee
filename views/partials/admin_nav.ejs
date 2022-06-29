@@ -1,0 +1,12 @@
+<nav>
+    <% if (access_role === "admin") { %>
+    <a href="/user_admin">Users</a>
+    <a href="/product_admin">Products</a>
+    <a href="/order_admin">Orders</a>
+    <% } else if (access_role == "stock") { %>
+    <a href="/product_admin">Products</a>
+    <% } else if (access_role == "sales") { %>
+    <a href="/order_admin">Orders</a>
+    <% } %>
+    <a href="/user_logout">Logout</a>
+</nav>

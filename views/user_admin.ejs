@@ -6,7 +6,8 @@
     </head>
     <body>
         <main>
-            <%- include("partials/header.ejs") %>
+            <%- include("partials/header.ejs") %> <%-
+            include("partials/admin_nav.ejs", {access_role: access_role}) %>
             <section class="half-half-layout">
                 <section class="cols-4 data-list">
                     <span class="data-list-heading">Name</span>

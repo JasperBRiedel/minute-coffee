@@ -57,6 +57,7 @@ userController
                         response.render("user_admin.ejs", {
                             users: users,
                             edit_user: user,
+                            access_role: request.session.user.access_role,
                         });
                     });
                 }
@@ -73,6 +74,7 @@ userController
                         username: "",
                         password: "",
                     },
+                    access_role: request.session.user.access_role,
                 });
             });
         }
