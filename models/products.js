@@ -4,6 +4,15 @@ export function getAllProducts() {
   return db_conn.query("SELECT * FROM products");
 }
 
+export function getAllProductsWithLastUpdatedUser() {
+  return db_conn.query(`
+    SELECT * 
+      FROM products 
+      INNER JOIN users 
+      ON products.last_updated_by_user_id = users.user_id
+      `);
+}
+
 export function getProductById(product_id) {
   return db_conn.query("SELECT * FROM products WHERE product_id = ?", [
     product_id,
@@ -20,15 +29,16 @@ export function getProductsBySearch(search_term) {
 export function createProduct(
   name,
   stock,
+  price,
   description,
   last_updated_by_user_id
 ) {
   return db_conn.query(
     `
-        INSERT INTO products (name, stock, description, last_updated_by_user_id) 
-        VALUES (?, ?, ?, ?)
+        INSERT INTO products (name, stock, price, description, last_updated_by_user_id) 
+        VALUES (?, ?, ?, ?, ?)
     `,
-    [name, stock, description, last_updated_by_user_id]
+    [name, stock, price, description, last_updated_by_user_id]
   );
 }
 
@@ -36,16 +46,17 @@ export function updateProductById(
   product_id,
   name,
   stock,
+  price,
   description,
   last_updated_by_user_id
 ) {
   return db_conn.query(
     `
         UPDATE products
-        SET name = ?, stock = ?, description = ?, last_updated_by_user_id = ?
+        SET name = ?, stock = ?, price = ?, description = ?, last_updated_by_user_id = ?
         WHERE product_id = ?
     `,
-    [name, stock, description, last_updated_by_user_id, product_id]
+    [name, stock, price, description, last_updated_by_user_id, product_id]
   );
 }
 

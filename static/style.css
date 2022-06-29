@@ -63,6 +63,14 @@ input, select {
     font-size: 20px;
 }
 
+textarea {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: 20px;
+    height: 6em;
+    resize: none;
+}
+
 .search-form {
     width: 100%;
     max-width: 700px;
@@ -146,6 +154,10 @@ input, select {
 
 .cols-4 {
     grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.cols-5 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .data-list-heading {

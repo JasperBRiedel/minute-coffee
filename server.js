@@ -9,12 +9,12 @@ const port = 8080;
 // that is used to give persistent state between requests, making
 // the application stateful and overcoming the stateless nature of HTTP.
 app.use(
-    session({
-        secret: "secret phrase",
-        resave: false,
-        saveUninitialized: false,
-        cookie: { secure: false },
-    })
+  session({
+    secret: "secret phrase",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+  })
 );
 
 // Enable the ejs view engine
@@ -22,14 +22,14 @@ app.set("view engine", "ejs");
 
 // Enable support for URL-encoded request bodies (form posts)
 app.use(
-    express.urlencoded({
-        extended: true,
-    })
+  express.urlencoded({
+    extended: true,
+  })
 );
 
 // Redirect request to root to the products page
 app.get("/", (request, response) => {
-    response.status(301).redirect("/product_list");
+  response.status(301).redirect("/product_list");
 });
 
 // Serve static resources
@@ -45,5 +45,5 @@ app.use(userController);
 
 // Start the listening for requests
 app.listen(port, () => {
-    console.log(`Express server started on http://localhost:${port}`);
+  console.log(`Express server started on http://localhost:${port}`);
 });
