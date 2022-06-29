@@ -43,7 +43,7 @@ footer {
     border-top: black 2px solid;
 }
 
-input {
+input, select {
     border: 1px solid black;
     padding: 5px;
     font-size: 20px;
@@ -105,7 +105,37 @@ input {
     align-self: start;
     display: grid;
     grid-template-columns: 1fr 2fr;
+    align-items: center;
     gap: 20px;
+}
+
+.responsive-half {
+    width: 50%;
+    max-width: 700px;
+}
+
+.margin-auto {
+    margin: auto;
+}
+
+.half-half-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.data-list {
+    display: grid;
+    align-items: center;
+    gap: 20px;
+}
+
+.cols-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.data-list-heading {
+    font-weight: bold;
 }
 
 @media screen and (max-width: 700px) {
@@ -121,6 +151,14 @@ input {
     }
     
     .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .responsive-half {
+        width: 100%;
+    }
+    
+    .half-half-layout {
         grid-template-columns: 1fr;
     }
 }
