@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include("partials/head.ejs") %>
-    <title>Minute Coffee - Drinks</title>
-</head>
-<body>
-    <main>
-        <%- include("partials/header.ejs") %>
-        <form action="product_list" method="get" class="search-form">
-            <input type="text" name="search_term" id="search-term" placeholder="Flat White">
-            <input type="submit" value="Search">
-        </form>
-        <section class="coffee-list">
-            <% for (let product of products) { %>
+    <head>
+        <%- include("partials/head.ejs") %>
+        <title>Minute Coffee - Drinks</title>
+    </head>
+    <body>
+        <main>
+            <%- include("partials/header.ejs") %>
+            <form action="product_list" method="get" class="search-form">
+                <input
+                    type="text"
+                    name="search_term"
+                    id="search-term"
+                    placeholder="Flat White"
+                />
+                <input type="submit" value="Search" />
+            </form>
+            <section class="coffee-list">
+                <% for (let product of products) { %>
                 <article class="coffee-card">
-                    <img src="img/coffee.jpg" alt="Takeaway coffee cup">
+                    <img src="img/coffee.jpg" alt="Takeaway coffee cup" />
                     <h2><%= product.name %></h2>
+                    <span>$<%= product.price %></span>
                     <p><%= product.description %></p>
-                    <a href="product_checkout?id=<%= product.product_id %>">Buy</a>
+                    <a href="product_checkout?id=<%= product.product_id %>"
+                        >Buy</a
+                    >
                 </article>
-            <% } %>
-        </section>
-        <%- include("partials/footer.ejs") %>
-    </main>
-</body>
+                <% } %>
+            </section>
+            <%- include("partials/footer.ejs") %>
+        </main>
+    </body>
 </html>

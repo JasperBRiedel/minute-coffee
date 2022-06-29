@@ -1,33 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include("partials/head.ejs") %>
-    <title>Minute Coffee - Checkout</title>
-</head>
-<body>
-    <main>
-        <%- include("partials/header.ejs") %>
-        <section class="checkout-layout">
-            <article class="coffee-card">
-                <img src="img/coffee.jpg" alt="Takeaway coffee cup">
-                <h2><%= product.name %></h2>
-                <p><%= product.description %></p>
-            </article>
-            <form action="/create_order" method="post" class="form-grid">
-                <input type="hidden" name="product_id" value="<%= product.product_id %>">
-                <label for="customer-first-name">First Name:</label>
-                <input type="text" name="customer_first_name" id="customer-first-name">
-                <label for="customer-last-name">Last Name:</label>
-                <input type="text" name="customer_last_name" id="customer-last-name">
-                <label for="customer-phone">Phone:</label>
-                <input type="tel" name="customer_phone" id="customer-phone">
-                <label for="customer-email">Email:</label>
-                <input type="email" name="customer_email" id="customer-email">
-                <a href="/" class="link-button">Back</a>
-                <input type="submit" value="Pay">
-            </form>
-        </section>
-        <%- include("partials/footer.ejs") %>
-    </main>
-</body>
+    <head>
+        <%- include("partials/head.ejs") %>
+        <title>Minute Coffee - Checkout</title>
+    </head>
+    <body>
+        <main>
+            <%- include("partials/header.ejs") %>
+            <section class="checkout-layout">
+                <article class="coffee-card">
+                    <img src="img/coffee.jpg" alt="Takeaway coffee cup" />
+                    <h2><%= product.name %></h2>
+                    <span>$<%= product.price %></span>
+                    <p><%= product.description %></p>
+                </article>
+                <form action="/create_order" method="post" class="form-grid">
+                    <input
+                        type="hidden"
+                        name="product_id"
+                        value="<%= product.product_id %>"
+                    />
+                    <label for="customer-first-name">First Name:</label>
+                    <input
+                        type="text"
+                        name="customer_first_name"
+                        id="customer-first-name"
+                    />
+                    <label for="customer-last-name">Last Name:</label>
+                    <input
+                        type="text"
+                        name="customer_last_name"
+                        id="customer-last-name"
+                    />
+                    <label for="customer-phone">Phone:</label>
+                    <input
+                        type="tel"
+                        name="customer_phone"
+                        id="customer-phone"
+                    />
+                    <label for="customer-email">Email:</label>
+                    <input
+                        type="email"
+                        name="customer_email"
+                        id="customer-email"
+                    />
+                    <a href="/" class="link-button">Back</a>
+                    <input type="submit" value="Pay" />
+                </form>
+            </section>
+            <%- include("partials/footer.ejs") %>
+        </main>
+    </body>
 </html>
