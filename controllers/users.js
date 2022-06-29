@@ -79,11 +79,14 @@ userController.post("/edit_user", (request, response) => {
             edit_details.last_name,
             edit_details.access_role,
             edit_details.username,
-            edit_details.password
+            bcrypt.hashSync(edit_details.password)
         ).then(([result]) => {
             response.redirect("/user_admin");
         });
     } else if (edit_details.action == "update") {
+        if (!edit_details.password.startsWith("$2a")) {
+            edit_details.password = bcrypt.hashSync(edit_details.password);
+        }
         updateUserById(
             edit_details.user_id,
             edit_details.first_name,
