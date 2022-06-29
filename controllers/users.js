@@ -8,6 +8,7 @@ import {
     getUsersByUsername,
     updateUserById,
 } from "../models/users.js";
+import access_control from "../access_control.js";
 
 const userController = express.Router();
 
@@ -38,70 +39,74 @@ userController.post("/user_login", (request, response) => {
     });
 });
 
-userController.get("/user_admin", (request, response) => {
-    const edit_id = request.query.edit_id;
-    if (edit_id) {
-        getUserById(edit_id).then(([users]) => {
-            if (users.length > 0) {
-                const user = users[0];
+userController
+    .use(access_control(["admin"]))
+    .get("/user_admin", (request, response) => {
+        const edit_id = request.query.edit_id;
+        if (edit_id) {
+            getUserById(edit_id).then(([users]) => {
+                if (users.length > 0) {
+                    const user = users[0];
 
-                getAllUsers().then(([users]) => {
-                    response.render("user_admin.ejs", {
-                        users: users,
-                        edit_user: user,
+                    getAllUsers().then(([users]) => {
+                        response.render("user_admin.ejs", {
+                            users: users,
+                            edit_user: user,
+                        });
                     });
-                });
-            }
-        });
-    } else {
-        getAllUsers().then(([users]) => {
-            response.render("user_admin.ejs", {
-                users: users,
-                edit_user: {
-                    user_id: 0,
-                    first_name: "",
-                    last_name: "",
-                    access_role: "",
-                    username: "",
-                    password: "",
-                },
+                }
             });
-        });
-    }
-});
-
-userController.post("/edit_user", (request, response) => {
-    const edit_details = request.body;
-
-    if (edit_details.action == "create") {
-        createUser(
-            edit_details.first_name,
-            edit_details.last_name,
-            edit_details.access_role,
-            edit_details.username,
-            bcrypt.hashSync(edit_details.password)
-        ).then(([result]) => {
-            response.redirect("/user_admin");
-        });
-    } else if (edit_details.action == "update") {
-        if (!edit_details.password.startsWith("$2a")) {
-            edit_details.password = bcrypt.hashSync(edit_details.password);
+        } else {
+            getAllUsers().then(([users]) => {
+                response.render("user_admin.ejs", {
+                    users: users,
+                    edit_user: {
+                        user_id: 0,
+                        first_name: "",
+                        last_name: "",
+                        access_role: "",
+                        username: "",
+                        password: "",
+                    },
+                });
+            });
         }
-        updateUserById(
-            edit_details.user_id,
-            edit_details.first_name,
-            edit_details.last_name,
-            edit_details.access_role,
-            edit_details.username,
-            edit_details.password
-        ).then(([result]) => {
-            response.redirect("/user_admin");
-        });
-    } else if (edit_details.action == "delete") {
-        deleteUserById(edit_details.user_id).then(([result]) => {
-            response.redirect("/user_admin");
-        });
-    }
-});
+    });
+
+userController
+    .use(access_control(["admin"]))
+    .post("/edit_user", (request, response) => {
+        const edit_details = request.body;
+
+        if (edit_details.action == "create") {
+            createUser(
+                edit_details.first_name,
+                edit_details.last_name,
+                edit_details.access_role,
+                edit_details.username,
+                bcrypt.hashSync(edit_details.password)
+            ).then(([result]) => {
+                response.redirect("/user_admin");
+            });
+        } else if (edit_details.action == "update") {
+            if (!edit_details.password.startsWith("$2a")) {
+                edit_details.password = bcrypt.hashSync(edit_details.password);
+            }
+            updateUserById(
+                edit_details.user_id,
+                edit_details.first_name,
+                edit_details.last_name,
+                edit_details.access_role,
+                edit_details.username,
+                edit_details.password
+            ).then(([result]) => {
+                response.redirect("/user_admin");
+            });
+        } else if (edit_details.action == "delete") {
+            deleteUserById(edit_details.user_id).then(([result]) => {
+                response.redirect("/user_admin");
+            });
+        }
+    });
 
 export default userController;
