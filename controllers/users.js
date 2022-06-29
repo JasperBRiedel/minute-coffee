@@ -39,6 +39,11 @@ userController.post("/user_login", (request, response) => {
     });
 });
 
+userController.get("/user_logout", (request, response) => {
+    request.session.destroy();
+    response.redirect("/");
+});
+
 userController
     .use(access_control(["admin"]))
     .get("/user_admin", (request, response) => {
