@@ -152,6 +152,10 @@ textarea {
     gap: 20px;
 }
 
+.cols-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
 .cols-4 {
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
@@ -162,6 +166,12 @@ textarea {
 
 .data-list-heading {
     font-weight: bold;
+}
+
+.order-update-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
 }
 
 @media screen and (max-width: 700px) {
@@ -185,6 +195,10 @@ textarea {
     }
     
     .half-half-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .order-update-form {
         grid-template-columns: 1fr;
     }
 }

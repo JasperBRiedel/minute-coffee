@@ -1,9 +1,13 @@
 import express, { query } from "express";
 import {
   createOrder,
+  getAllOrdersByStatusWithProduct,
   getOrderById,
   getOrderWithProductById,
+  updateOrderStatusById,
 } from "../models/orders.js";
+import access_control from "../access_control.js";
+import { render } from "ejs";
 
 const orderController = express.Router();
 
@@ -34,5 +38,39 @@ orderController.get("/order_confirmation", (request, response) => {
     });
   }
 });
+
+orderController.get(
+  "/order_admin",
+  access_control(["admin", "sales"]),
+  (request, response) => {
+    let order_status = request.query.status;
+    if (!order_status) {
+      order_status = "pending";
+    }
+
+    getAllOrdersByStatusWithProduct(order_status).then(([orders]) => {
+      response.render("order_admin.ejs", {
+        orders: orders,
+        order_status: order_status,
+        access_role: request.session.user.access_role,
+      });
+    });
+  }
+);
+
+orderController.post(
+  "/order_admin",
+  access_control(["admin", "sales"]),
+  (request, response) => {
+    const edit_details = request.body;
+    updateOrderStatusById(edit_details.order_id, edit_details.status).then(
+      ([result]) => {
+        if (result.affectedRows > 0) {
+          response.redirect("/order_admin");
+        }
+      }
+    );
+  }
+);
 
 export default orderController;

@@ -4,8 +4,16 @@ export function getAllOrders() {
   return db_conn.query("SELECT * FROM orders");
 }
 
-export function getAllOrdersByStatus(status) {
-  return db_conn.query("SELECT * FROM orders WHERE status = ?", [status]);
+export function getAllOrdersByStatusWithProduct(status) {
+  return db_conn.query(
+    `
+        SELECT * FROM orders
+        INNER JOIN products
+        ON orders.product_id = products.product_id
+        WHERE orders.status = ?
+    `,
+    [status]
+  );
 }
 
 export function getOrderById(order_id) {
