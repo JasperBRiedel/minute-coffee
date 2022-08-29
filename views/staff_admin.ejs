@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <%- include("partials/head.ejs") %>
-        <title>Minute Coffee - User Admin</title>
+        <title>Minute Coffee - Staff Admin</title>
     </head>
     <body>
         <main>
@@ -14,36 +14,36 @@
                     <span class="data-list-heading">Username</span>
                     <span class="data-list-heading">Role</span>
                     <span></span>
-                    <% for (let user of users) { %>
-                    <span><%= user.first_name %> <%= user.last_name %></span>
-                    <span><%= user.username %></span>
-                    <span><%= user.access_role %></span>
+                    <% for (let staff of staffs) { %>
+                    <span><%= staff.first_name %> <%= staff.last_name %></span>
+                    <span><%= staff.username %></span>
+                    <span><%= staff.access_role %></span>
                     <a
-                        href="/user_admin?edit_id=<%= user.user_id %>"
+                        href="/staff_admin?edit_id=<%= staff.staff_id %>"
                         class="link-button"
                         >Edit</a
                     >
                     <% } %>
                 </section>
-                <form action="/edit_user" method="post" class="form-grid">
+                <form action="/edit_staff" method="post" class="form-grid">
                     <input
                         type="hidden"
-                        name="user_id"
-                        value="<%= edit_user.user_id %>"
+                        name="staff_id"
+                        value="<%= edit_staff.staff_id %>"
                     />
                     <label for="first-name">First Name:</label>
                     <input
                         type="text"
                         name="first_name"
                         id="first-name"
-                        value="<%= edit_user.first_name %>"
+                        value="<%= edit_staff.first_name %>"
                     />
                     <label for="last-name">Last Name:</label>
                     <input
                         type="text"
                         name="last_name"
                         id="last-name"
-                        value="<%= edit_user.last_name %>"
+                        value="<%= edit_staff.last_name %>"
                     />
                     <label for="access-role">Access Role</label>
                     <select name="access_role" id="access-role">
@@ -54,24 +54,24 @@
                     <script>
                         // This is a hack to set the selected option of the select box above
                         document.getElementById("access-role").value =
-                            "<%= edit_user.access_role %>";
+                            "<%= edit_staff.access_role %>";
                     </script>
                     <label for="username">Username:</label>
                     <input
                         type="text"
                         name="username"
                         id="username"
-                        value="<%= edit_user.username %>"
+                        value="<%= edit_staff.username %>"
                     />
                     <label for="password">Password:</label>
                     <input
                         type="password"
                         name="password"
                         id="password"
-                        value="<%= edit_user.password %>"
+                        value="<%= edit_staff.password %>"
                     />
                     <input type="submit" name="action" value="delete" />
-                    <% if (edit_user.user_id == "0") { %>
+                    <% if (edit_staff.staff_id == "0") { %>
                     <input type="submit" name="action" value="create" />
                     <% } else { %>
                     <input type="submit" name="action" value="update" />
