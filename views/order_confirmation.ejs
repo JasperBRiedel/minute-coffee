@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include("partials/head.ejs") %>
-    <title>Minute Coffee - Order Confirmation</title>
-</head>
-<body>
-    <main>
-        <%- include("partials/header.ejs") %>
-        <section class="checkout-layout">
-            <article class="coffee-card">
-                <img src="img/coffee.jpg" alt="Takeaway coffee cup">
-                <h2><%= order_with_product.name %></h2>
-                <p><%= order_with_product.description %></p>
-            </article>
-            <article class="form-grid">
-                <label for="time">Order Time:</label>
-                <span id="status"><%= order_with_product.order_datetime.toLocaleString() %></span>
-                <label for="name">Order Name:</label>
-                <span id="name"><%= order_with_product.customer_first_name %></span>
-                <label for="status">Order Status:</label>
-                <span id="status"><%= order_with_product.status %></span>
-                <a href="/" class="link-button">Back</a>
-                <a href="order_confirmation?id=<%= order_with_product.order_id %>" class="link-button">Refresh</a>
-            </article>
-        </section>
-        <%- include("partials/footer.ejs") %>
-    </main>
-</body>
+    <head>
+        <%- include("partials/head.ejs") %>
+        <title>Minute Coffee - Order Confirmation</title>
+    </head>
+    <body>
+        <main>
+            <%- include("partials/header.ejs") %>
+            <section class="checkout-layout">
+                <article class="coffee-card">
+                    <img src="img/coffee.jpg" alt="Takeaway coffee cup" />
+                    <h2><%= order_with_product.product_name %></h2>
+                    <p><%= order_with_product.product_description %></p>
+                </article>
+                <article class="form-grid">
+                    <label for="time">Order Time:</label>
+                    <span id="status">
+                        <%= order_with_product.order_datetime.toLocaleString()%>
+                    </span>
+                    <label for="name">Order Name:</label>
+                    <span id="name">
+                        <%= order_with_product.customer_first_name %>
+                    </span>
+                    <label for="status">Order Status:</label>
+                    <span id="status">
+                        <%= order_with_product.order_status %>
+                    </span>
+                    <a href="/" class="link-button">Back</a>
+                    <a
+                        href="order_confirmation?id=<%= order_with_product.order_id %>"
+                        class="link-button"
+                    >
+                        Refresh
+                    </a>
+                </article>
+            </section>
+            <%- include("partials/footer.ejs") %>
+        </main>
+    </body>
 </html>

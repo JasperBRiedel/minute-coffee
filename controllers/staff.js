@@ -23,10 +23,10 @@ staffController.post("/staff_login", (request, response) => {
         if (staffs.length > 0) {
             let staff = staffs[0];
 
-            if (bcrypt.compareSync(login_password, staff.password)) {
+            if (bcrypt.compareSync(login_password, staff.staff_password)) {
                 request.session.user = {
                     staff_id: staff.staff_id,
-                    access_role: staff.access_role,
+                    access_role: staff.staff_access_role,
                 };
 
                 response.redirect("/order_admin");

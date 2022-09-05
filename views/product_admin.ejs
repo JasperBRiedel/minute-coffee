@@ -16,10 +16,10 @@
                     <span class="data-list-heading">Updated By</span>
                     <span></span>
                     <% for (let product of products) { %>
-                    <span><%= product.name %></span>
-                    <span><%= product.stock %></span>
-                    <span><%= product.price %></span>
-                    <span><%= product.username %></span>
+                    <span><%= product.product_name %></span>
+                    <span><%= product.product_stock %></span>
+                    <span><%= product.product_price %></span>
+                    <span><%= product.staff_username %></span>
                     <a
                         href="/product_admin?edit_id=<%= product.product_id %>"
                         class="link-button"
@@ -38,26 +38,26 @@
                         type="text"
                         name="name"
                         id="name"
-                        value="<%= edit_product.name %>"
+                        value="<%= edit_product.product_name %>"
                     />
                     <label for="stock">Stock:</label>
                     <input
                         type="text"
                         name="stock"
                         id="stock"
-                        value="<%= edit_product.stock %>"
+                        value="<%= edit_product.product_stock %>"
                     />
                     <label for="price">Price:</label>
                     <input
                         type="text"
                         name="price"
                         id="price"
-                        value="<%= edit_product.price %>"
+                        value="<%= edit_product.product_price %>"
                     />
                     <label for="description">Description:</label>
                     <textarea name="description" id="description">
-<%= edit_product.description %></textarea
-                    >
+                        <%= edit_product.product_description %>
+                    </textarea>
                     <input type="submit" name="action" value="delete" />
                     <% if (edit_product.product_id == "0") { %>
                     <input type="submit" name="action" value="create" />

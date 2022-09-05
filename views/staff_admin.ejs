@@ -15,14 +15,18 @@
                     <span class="data-list-heading">Role</span>
                     <span></span>
                     <% for (let staff of staffs) { %>
-                    <span><%= staff.first_name %> <%= staff.last_name %></span>
-                    <span><%= staff.username %></span>
-                    <span><%= staff.access_role %></span>
+                    <span>
+                        <%= staff.staff_first_name %> <%= staff.staff_last_name
+                        %>
+                    </span>
+                    <span><%= staff.staff_username %></span>
+                    <span><%= staff.staff_access_role %></span>
                     <a
                         href="/staff_admin?edit_id=<%= staff.staff_id %>"
                         class="link-button"
-                        >Edit</a
                     >
+                        Edit
+                    </a>
                     <% } %>
                 </section>
                 <form action="/edit_staff" method="post" class="form-grid">
@@ -36,14 +40,14 @@
                         type="text"
                         name="first_name"
                         id="first-name"
-                        value="<%= edit_staff.first_name %>"
+                        value="<%= edit_staff.staff_first_name %>"
                     />
                     <label for="last-name">Last Name:</label>
                     <input
                         type="text"
                         name="last_name"
                         id="last-name"
-                        value="<%= edit_staff.last_name %>"
+                        value="<%= edit_staff.staff_last_name %>"
                     />
                     <label for="access-role">Access Role</label>
                     <select name="access_role" id="access-role">
@@ -54,21 +58,21 @@
                     <script>
                         // This is a hack to set the selected option of the select box above
                         document.getElementById("access-role").value =
-                            "<%= edit_staff.access_role %>";
+                            "<%= edit_staff.staff_access_role %>";
                     </script>
                     <label for="username">Username:</label>
                     <input
                         type="text"
                         name="username"
                         id="username"
-                        value="<%= edit_staff.username %>"
+                        value="<%= edit_staff.staff_username %>"
                     />
                     <label for="password">Password:</label>
                     <input
                         type="password"
                         name="password"
                         id="password"
-                        value="<%= edit_staff.password %>"
+                        value="<%= edit_staff.staff_password %>"
                     />
                     <input type="submit" name="action" value="delete" />
                     <% if (edit_staff.staff_id == "0") { %>

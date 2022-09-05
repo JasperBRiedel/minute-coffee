@@ -20,7 +20,7 @@
                     <span class="data-list-heading">Status</span>
                     <% for (let order of orders) { %>
                     <div>
-                        <span><%= order.name %></span><br />
+                        <span><%= order.product_name %></span><br />
                         <span><%= order.customer_first_name %></span>
                     </div>
                     <span><%= order.order_datetime.toLocaleString() %></span>

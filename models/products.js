@@ -21,7 +21,7 @@ export function getProductById(product_id) {
 
 export function getProductsBySearch(search_term) {
     return db_conn.query(
-        "SELECT * FROM products WHERE name LIKE ? OR description LIKE ?",
+        "SELECT * FROM products WHERE product_name LIKE ? OR product_description LIKE ?",
         [`%${search_term}%`, `%${search_term}%`]
     );
 }
@@ -31,14 +31,15 @@ export function createProduct(
     stock,
     price,
     description,
-    last_updated_by_staff_id
+    last_updated_staff_id
 ) {
     return db_conn.query(
         `
-        INSERT INTO products (name, stock, price, description, last_updated_by_staff_id) 
+        INSERT INTO products 
+        (product_name, product_stock, product_price, product_description, last_updated_by_staff_id) 
         VALUES (?, ?, ?, ?, ?)
     `,
-        [name, stock, price, description, last_updated_by_staff_id]
+        [name, stock, price, description, last_updated_staff_id]
     );
 }
 
@@ -48,15 +49,15 @@ export function updateProductById(
     stock,
     price,
     description,
-    last_updated_by_staff_id
+    last_updated_staff_id
 ) {
     return db_conn.query(
         `
         UPDATE products
-        SET name = ?, stock = ?, price = ?, description = ?, last_updated_by_staff_id = ?
+        SET product_name = ?, product_stock = ?, product_price = ?, product_description = ?, last_updated_by_staff_id = ?
         WHERE product_id = ?
     `,
-        [name, stock, price, description, last_updated_by_staff_id, product_id]
+        [name, stock, price, description, last_updated_staff_id, product_id]
     );
 }
 

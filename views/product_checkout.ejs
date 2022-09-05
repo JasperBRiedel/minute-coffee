@@ -10,9 +10,9 @@
             <section class="checkout-layout">
                 <article class="coffee-card">
                     <img src="img/coffee.jpg" alt="Takeaway coffee cup" />
-                    <h2><%= product.name %></h2>
-                    <span>$<%= product.price %></span>
-                    <p><%= product.description %></p>
+                    <h2><%= product.product_name %></h2>
+                    <span>$<%= product.product_price %></span>
+                    <p><%= product.product_description %></p>
                 </article>
                 <form action="/create_order" method="post" class="form-grid">
                     <input
