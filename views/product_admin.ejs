@@ -55,8 +55,9 @@
                         value="<%= edit_product.product_price %>"
                     />
                     <label for="description">Description:</label>
+                    <!-- Unindented to avoid whitespace in textarea  -->
                     <textarea name="description" id="description">
-                        <%= edit_product.product_description %>
+<%= edit_product.product_description %>
                     </textarea>
                     <input type="submit" name="action" value="delete" />
                     <% if (edit_product.product_id == "0") { %>

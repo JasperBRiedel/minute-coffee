@@ -19,6 +19,7 @@ staffController.get("/staff_login", (request, response) => {
 staffController.post("/staff_login", (request, response) => {
     const login_username = request.body.username;
     const login_password = request.body.password;
+
     getStaffByUsername(login_username).then(([staffs]) => {
         if (staffs.length > 0) {
             let staff = staffs[0];
@@ -87,6 +88,31 @@ staffController.post(
     access_control(["admin"]),
     (request, response) => {
         const edit_details = request.body;
+
+        if (!/[a-zA-Z-]{2,}/.test(edit_details.first_name)) {
+            response.render("status.ejs", {
+                status: "Invalid first name",
+                message: "First name must be letters",
+            });
+            return;
+        }
+
+        if (!/[a-zA-Z-]{2,}/.test(edit_details.last_name)) {
+            response.render("status.ejs", {
+                status: "Invalid last name",
+                message: "Last name must be letters",
+            });
+            return;
+        }
+
+        if (!/[a-zA-Z0-9-]{6,}/.test(edit_details.password)) {
+            response.render("status.ejs", {
+                status: "Invalid password",
+                message:
+                    "Password must be at least 6 characters long and contain a variety of characters.",
+            });
+            return;
+        }
 
         if (edit_details.action == "create") {
             createStaff(

@@ -26,10 +26,11 @@
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
-    "prettier": "^2.7.1",
-    "nodemon": "^2.0.18"
+    "nodemon": "^2.0.18",
+    "prettier": "^2.7.1"
   }
 }

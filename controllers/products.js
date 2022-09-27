@@ -26,6 +26,14 @@ productController.get("/product_list", (request, response) => {
 
 productController.get("/product_checkout", (request, response) => {
     if (request.query.id) {
+        if (!/[0-9]{1,}/.test(request.query.id)) {
+            response.render("status.ejs", {
+                status: "Invalid product ID",
+                message: "Please pick another product.",
+            });
+            return;
+        }
+
         getProductById(request.query.id).then(([products]) => {
             if (products.length > 0) {
                 let product = products[0];
