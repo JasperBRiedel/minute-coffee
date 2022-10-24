@@ -73,7 +73,7 @@ staffController.get(
                         first_name: "",
                         last_name: "",
                         access_role: "",
-                        staffname: "",
+                        username: "",
                         password: "",
                     },
                     access_role: request.session.user.access_role,
