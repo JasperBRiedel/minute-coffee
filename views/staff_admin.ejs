@@ -1,63 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <%- include("partials/head.ejs") %>
+<head>
+    <%- include("partials/head.ejs") %>
         <title>Minute Coffee - Staff Admin</title>
-    </head>
-    <body>
-        <main>
-            <%- include("partials/header.ejs") %>
+</head>
+<body>
+    <main>
+        <%- include("partials/header.ejs") %>
             <%- include("partials/admin_nav.ejs", {access_role: access_role}) %>
-            <section class="half-half-layout">
-                <section class="cols-4 data-list">
-                    <span class="data-list-heading">Name</span>
-                    <span class="data-list-heading">Username</span>
-                    <span class="data-list-heading">Role</span>
-                    <span></span>
-                    <% for (let staff of staffs) { %>
-                        <span>
-                            <%= staff.staff_first_name %>
-                            <%= staff.staff_last_name %>
-                        </span>
-                        <span>
-                            <%= staff.staff_username %>
-                        </span>
-                        <span>
-                            <%= staff.staff_access_role %>
-                        </span>
-                        <a href="/staff_admin?edit_id=<%= staff.staff_id %>" class="link-button">
-                            Edit
-                        </a>
-                    <% } %>
+                <section class="half-half-layout">
+                    <section class="cols-4 data-list">
+                        <span class="data-list-heading">Name</span>
+                        <span class="data-list-heading">Username</span>
+                        <span class="data-list-heading">Role</span>
+                        <span></span>
+                        <% for (let staff of staffs) { %>
+                            <span>
+                                <%= staff.staff_first_name %>
+                                    <%= staff.staff_last_name %>
+                            </span>
+                            <span>
+                                <%= staff.staff_username %>
+                            </span>
+                            <span>
+                                <%= staff.staff_access_role %>
+                            </span>
+                            <a href="/staff_admin?edit_id=<%= staff.staff_id %>" class="link-button">
+                                Edit
+                            </a>
+                            <% } %>
+                    </section>
+                    <form action="/edit_staff" method="post" class="form-grid">
+                        <input type="hidden" name="staff_id" value="<%= edit_staff.staff_id %>" />
+                        <label for="first-name">First Name:</label>
+                        <input type="text" name="first_name" id="first-name"
+                            value="<%= edit_staff.staff_first_name %>" />
+                        <label for="last-name">Last Name:</label>
+                        <input type="text" name="last_name" id="last-name" value="<%= edit_staff.staff_last_name %>" />
+                        <label for="access-role">Access Role</label>
+                        <select name="access_role" id="access-role">
+                            <option <%=edit_staff.staff_access_role=="admin" ? "selected" : "" %> value="admin">Admin
+                            </option>
+                            <option <%=edit_staff.staff_access_role=="stock" ? "selected" : "" %> value="stock">Stock
+                            </option>
+                            <option <%=edit_staff.staff_access_role=="sales" ? "selected" : "" %> value="sales">Sales
+                            </option>
+                        </select>
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" value="<%= edit_staff.staff_username %>" />
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" value="<%= edit_staff.staff_password %>" />
+                        <input type="submit" name="action" value="delete" />
+                        <% if (edit_staff.staff_id=="0" ) { %>
+                            <input type="submit" name="action" value="create" />
+                            <% } else { %>
+                                <input type="submit" name="action" value="update" />
+                                <% } %>
+                    </form>
                 </section>
-                <form action="/edit_staff" method="post" class="form-grid">
-                    <input type="hidden" name="staff_id" value="<%= edit_staff.staff_id %>" />
-                    <label for="first-name">First Name:</label>
-                    <input type="text" name="first_name" id="first-name" value="<%= edit_staff.staff_first_name %>" />
-                    <label for="last-name">Last Name:</label>
-                    <input type="text" name="last_name" id="last-name" value="<%= edit_staff.staff_last_name %>" />
-                    <label for="access-role">Access Role</label>
-                    <select name="access_role" id="access-role">
-                        <option <%=edit_staff.staff_access_role=="admin" ? "selected" : "" %> value="admin">Admin
-                        </option>
-                        <option <%=edit_staff.staff_access_role=="stock" ? "selected" : "" %> value="stock">Stock
-                        </option>
-                        <option <%=edit_staff.staff_access_role=="sales" ? "selected" : "" %> value="sales">Sales
-                        </option>
-                    </select>
-                    <label for="username">Username:</label>
-                    <input type="text" name="username" id="username" value="<%= edit_staff.staff_username %>" />
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" value="<%= edit_staff.staff_password %>" />
-                    <input type="submit" name="action" value="delete" />
-                    <% if (edit_staff.staff_id=="0" ) { %>
-                        <input type="submit" name="action" value="create" />
-                    <% } else { %>
-                        <input type="submit" name="action" value="update" />
-                    <% } %>
-                </form>
-            </section>
-            <%- include("partials/footer.ejs") %>
-        </main>
-    </body>
+                <%- include("partials/footer.ejs") %>
+    </main>
+</body>
 </html>
