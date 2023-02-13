@@ -39,11 +39,11 @@ export function getAllStaff() {
             return queryResult.map(
                 result => Staff(
                     result.staff_id,
-                    result.first_name,
-                    result.last_name,
-                    result.access_role,
-                    result.username,
-                    result.password,
+                    result.staff_first_name,
+                    result.staff_last_name,
+                    result.staff_access_role,
+                    result.staff_username,
+                    result.staff_password,
                 )
             )
 
@@ -61,11 +61,11 @@ export function getStaffById(staff_id) {
                 // convert result into a model object
                 return Staff(
                     result.staff_id,
-                    result.first_name,
-                    result.last_name,
-                    result.access_role,
-                    result.username,
-                    result.password,
+                    result.staff_first_name,
+                    result.staff_last_name,
+                    result.staff_access_role,
+                    result.staff_username,
+                    result.staff_password,
                 )
             } else {
                 return Promise.reject("no matching results")
@@ -85,11 +85,11 @@ export function getStaffByUsername(username) {
                 // convert result into a model object
                 return Staff(
                     result.staff_id,
-                    result.first_name,
-                    result.last_name,
-                    result.access_role,
-                    result.username,
-                    result.password,
+                    result.staff_first_name,
+                    result.staff_last_name,
+                    result.staff_access_role,
+                    result.staff_username,
+                    result.staff_password,
                 )
             } else {
                 return Promise.reject("no matching results")

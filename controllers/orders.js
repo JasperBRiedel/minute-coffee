@@ -1,12 +1,15 @@
-import express, { query } from "express";
+import express from "express";
 import validator from "validator";
+import access_control from "../access_control.js";
 import {
     createOrder,
-    getAllOrdersByStatusWithProduct,
-    getOrderWithProductById,
+    Order,
     updateOrderStatusById,
 } from "../models/orders.js";
-import access_control from "../access_control.js";
+import {
+    getAllOrdersByStatusWithProduct,
+    getOrderWithProductById
+} from "../models/orders-products.js";
 
 const orderController = express.Router();
 
@@ -59,14 +62,22 @@ orderController.post("/create_order", (request, response) => {
             return;
         }
 
-        // Call model function
-        createOrder(
-            validator.escape(order_details.product_id),
+        const newOrder = Order(
+            // New model doesn't have an ID yet
+            null,
+            // All new orders are pending by default
+            "pending",
+            // Gets the current date and time in MySQL friendly format
+            (new Date().toISOString().slice(0, 19).replace('T', ' ')),
             validator.escape(order_details.customer_first_name),
             validator.escape(order_details.customer_last_name),
             validator.escape(order_details.customer_phone),
-            validator.escape(order_details.customer_email)
-        ).then(([result]) => {
+            validator.escape(order_details.customer_email),
+            validator.escape(order_details.product_id),
+        )
+
+        // Call model function
+        createOrder(newOrder).then(([result]) => {
             response.redirect("/order_confirmation?id=" + result.insertId);
         });
     }
@@ -83,15 +94,17 @@ orderController.get("/order_confirmation", (request, response) => {
 
     if (request.query.id) {
         getOrderWithProductById(request.query.id).then(
-            ([orders_with_products]) => {
-                if (orders_with_products.length > 0) {
-                    let order_with_product = orders_with_products[0];
-                    response.render("order_confirmation.ejs", {
-                        order_with_product: order_with_product,
-                    });
-                }
+            orderProduct => {
+                response.render("order_confirmation.ejs", {
+                    orderProduct,
+                });
             }
-        );
+        ).catch(error => {
+            response.render("status.ejs", {
+                status: "Failed to get order status",
+                message: error,
+            });
+        })
     }
 });
 
@@ -99,16 +112,16 @@ orderController.get(
     "/order_admin",
     access_control(["admin", "sales"]),
     (request, response) => {
-        let order_status = request.query.status;
-        if (!order_status) {
-            order_status = "pending";
+        let orderStatus = request.query.status;
+        if (!orderStatus) {
+            orderStatus = "pending";
         }
 
-        getAllOrdersByStatusWithProduct(order_status).then(([orders]) => {
+        getAllOrdersByStatusWithProduct(orderStatus).then(ordersProducts => {
             response.render("order_admin.ejs", {
-                orders: orders,
-                order_status: order_status,
-                access_role: request.session.user.access_role,
+                ordersProducts,
+                orderStatus,
+                accessRole: request.session.user.access_role,
             });
         });
     }

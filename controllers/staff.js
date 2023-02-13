@@ -1,14 +1,15 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import access_control from "../access_control.js";
 import {
     createStaff,
     deleteStaffById,
     getAllStaff,
     getStaffById,
     getStaffByUsername,
+    Staff,
     updateStaffById,
 } from "../models/staff.js";
-import access_control from "../access_control.js";
 
 const staffController = express.Router();
 
@@ -20,24 +21,21 @@ staffController.post("/staff_login", (request, response) => {
     const login_username = request.body.username;
     const login_password = request.body.password;
 
-    getStaffByUsername(login_username).then(([staffs]) => {
-        if (staffs.length > 0) {
-            let staff = staffs[0];
+    getStaffByUsername(login_username).then(staff => {
 
-            if (bcrypt.compareSync(login_password, staff.staff_password)) {
-                request.session.user = {
-                    staff_id: staff.staff_id,
-                    access_role: staff.staff_access_role,
-                };
+        if (bcrypt.compareSync(login_password, staff.password)) {
+            request.session.user = {
+                staff_id: staff.id,
+                access_role: staff.access_role,
+            };
 
-                response.redirect("/order_admin");
-            } else {
-                response.render("status.ejs", { status: "Invalid password" });
-            }
+            response.redirect("/order_admin");
         } else {
-            response.render("status.ejs", { status: "staff not found" });
+            response.render("status.ejs", { status: "Login Failed", message: "Invalid password" });
         }
-    });
+    }).catch(error => {
+        response.render("status.ejs", { status: "Staff member not found", message: error });
+    })
 });
 
 staffController.get("/staff_logout", (request, response) => {
@@ -51,32 +49,22 @@ staffController.get(
     (request, response) => {
         const edit_id = request.query.edit_id;
         if (edit_id) {
-            getStaffById(edit_id).then(([staffs]) => {
-                if (staffs.length > 0) {
-                    const staff = staffs[0];
+            getStaffById(edit_id).then(editStaff => {
 
-                    getAllStaff().then(([staffs]) => {
-                        response.render("staff_admin.ejs", {
-                            staffs: staffs,
-                            edit_staff: staff,
-                            access_role: request.session.user.access_role,
-                        });
+                getAllStaff().then(allStaff => {
+                    response.render("staff_admin.ejs", {
+                        allStaff,
+                        editStaff,
+                        accessRole: request.session.user.access_role,
                     });
-                }
+                });
             });
         } else {
-            getAllStaff().then(([staffs]) => {
+            getAllStaff().then(allStaff => {
                 response.render("staff_admin.ejs", {
-                    staffs: staffs,
-                    edit_staff: {
-                        staff_id: 0,
-                        first_name: "",
-                        last_name: "",
-                        access_role: "",
-                        username: "",
-                        password: "",
-                    },
-                    access_role: request.session.user.access_role,
+                    allStaff,
+                    editStaff: Staff(0, "", "", "", "", ""),
+                    accessRole: request.session.user.access_role,
                 });
             });
         }
@@ -114,32 +102,35 @@ staffController.post(
             return;
         }
 
+        // Create a staff model object to represent the staff member submitted
+        const editStaff = Staff(
+            edit_details.staff_id,
+            edit_details.first_name,
+            edit_details.last_name,
+            edit_details.access_role,
+            edit_details.username,
+            edit_details.password
+        )
+
+        // hash the password if it isn't already hashed
+        if (!editStaff.password.startsWith("$2a")) {
+            editStaff.password = bcrypt.hashSync(editStaff.password);
+        }
+
+        // Determine and run CRUD operation
         if (edit_details.action == "create") {
-            createStaff(
-                edit_details.first_name,
-                edit_details.last_name,
-                edit_details.access_role,
-                edit_details.username,
-                bcrypt.hashSync(edit_details.password)
-            ).then(([result]) => {
+            createStaff(editStaff).then(([result]) => {
                 response.redirect("/staff_admin");
             });
         } else if (edit_details.action == "update") {
             if (!edit_details.password.startsWith("$2a")) {
                 edit_details.password = bcrypt.hashSync(edit_details.password);
             }
-            updateStaffById(
-                edit_details.staff_id,
-                edit_details.first_name,
-                edit_details.last_name,
-                edit_details.access_role,
-                edit_details.username,
-                edit_details.password
-            ).then(([result]) => {
+            updateStaffById(editStaff).then(([result]) => {
                 response.redirect("/staff_admin");
             });
         } else if (edit_details.action == "delete") {
-            deleteStaffById(edit_details.staff_id).then(([result]) => {
+            deleteStaffById(editStaff.id).then(([result]) => {
                 response.redirect("/staff_admin");
             });
         }

@@ -7,7 +7,7 @@
     <body>
         <main>
             <%- include("partials/header.ejs") %> <%-
-            include("partials/admin_nav.ejs", {access_role: access_role}) %>
+            include("partials/admin_nav.ejs", { accessRole }) %>
             <section class="half-half-layout">
                 <section class="cols-5 data-list">
                     <span class="data-list-heading">Name</span>
@@ -15,52 +15,29 @@
                     <span class="data-list-heading">Price</span>
                     <span class="data-list-heading">Updated By</span>
                     <span></span>
-                    <% for (let product of products) { %>
-                    <span><%= product.product_name %></span>
-                    <span><%= product.product_stock %></span>
-                    <span><%= product.product_price %></span>
-                    <span><%= product.staff_username %></span>
-                    <a
-                        href="/product_admin?edit_id=<%= product.product_id %>"
-                        class="link-button"
-                        >Edit</a
-                    >
+                    <% for (let productStaff of productsStaff) { %>
+                    <span><%= productStaff.product_name %></span>
+                    <span><%= productStaff.product_stock %></span>
+                    <span><%= productStaff.product_price %></span>
+                    <span><%= productStaff.staff_username %></span>
+                    <a href="/product_admin?edit_id=<%= productStaff.product_id %>" class="link-button">Edit</a>
                     <% } %>
                 </section>
                 <form action="/edit_product" method="post" class="form-grid">
-                    <input
-                        type="hidden"
-                        name="product_id"
-                        value="<%= edit_product.product_id %>"
-                    />
+                    <input type="hidden" name="product_id" value="<%= editProduct.id %>" />
                     <label for="name">Name:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        value="<%= edit_product.product_name %>"
-                    />
+                    <input type="text" name="name" id="name" value="<%= editProduct.name %>" />
                     <label for="stock">Stock:</label>
-                    <input
-                        type="text"
-                        name="stock"
-                        id="stock"
-                        value="<%= edit_product.product_stock %>"
-                    />
+                    <input type="text" name="stock" id="stock" value="<%= editProduct.stock %>" />
                     <label for="price">Price:</label>
-                    <input
-                        type="text"
-                        name="price"
-                        id="price"
-                        value="<%= edit_product.product_price %>"
-                    />
+                    <input type="text" name="price" id="price" value="<%= editProduct.price %>" />
                     <label for="description">Description:</label>
-                    <!-- Unindented to avoid whitespace in textarea  -->
-                    <textarea name="description" id="description">
-<%= edit_product.product_description %>
-                    </textarea>
+                    <!-- Careful formatting to avoid whitespace in textarea  -->
+                    <textarea name="description" id="description"><%= 
+                        editProduct.description 
+                    %></textarea>
                     <input type="submit" name="action" value="delete" />
-                    <% if (edit_product.product_id == "0") { %>
+                    <% if (editProduct.id == "0") { %>
                     <input type="submit" name="action" value="create" />
                     <% } else { %>
                     <input type="submit" name="action" value="update" />

@@ -7,7 +7,7 @@
     <body>
         <main>
             <%- include("partials/header.ejs") %> <%-
-            include("partials/admin_nav.ejs", {access_role: access_role}) %>
+            include("partials/admin_nav.ejs", { accessRole }) %>
             <section class="">
                 <nav>
                     <a href="/order_admin?status=pending">Pending Orders</a>
@@ -18,22 +18,14 @@
                     <span class="data-list-heading">Product / Customer</span>
                     <span class="data-list-heading">Order Time</span>
                     <span class="data-list-heading">Status</span>
-                    <% for (let order of orders) { %>
+                    <% for (let orderProduct of ordersProducts) { %>
                     <div>
-                        <span><%= order.product_name %></span><br />
-                        <span><%= order.customer_first_name %></span>
+                        <span><%= orderProduct.product_name %></span><br />
+                        <span><%= orderProduct.customer_first_name %></span>
                     </div>
-                    <span><%= order.order_datetime.toLocaleString() %></span>
-                    <form
-                        action="/order_admin"
-                        method="post"
-                        class="order-update-form"
-                    >
-                        <input
-                            type="hidden"
-                            name="order_id"
-                            value="<%= order.order_id %>"
-                        />
+                    <span><%= orderProduct.order_datetime.toLocaleString() %></span>
+                    <form action="/order_admin" method="post" class="order-update-form">
+                        <input type="hidden" name="order_id" value="<%= orderProduct.order_id %>" />
                         <select name="status">
                             <option value="" disabled selected>Select</option>
                             <option value="pending">Pending</option>

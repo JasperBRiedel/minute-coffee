@@ -3,23 +3,24 @@ import {
     createProduct,
     deleteProductById,
     getAllProducts,
-    getAllProductsWithLastUpdatedStaff,
     getProductById,
     getProductsBySearch,
+    Product,
     updateProductById,
 } from "../models/products.js";
 import access_control from "../access_control.js";
+import { getAllProductsWithLastUpdatedStaff } from "../models/products-staff.js";
 
 const productController = express.Router();
 
 productController.get("/product_list", (request, response) => {
     if (request.query.search_term) {
-        getProductsBySearch(request.query.search_term).then(([products]) => {
-            response.render("product_list.ejs", { products: products });
+        getProductsBySearch(request.query.search_term).then(products => {
+            response.render("product_list.ejs", { products });
         });
     } else {
-        getAllProducts().then(([products]) => {
-            response.render("product_list.ejs", { products: products });
+        getAllProducts().then(products => {
+            response.render("product_list.ejs", { products });
         });
     }
 });
@@ -34,12 +35,15 @@ productController.get("/product_checkout", (request, response) => {
             return;
         }
 
-        getProductById(request.query.id).then(([products]) => {
-            if (products.length > 0) {
-                let product = products[0];
-                response.render("product_checkout.ejs", { product: product });
-            }
-        });
+        getProductById(request.query.id)
+            .then(product => {
+                response.render("product_checkout.ejs", { product });
+            }).catch(error => {
+                response.render("status.ejs", {
+                    status: "Product not found",
+                    message: error
+                });
+            })
     }
 });
 
@@ -49,31 +53,27 @@ productController.get(
     (request, response) => {
         const edit_id = request.query.edit_id;
         if (edit_id) {
-            getProductById(edit_id).then(([products]) => {
-                if (products.length > 0) {
-                    const edit_product = products[0];
+            getProductById(edit_id).then(editProduct => {
 
-                    getAllProductsWithLastUpdatedStaff().then(([products]) => {
-                        response.render("product_admin.ejs", {
-                            products: products,
-                            edit_product: edit_product,
-                            access_role: request.session.user.access_role,
-                        });
+                getAllProductsWithLastUpdatedStaff().then(productsStaff => {
+                    response.render("product_admin.ejs", {
+                        productsStaff,
+                        editProduct,
+                        accessRole: request.session.user.access_role,
                     });
-                }
-            });
+                });
+            }).catch(error => {
+                response.render("status.ejs", {
+                    status: "Edit product not found",
+                    message: error
+                });
+            })
         } else {
-            getAllProductsWithLastUpdatedStaff().then(([products]) => {
+            getAllProductsWithLastUpdatedStaff().then(productsStaff => {
                 response.render("product_admin.ejs", {
-                    products: products,
-                    edit_product: {
-                        product_id: 0,
-                        name: "",
-                        stock: 0,
-                        price: 0,
-                        description: "",
-                    },
-                    access_role: request.session.user.access_role,
+                    productsStaff,
+                    editProduct: Product(0, "", 0, 0, "", 0),
+                    accessRole: request.session.user.access_role,
                 });
             });
         }
@@ -84,31 +84,27 @@ productController.post(
     "/edit_product",
     access_control(["admin", "stock"]),
     (request, response) => {
-        const edit_details = request.body;
+        const formData = request.body
 
-        if (edit_details.action == "create") {
-            createProduct(
-                edit_details.name,
-                edit_details.stock,
-                edit_details.price,
-                edit_details.description,
-                request.session.user.staff_id
-            ).then(([result]) => {
+        const editedProduct = Product(
+            formData.product_id,
+            formData.name,
+            formData.stock,
+            formData.price,
+            formData.description,
+            request.session.user.staff_id
+        )
+
+        if (formData.action == "create") {
+            createProduct(editedProduct).then(([result]) => {
                 response.redirect("/product_admin");
             });
-        } else if (edit_details.action == "update") {
-            updateProductById(
-                edit_details.product_id,
-                edit_details.name,
-                edit_details.stock,
-                edit_details.price,
-                edit_details.description,
-                request.session.user.staff_id
-            ).then(([result]) => {
+        } else if (formData.action == "update") {
+            updateProductById(editedProduct).then(([result]) => {
                 response.redirect("/product_admin");
             });
-        } else if (edit_details.action == "delete") {
-            deleteProductById(edit_details.product_id).then(([result]) => {
+        } else if (formData.action == "delete") {
+            deleteProductById(editedProduct.id).then(([result]) => {
                 response.redirect("/product_admin");
             });
         }
