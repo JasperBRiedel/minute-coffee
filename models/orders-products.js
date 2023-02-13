@@ -65,7 +65,7 @@ export function getAllOrdersByStatusWithProduct(status) {
     })
 }
 
-export function getOrderWithProductById(order_id) {
+export function getOrderWithProductById(orderID) {
     return db_conn.query(
         `
         SELECT *
@@ -74,7 +74,7 @@ export function getOrderWithProductById(order_id) {
         ON orders.product_id = products.product_id
         WHERE orders.order_id = ?
     `,
-        [order_id]
+        [orderID]
     ).then(([queryResult]) => {
         // check that at least 1 match was found
         if (queryResult.length > 0) {

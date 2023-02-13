@@ -50,8 +50,8 @@ export function getAllStaff() {
         })
 }
 
-export function getStaffById(staff_id) {
-    return db_conn.query(`SELECT * FROM staff WHERE staff_id = ?`, [staff_id])
+export function getStaffById(staffID) {
+    return db_conn.query(`SELECT * FROM staff WHERE staff_id = ?`, [staffID])
         .then(([queryResult]) => {
             // check that at least 1 match was found
             if (queryResult.length > 0) {
@@ -111,6 +111,6 @@ export function updateStaffById(staff) {
 }
 
 // Delete
-export function deleteStaffById(staff_id) {
-    return db_conn.query(`DELETE FROM staff WHERE staff_id = ?`, [staff_id]);
+export function deleteStaffById(staffID) {
+    return db_conn.query(`DELETE FROM staff WHERE staff_id = ?`, [staffID]);
 }

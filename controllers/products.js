@@ -51,15 +51,15 @@ productController.get(
     "/product_admin",
     access_control(["admin", "stock"]),
     (request, response) => {
-        const edit_id = request.query.edit_id;
-        if (edit_id) {
-            getProductById(edit_id).then(editProduct => {
+        const editID = request.query.edit_id;
+        if (editID) {
+            getProductById(editID).then(editProduct => {
 
                 getAllProductsWithLastUpdatedStaff().then(productsStaff => {
                     response.render("product_admin.ejs", {
                         productsStaff,
                         editProduct,
-                        accessRole: request.session.user.access_role,
+                        accessRole: request.session.user.accessRole,
                     });
                 });
             }).catch(error => {
@@ -73,7 +73,7 @@ productController.get(
                 response.render("product_admin.ejs", {
                     productsStaff,
                     editProduct: Product(0, "", 0, 0, "", 0),
-                    accessRole: request.session.user.access_role,
+                    accessRole: request.session.user.accessRole,
                 });
             });
         }
@@ -92,7 +92,7 @@ productController.post(
             formData.stock,
             formData.price,
             formData.description,
-            request.session.user.staff_id
+            request.session.user.staffID
         )
 
         if (formData.action == "create") {

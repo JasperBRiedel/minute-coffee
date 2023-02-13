@@ -15,10 +15,10 @@ const orderController = express.Router();
 
 orderController.post("/create_order", (request, response) => {
     if (request.body) {
-        let order_details = request.body;
+        let formData = request.body;
 
         // Validation
-        if (!/[0-9]{1,}/.test(order_details.product_id)) {
+        if (!/[0-9]{1,}/.test(formData.product_id)) {
             response.render("status.ejs", {
                 status: "Invalid product ID",
                 message: "Please pick another product.",
@@ -26,7 +26,7 @@ orderController.post("/create_order", (request, response) => {
             return;
         }
 
-        if (!/[a-zA-Z-]{2,}/.test(order_details.customer_first_name)) {
+        if (!/[a-zA-Z-]{2,}/.test(formData.customer_first_name)) {
             response.render("status.ejs", {
                 status: "Invalid first name",
                 message: "First name must be letters",
@@ -34,7 +34,7 @@ orderController.post("/create_order", (request, response) => {
             return;
         }
 
-        if (!/[a-zA-Z-]{2,}/.test(order_details.customer_last_name)) {
+        if (!/[a-zA-Z-]{2,}/.test(formData.customer_last_name)) {
             response.render("status.ejs", {
                 status: "Invalid last name",
                 message: "Last name must be letters",
@@ -44,7 +44,7 @@ orderController.post("/create_order", (request, response) => {
 
         if (
             !/(^\({0,1}((0|\+61)(2|4|3|7|8)){0,1}\){0,1}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{1}(\ |-){0,1}[0-9]{3}$)/.test(
-                order_details.customer_phone
+                formData.customer_phone
             )
         ) {
             response.render("status.ejs", {
@@ -54,7 +54,7 @@ orderController.post("/create_order", (request, response) => {
             return;
         }
 
-        if (!/^\S{1,}@\S{1,}[.]\S{1,}$/.test(order_details.customer_email)) {
+        if (!/^\S{1,}@\S{1,}[.]\S{1,}$/.test(formData.customer_email)) {
             response.render("status.ejs", {
                 status: "Invalid email address",
                 message: "Please enter a valid email address",
@@ -69,11 +69,11 @@ orderController.post("/create_order", (request, response) => {
             "pending",
             // Gets the current date and time in MySQL friendly format
             (new Date().toISOString().slice(0, 19).replace('T', ' ')),
-            validator.escape(order_details.customer_first_name),
-            validator.escape(order_details.customer_last_name),
-            validator.escape(order_details.customer_phone),
-            validator.escape(order_details.customer_email),
-            validator.escape(order_details.product_id),
+            validator.escape(formData.customer_first_name),
+            validator.escape(formData.customer_last_name),
+            validator.escape(formData.customer_phone),
+            validator.escape(formData.customer_email),
+            validator.escape(formData.product_id),
         )
 
         // Call model function
@@ -121,7 +121,7 @@ orderController.get(
             response.render("order_admin.ejs", {
                 ordersProducts,
                 orderStatus,
-                accessRole: request.session.user.access_role,
+                accessRole: request.session.user.accessRole,
             });
         });
     }
@@ -131,8 +131,8 @@ orderController.post(
     "/order_admin",
     access_control(["admin", "sales"]),
     (request, response) => {
-        const edit_details = request.body;
-        updateOrderStatusById(edit_details.order_id, edit_details.status).then(
+        const formData = request.body;
+        updateOrderStatusById(formData.order_id, formData.status).then(
             ([result]) => {
                 if (result.affectedRows > 0) {
                     response.redirect("/order_admin");

@@ -1,9 +1,9 @@
-export default function access_control(allowed_roles) {
+export default function access_control(allowedRoles) {
   return function (request, response, next) {
     if (request.session.user != null) {
       if (
-        allowed_roles.some(
-          (allowed_role) => allowed_role === request.session.user.access_role
+        allowedRoles.some(
+          (allowedRole) => allowedRole === request.session.user.accessRole
         )
       ) {
         next();

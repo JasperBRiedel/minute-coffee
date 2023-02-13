@@ -25,8 +25,8 @@ staffController.post("/staff_login", (request, response) => {
 
         if (bcrypt.compareSync(login_password, staff.password)) {
             request.session.user = {
-                staff_id: staff.id,
-                access_role: staff.access_role,
+                staffID: staff.id,
+                accessRole: staff.access_role,
             };
 
             response.redirect("/order_admin");
@@ -47,15 +47,15 @@ staffController.get(
     "/staff_admin",
     access_control(["admin"]),
     (request, response) => {
-        const edit_id = request.query.edit_id;
-        if (edit_id) {
-            getStaffById(edit_id).then(editStaff => {
+        const editID = request.query.edit_id;
+        if (editID) {
+            getStaffById(editID).then(editStaff => {
 
                 getAllStaff().then(allStaff => {
                     response.render("staff_admin.ejs", {
                         allStaff,
                         editStaff,
-                        accessRole: request.session.user.access_role,
+                        accessRole: request.session.user.accessRole,
                     });
                 });
             });
@@ -64,7 +64,7 @@ staffController.get(
                 response.render("staff_admin.ejs", {
                     allStaff,
                     editStaff: Staff(0, "", "", "", "", ""),
-                    accessRole: request.session.user.access_role,
+                    accessRole: request.session.user.accessRole,
                 });
             });
         }
@@ -75,9 +75,9 @@ staffController.post(
     "/edit_staff",
     access_control(["admin"]),
     (request, response) => {
-        const edit_details = request.body;
+        const formData = request.body;
 
-        if (!/[a-zA-Z-]{2,}/.test(edit_details.first_name)) {
+        if (!/[a-zA-Z-]{2,}/.test(formData.first_name)) {
             response.render("status.ejs", {
                 status: "Invalid first name",
                 message: "First name must be letters",
@@ -85,7 +85,7 @@ staffController.post(
             return;
         }
 
-        if (!/[a-zA-Z-]{2,}/.test(edit_details.last_name)) {
+        if (!/[a-zA-Z-]{2,}/.test(formData.last_name)) {
             response.render("status.ejs", {
                 status: "Invalid last name",
                 message: "Last name must be letters",
@@ -93,7 +93,7 @@ staffController.post(
             return;
         }
 
-        if (!/[a-zA-Z0-9-]{6,}/.test(edit_details.password)) {
+        if (!/[a-zA-Z0-9-]{6,}/.test(formData.password)) {
             response.render("status.ejs", {
                 status: "Invalid password",
                 message:
@@ -104,12 +104,12 @@ staffController.post(
 
         // Create a staff model object to represent the staff member submitted
         const editStaff = Staff(
-            edit_details.staff_id,
-            edit_details.first_name,
-            edit_details.last_name,
-            edit_details.access_role,
-            edit_details.username,
-            edit_details.password
+            formData.staff_id,
+            formData.first_name,
+            formData.last_name,
+            formData.access_role,
+            formData.username,
+            formData.password
         )
 
         // hash the password if it isn't already hashed
@@ -118,18 +118,15 @@ staffController.post(
         }
 
         // Determine and run CRUD operation
-        if (edit_details.action == "create") {
+        if (formData.action == "create") {
             createStaff(editStaff).then(([result]) => {
                 response.redirect("/staff_admin");
             });
-        } else if (edit_details.action == "update") {
-            if (!edit_details.password.startsWith("$2a")) {
-                edit_details.password = bcrypt.hashSync(edit_details.password);
-            }
+        } else if (formData.action == "update") {
             updateStaffById(editStaff).then(([result]) => {
                 response.redirect("/staff_admin");
             });
-        } else if (edit_details.action == "delete") {
+        } else if (formData.action == "delete") {
             deleteStaffById(editStaff.id).then(([result]) => {
                 response.redirect("/staff_admin");
             });

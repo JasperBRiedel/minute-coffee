@@ -36,9 +36,9 @@ export function getAllProducts() {
         })
 }
 
-export function getProductById(product_id) {
+export function getProductById(productID) {
     return db_conn.query("SELECT * FROM products WHERE product_id = ?", [
-        product_id,
+        productID,
     ]).then(([queryResult]) => {
         // check that at least 1 order was found
         if (queryResult.length > 0) {
@@ -61,10 +61,10 @@ export function getProductById(product_id) {
     })
 }
 
-export function getProductsBySearch(search_term) {
+export function getProductsBySearch(searchTerm) {
     return db_conn.query(
         "SELECT * FROM products WHERE product_name LIKE ? OR product_description LIKE ?",
-        [`%${search_term}%`, `%${search_term}%`]
+        [`%${searchTerm}%`, `%${searchTerm}%`]
     ).then(([queryResult]) => {
         // convert each result into a model object
         return queryResult.map(
@@ -103,8 +103,8 @@ export function updateProductById(product) {
     );
 }
 
-export function deleteProductById(product_id) {
+export function deleteProductById(productID) {
     return db_conn.query("DELETE FROM products WHERE product_id = ?", [
-        product_id,
+        productID,
     ]);
 }

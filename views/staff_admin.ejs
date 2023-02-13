@@ -38,11 +38,14 @@
                     <input type="text" name="last_name" id="last-name" value="<%= editStaff.last_name %>" />
                     <label for="access-role">Access Role</label>
                     <select name="access_role" id="access-role">
-                        <option <%=editStaff.access_role=="admin" ? "selected" : "" %> value="admin">Admin
+                        <option <%=editStaff.access_role=="admin" ? "selected" : "" %> value="admin">
+                            Admin
                         </option>
-                        <option <%=editStaff.access_role=="stock" ? "selected" : "" %> value="stock">Stock
+                        <option <%=editStaff.access_role=="stock" ? "selected" : "" %> value="stock">
+                            Stock
                         </option>
-                        <option <%=editStaff.access_role=="sales" ? "selected" : "" %> value="sales">Sales
+                        <option <%=editStaff.access_role=="sales" ? "selected" : "" %> value="sales">
+                            Sales
                         </option>
                     </select>
                     <label for="username">Username:</label>

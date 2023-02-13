@@ -44,8 +44,8 @@ export function getAllOrders() {
 }
 
 
-export function getOrderById(order_id) {
-    return db_conn.query("SELECT * FROM orders WHERE order_id = ?", [order_id])
+export function getOrderById(orderID) {
+    return db_conn.query("SELECT * FROM orders WHERE order_id = ?", [orderID])
         .then(([queryResult]) => {
             // check that at least 1 match was found
             if (queryResult.length > 0) {
@@ -89,13 +89,13 @@ export function createOrder(order) {
     );
 }
 
-export function updateOrderStatusById(order_id, status) {
+export function updateOrderStatusById(orderID, status) {
     return db_conn.query(
         `
         UPDATE orders
         SET order_status = ?
         WHERE order_id = ?
     `,
-        [status, order_id]
+        [status, orderID]
     );
 }
