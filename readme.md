@@ -1,20 +1,19 @@
 # Minute Coffee
 
-Minute coffee is a dead simple server-side CRUD application that
+Minute coffee is a simple server-side rendered CRUD application that
 aims to provide a decent overview of how a traditional server-side
 application could be implemented. The project is intended to be used
 as scaffolding for first semester web development students.
 
-Do not expect anything to be implemented to best practices or be production ready.
+Do not expect anything to be implemented to best practices or suitable production ready. The goal is simplicity for this first project.
 
-Use and execution of code in this repository is at your own risk.
+This source code is provided without warrenty express or implied. Usage of the resources within this repository is at your own risk.
 
 ## Technologies
-
 -   express
 -   ejs for page rendering
 -   express-session for session state
--   bcrpytjs for password hashing
+-   bcryptjs for password hashing
 -   mysql2 for database access
 
 ## Wireframes
@@ -47,4 +46,4 @@ _Customer Pages_
 
 ---
 
-Copyright Jasper Riedel-Rutterford 2022
+Copyright Jasper Riedel-Rutterford 2023
