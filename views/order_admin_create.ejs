@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("partials/head.ejs") %>
+        <title>Minute Coffee - Order Admin</title>
+    </head>
+    <body>
+        <main>
+            <%- include("partials/header.ejs") %> <%-
+            include("partials/admin_nav.ejs", { accessRole }) %>
+            <section class="">
+                <nav>
+                    <a href="/order_admin?status=pending">Pending Orders</a>
+                    <a href="/order_admin?status=complete">Complete Orders</a>
+                    <a href="/order_admin?status=cancelled">Cancelled Orders</a>
+                    <a href="/order_admin_create">Create Order</a>
+                </nav>
+                <section class="">
+                    <form action="/create_order" method="post" class="form-grid">
+                        <label for="product">Product:</label>
+                        <select name="product_id" id="product">
+                            <% for (const product of products) { %>
+                            <option value="<%= product.id %>">
+                                <%= product.name %> - $<%= product.price %>
+                            </option>
+                            <% } %>
+                        </select>
+                        <label for="customer-first-name">First Name:</label>
+                        <input type="text" name="customer_first_name" id="customer-first-name" />
+                        <label for="customer-last-name">Last Name:</label>
+                        <input type="text" name="customer_last_name" id="customer-last-name" />
+                        <label for="customer-phone">Phone:</label>
+                        <input type="tel" name="customer_phone" id="customer-phone" />
+                        <label for="customer-email">Email:</label>
+                        <input type="email" name="customer_email" id="customer-email" />
+                        <input type="submit" value="Create" />
+                    </form>
+                </section>
+            </section>
+            <%- include("partials/footer.ejs") %>
+        </main>
+    </body>
+</html>

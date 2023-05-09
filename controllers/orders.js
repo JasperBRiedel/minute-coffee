@@ -10,6 +10,7 @@ import {
     getAllOrdersByStatusWithProduct,
     getOrderWithProductById
 } from "../models/orders-products.js";
+import { getAllProducts } from "../models/products.js";
 
 const orderController = express.Router();
 
@@ -126,6 +127,15 @@ orderController.get(
         });
     }
 );
+
+orderController.get("/order_admin_create", (request, response) => {
+    getAllProducts().then(products => {
+        response.render("order_admin_create.ejs", {
+            products,
+            accessRole: request.session.user.accessRole,
+        })
+    })
+})
 
 orderController.post(
     "/order_admin",
