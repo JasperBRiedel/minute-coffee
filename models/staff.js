@@ -1,6 +1,6 @@
 import { db_conn } from "../database.js";
 
-export function Staff(
+export function newStaff(
     id,
     first_name,
     last_name,
@@ -20,7 +20,7 @@ export function Staff(
 
 
 // Create
-export function createStaff(staff) {
+export function create(staff) {
     return db_conn.query(
         `
         INSERT INTO staff 
@@ -32,12 +32,12 @@ export function createStaff(staff) {
 }
 
 // Read
-export function getAllStaff() {
+export function getAll() {
     return db_conn.query(`SELECT * FROM staff`)
         .then(([queryResult]) => {
             // convert each result into a model object
             return queryResult.map(
-                result => Staff(
+                result => newStaff(
                     result.staff_id,
                     result.staff_first_name,
                     result.staff_last_name,
@@ -50,7 +50,7 @@ export function getAllStaff() {
         })
 }
 
-export function getStaffById(staffID) {
+export function getById(staffID) {
     return db_conn.query(`SELECT * FROM staff WHERE staff_id = ?`, [staffID])
         .then(([queryResult]) => {
             // check that at least 1 match was found
@@ -59,7 +59,7 @@ export function getStaffById(staffID) {
                 const result = queryResult[0]
 
                 // convert result into a model object
-                return Staff(
+                return newStaff(
                     result.staff_id,
                     result.staff_first_name,
                     result.staff_last_name,
@@ -74,7 +74,7 @@ export function getStaffById(staffID) {
         })
 }
 
-export function getStaffByUsername(username) {
+export function getByUsername(username) {
     return db_conn.query(`SELECT * FROM staff WHERE staff_username = ?`, [username])
         .then(([queryResult]) => {
             // check that at least 1 match was found
@@ -83,7 +83,7 @@ export function getStaffByUsername(username) {
                 const result = queryResult[0]
 
                 // convert result into a model object
-                return Staff(
+                return newStaff(
                     result.staff_id,
                     result.staff_first_name,
                     result.staff_last_name,
@@ -99,7 +99,7 @@ export function getStaffByUsername(username) {
 }
 
 // Update
-export function updateStaffById(staff) {
+export function update(staff) {
     return db_conn.query(
         `
         UPDATE staff
@@ -111,6 +111,6 @@ export function updateStaffById(staff) {
 }
 
 // Delete
-export function deleteStaffById(staffID) {
+export function deleteById(staffID) {
     return db_conn.query(`DELETE FROM staff WHERE staff_id = ?`, [staffID]);
 }

@@ -1,25 +1,17 @@
 import express from "express";
-import {
-    createProduct,
-    deleteProductById,
-    getAllProducts,
-    getProductById,
-    getProductsBySearch,
-    Product,
-    updateProductById,
-} from "../models/products.js";
 import access_control from "../access_control.js";
-import { getAllProductsWithLastUpdatedStaff } from "../models/products-staff.js";
+import * as ProductStaff from "../models/products-staff.js";
+import * as Products from "../models/products.js";
 
 const productController = express.Router();
 
 productController.get("/product_list", (request, response) => {
     if (request.query.search_term) {
-        getProductsBySearch(request.query.search_term).then(products => {
+        Products.getBySearch(request.query.search_term).then(products => {
             response.render("product_list.ejs", { products });
         });
     } else {
-        getAllProducts().then(products => {
+        Products.getAll().then(products => {
             response.render("product_list.ejs", { products });
         });
     }
@@ -35,7 +27,7 @@ productController.get("/product_checkout", (request, response) => {
             return;
         }
 
-        getProductById(request.query.id)
+        Products.getById(request.query.id)
             .then(product => {
                 response.render("product_checkout.ejs", { product });
             }).catch(error => {
@@ -53,9 +45,9 @@ productController.get(
     (request, response) => {
         const editID = request.query.edit_id;
         if (editID) {
-            getProductById(editID).then(editProduct => {
+            Products.getById(editID).then(editProduct => {
 
-                getAllProductsWithLastUpdatedStaff().then(productsStaff => {
+                ProductStaff.getAll().then(productsStaff => {
                     response.render("product_admin.ejs", {
                         productsStaff,
                         editProduct,
@@ -69,10 +61,10 @@ productController.get(
                 });
             })
         } else {
-            getAllProductsWithLastUpdatedStaff().then(productsStaff => {
+            ProductStaff.getAll().then(productsStaff => {
                 response.render("product_admin.ejs", {
                     productsStaff,
-                    editProduct: Product(0, "", 0, 0, "", 0),
+                    editProduct: Products.newProduct(0, "", 0, 0, "", 0),
                     accessRole: request.session.user.accessRole,
                 });
             });
@@ -86,7 +78,7 @@ productController.post(
     (request, response) => {
         const formData = request.body
 
-        const editedProduct = Product(
+        const editedProduct = Products.newProduct(
             formData.product_id,
             formData.name,
             formData.stock,
@@ -96,15 +88,15 @@ productController.post(
         )
 
         if (formData.action == "create") {
-            createProduct(editedProduct).then(([result]) => {
+            Products.create(editedProduct).then(([result]) => {
                 response.redirect("/product_admin");
             });
         } else if (formData.action == "update") {
-            updateProductById(editedProduct).then(([result]) => {
+            Products.update(editedProduct).then(([result]) => {
                 response.redirect("/product_admin");
             });
         } else if (formData.action == "delete") {
-            deleteProductById(editedProduct.id).then(([result]) => {
+            Products.deleteById(editedProduct.id).then(([result]) => {
                 response.redirect("/product_admin");
             });
         }

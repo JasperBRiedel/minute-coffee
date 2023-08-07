@@ -1,16 +1,9 @@
 import express from "express";
 import validator from "validator";
 import access_control from "../access_control.js";
-import {
-    createOrder,
-    Order,
-    updateOrderStatusById,
-} from "../models/orders.js";
-import {
-    getAllOrdersByStatusWithProduct,
-    getOrderWithProductById
-} from "../models/orders-products.js";
-import { getAllProducts } from "../models/products.js";
+import * as OrdersProducts from "../models/orders-products.js";
+import * as Orders from "../models/orders.js";
+import * as Products from "../models/products.js";
 
 const orderController = express.Router();
 
@@ -63,7 +56,7 @@ orderController.post("/create_order", (request, response) => {
             return;
         }
 
-        const newOrder = Order(
+        const newOrder = Orders.newOrder(
             // New model doesn't have an ID yet
             null,
             // All new orders are pending by default
@@ -78,7 +71,7 @@ orderController.post("/create_order", (request, response) => {
         )
 
         // Call model function
-        createOrder(newOrder).then(([result]) => {
+        Orders.create(newOrder).then(([result]) => {
             response.redirect("/order_confirmation?id=" + result.insertId);
         });
     }
@@ -94,7 +87,7 @@ orderController.get("/order_confirmation", (request, response) => {
     }
 
     if (request.query.id) {
-        getOrderWithProductById(request.query.id).then(
+        OrdersProducts.getAllByOrderId(request.query.id).then(
             orderProduct => {
                 response.render("order_confirmation.ejs", {
                     orderProduct,
@@ -118,7 +111,7 @@ orderController.get(
             orderStatus = "pending";
         }
 
-        getAllOrdersByStatusWithProduct(orderStatus).then(ordersProducts => {
+        OrdersProducts.getAllByOrderStatus(orderStatus).then(ordersProducts => {
             response.render("order_admin.ejs", {
                 ordersProducts,
                 orderStatus,
@@ -129,7 +122,7 @@ orderController.get(
 );
 
 orderController.get("/order_admin_create", (request, response) => {
-    getAllProducts().then(products => {
+    Products.getAll().then(products => {
         response.render("order_admin_create.ejs", {
             products,
             accessRole: request.session.user.accessRole,
@@ -142,7 +135,7 @@ orderController.post(
     access_control(["admin", "sales"]),
     (request, response) => {
         const formData = request.body;
-        updateOrderStatusById(formData.order_id, formData.status).then(
+        Orders.updateStatusById(formData.order_id, formData.status).then(
             ([result]) => {
                 if (result.affectedRows > 0) {
                     response.redirect("/order_admin");

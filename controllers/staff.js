@@ -1,15 +1,7 @@
-import express from "express";
 import bcrypt from "bcryptjs";
+import express from "express";
 import access_control from "../access_control.js";
-import {
-    createStaff,
-    deleteStaffById,
-    getAllStaff,
-    getStaffById,
-    getStaffByUsername,
-    Staff,
-    updateStaffById,
-} from "../models/staff.js";
+import * as Staff from "../models/staff.js";
 
 const staffController = express.Router();
 
@@ -21,7 +13,7 @@ staffController.post("/staff_login", (request, response) => {
     const login_username = request.body.username;
     const login_password = request.body.password;
 
-    getStaffByUsername(login_username).then(staff => {
+    Staff.getByUsername(login_username).then(staff => {
 
         if (bcrypt.compareSync(login_password, staff.password)) {
             request.session.user = {
@@ -49,9 +41,9 @@ staffController.get(
     (request, response) => {
         const editID = request.query.edit_id;
         if (editID) {
-            getStaffById(editID).then(editStaff => {
+            Staff.getById(editID).then(editStaff => {
 
-                getAllStaff().then(allStaff => {
+                Staff.getAll().then(allStaff => {
                     response.render("staff_admin.ejs", {
                         allStaff,
                         editStaff,
@@ -60,10 +52,10 @@ staffController.get(
                 });
             });
         } else {
-            getAllStaff().then(allStaff => {
+            Staff.getAll().then(allStaff => {
                 response.render("staff_admin.ejs", {
                     allStaff,
-                    editStaff: Staff(0, "", "", "", "", ""),
+                    editStaff: Staff.newStaff(0, "", "", "", "", ""),
                     accessRole: request.session.user.accessRole,
                 });
             });
@@ -103,7 +95,7 @@ staffController.post(
         }
 
         // Create a staff model object to represent the staff member submitted
-        const editStaff = Staff(
+        const editStaff = Staff.newStaff(
             formData.staff_id,
             formData.first_name,
             formData.last_name,
@@ -119,15 +111,15 @@ staffController.post(
 
         // Determine and run CRUD operation
         if (formData.action == "create") {
-            createStaff(editStaff).then(([result]) => {
+            Staff.create(editStaff).then(([result]) => {
                 response.redirect("/staff_admin");
             });
         } else if (formData.action == "update") {
-            updateStaffById(editStaff).then(([result]) => {
+            Staff.update(editStaff).then(([result]) => {
                 response.redirect("/staff_admin");
             });
         } else if (formData.action == "delete") {
-            deleteStaffById(editStaff.id).then(([result]) => {
+            Staff.deleteById(editStaff.id).then(([result]) => {
                 response.redirect("/staff_admin");
             });
         }

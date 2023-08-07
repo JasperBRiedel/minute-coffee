@@ -1,7 +1,7 @@
 import { db_conn } from "../database.js";
 
 // Order model (object) constructor
-export function Order(
+export function newOrder(
     id,
     status,
     datetime,
@@ -23,12 +23,12 @@ export function Order(
     }
 }
 
-export function getAllOrders() {
+export function getAll() {
     return db_conn.query("SELECT * FROM orders")
         .then(([queryResult]) => {
             // convert each result into a model object
             return queryResult.map(
-                result => Order(
+                result => newOrder(
                     result.order_id,
                     result.order_status,
                     result.order_datetime,
@@ -44,7 +44,7 @@ export function getAllOrders() {
 }
 
 
-export function getOrderById(orderID) {
+export function getById(orderID) {
     return db_conn.query("SELECT * FROM orders WHERE order_id = ?", [orderID])
         .then(([queryResult]) => {
             // check that at least 1 match was found
@@ -53,7 +53,7 @@ export function getOrderById(orderID) {
                 const result = queryResult[0]
 
                 // convert result into a model object
-                return Order(
+                return newOrder(
                     result.order_id,
                     result.order_status,
                     result.order_datetime,
@@ -71,7 +71,7 @@ export function getOrderById(orderID) {
 }
 
 
-export function createOrder(order) {
+export function create(order) {
     return db_conn.query(
         `
         INSERT INTO orders (product_id, order_status, order_datetime, customer_first_name, customer_last_name, customer_phone, customer_email) 
@@ -89,7 +89,7 @@ export function createOrder(order) {
     );
 }
 
-export function updateOrderStatusById(orderID, status) {
+export function updateStatusById(orderID, status) {
     return db_conn.query(
         `
         UPDATE orders

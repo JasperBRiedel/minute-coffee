@@ -1,6 +1,6 @@
 import { db_conn } from "../database.js";
 
-export function ProductStaff(
+export function newProductStaff(
     product_id,
     product_name,
     product_stock,
@@ -30,7 +30,7 @@ export function ProductStaff(
     }
 }
 
-export function getAllProductsWithLastUpdatedStaff() {
+export function getAll() {
     return db_conn.query(`
         SELECT * FROM products INNER JOIN staff 
         ON products.last_updated_by_staff_id = staff.staff_id
@@ -38,7 +38,7 @@ export function getAllProductsWithLastUpdatedStaff() {
         .then(([queryResult]) => {
             // convert each result into a model object
             return queryResult.map(
-                result => ProductStaff(
+                result => newProductStaff(
                     result.product_id,
                     result.product_name,
                     result.product_stock,

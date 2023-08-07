@@ -1,6 +1,6 @@
 import { db_conn } from "../database.js";
 
-export function Product(
+export function newProduct(
     id,
     name,
     stock,
@@ -18,12 +18,12 @@ export function Product(
     }
 }
 
-export function getAllProducts() {
+export function getAll() {
     return db_conn.query("SELECT * FROM products")
         .then(([queryResult]) => {
             // convert each result into a model object
             return queryResult.map(
-                result => Product(
+                result => newProduct(
                     result.product_id,
                     result.product_name,
                     result.product_stock,
@@ -36,7 +36,7 @@ export function getAllProducts() {
         })
 }
 
-export function getProductById(productID) {
+export function getById(productID) {
     return db_conn.query("SELECT * FROM products WHERE product_id = ?", [
         productID,
     ]).then(([queryResult]) => {
@@ -46,7 +46,7 @@ export function getProductById(productID) {
             const result = queryResult[0]
 
             // convert result into a model object
-            return Product(
+            return newProduct(
                 result.product_id,
                 result.product_name,
                 result.product_stock,
@@ -61,14 +61,14 @@ export function getProductById(productID) {
     })
 }
 
-export function getProductsBySearch(searchTerm) {
+export function getBySearch(searchTerm) {
     return db_conn.query(
         "SELECT * FROM products WHERE product_name LIKE ? OR product_description LIKE ?",
         [`%${searchTerm}%`, `%${searchTerm}%`]
     ).then(([queryResult]) => {
         // convert each result into a model object
         return queryResult.map(
-            result => Product(
+            result => newProduct(
                 result.product_id,
                 result.product_name,
                 result.product_stock,
@@ -81,7 +81,7 @@ export function getProductsBySearch(searchTerm) {
     })
 }
 
-export function createProduct(product) {
+export function create(product) {
     return db_conn.query(
         `
         INSERT INTO products 
@@ -92,7 +92,7 @@ export function createProduct(product) {
     );
 }
 
-export function updateProductById(product) {
+export function update(product) {
     return db_conn.query(
         `
         UPDATE products
@@ -103,7 +103,7 @@ export function updateProductById(product) {
     );
 }
 
-export function deleteProductById(productID) {
+export function deleteById(productID) {
     return db_conn.query("DELETE FROM products WHERE product_id = ?", [
         productID,
     ]);

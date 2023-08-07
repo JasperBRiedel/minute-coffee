@@ -1,7 +1,7 @@
 import { db_conn } from "../database.js";
 
 // Order model (object) constructor
-export function OrderProduct(
+export function newOrderProduct(
     order_id,
     order_status,
     order_datetime,
@@ -33,7 +33,7 @@ export function OrderProduct(
     }
 }
 
-export function getAllOrdersByStatusWithProduct(status) {
+export function getAllByOrderStatus(status) {
     return db_conn.query(
         `
         SELECT * FROM orders
@@ -45,7 +45,7 @@ export function getAllOrdersByStatusWithProduct(status) {
     ).then(([queryResult]) => {
         // convert each result into a model object
         return queryResult.map(
-            result => OrderProduct(
+            result => newOrderProduct(
                 result.order_id,
                 result.order_status,
                 result.order_datetime,
@@ -65,7 +65,7 @@ export function getAllOrdersByStatusWithProduct(status) {
     })
 }
 
-export function getOrderWithProductById(orderID) {
+export function getAllByOrderId(orderID) {
     return db_conn.query(
         `
         SELECT *
@@ -82,7 +82,7 @@ export function getOrderWithProductById(orderID) {
             const result = queryResult[0]
 
             // convert result into a model object
-            return OrderProduct(
+            return newOrderProduct(
                 result.order_id,
                 result.order_status,
                 result.order_datetime,
