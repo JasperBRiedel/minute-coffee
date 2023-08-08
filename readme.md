@@ -7,7 +7,7 @@ as scaffolding for first semester web development students.
 
 Do not expect anything to be implemented to best practices or suitable production ready. The goal is simplicity for this first project.
 
-This source code is provided without warrenty express or implied. Usage of the resources within this repository is at your own risk.
+This source code is provided without warranty express or implied. Usage of the resources within this repository is at your own risk.
 
 ## Technologies
 -   express
@@ -31,7 +31,9 @@ _Customer Pages_
 -   Order CRUD
     _Stock Pages_
 -   Products CRUD
-    _Admin Pages_
+
+_Admin Pages_
+
 -   Users CRUD
 -   Products CRUD
 -   Orders CRUD
