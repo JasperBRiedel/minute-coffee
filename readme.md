@@ -1,49 +1,36 @@
 # Minute Coffee
 
-Minute coffee is a simple server-side rendered CRUD application that
-aims to provide a decent overview of how a traditional server-side
-application could be implemented. The project is intended to be used
-as scaffolding for first semester web development students.
+**Minute Coffee** is a straightforward server-side rendered CRUD application designed to provide a basic understanding of how to implement a traditional server-side application in JavaScript. This project is primarily intended as a reference for first-semester web development students in the ICT50220 Diploma program.
 
-Do not expect anything to be implemented to best practices or suitable production ready. The goal is simplicity for this first project.
+Please be aware that this project does not conform to best practices or prioritise production-readiness. Its main objective is simplicity, serving as a teaching tool for fundamental techniques, including form data handling, postbacks, routing, authentication, authorisation, and MVC principles. This makes it ideal for beginners to use as a reference when embarking on their first project.
 
-This source code is provided without warrenty express or implied. Usage of the resources within this repository is at your own risk.
+**Disclaimer:** This source code is provided without any warranty, express or implied. Usage of the resources within this repository is at your own risk.
 
 ## Technologies
--   express
--   ejs for page rendering
--   express-session for session state
--   bcryptjs for password hashing
--   mysql2 for database access
 
-## Wireframes
+- [Express](https://www.npmjs.com/package/express): Express is a fast, minimalist web framework for Node.js. It is used in this project to handle routing, middleware, and HTTP request/response management.
 
-![Draft wireframes](prototype/prototype%20wireframes.excalidraw.png)
+- [EJS](https://www.npmjs.com/package/ejs): EJS (Embedded JavaScript) is a simple templating language that enables dynamic HTML page generation. It is utilised here for server-side rendering and creating dynamic web pages.
 
-## Pages
+- [Express-session](https://www.npmjs.com/package/express-session): Express-session is a middleware for handling session state in Express applications. It is employed to manage user sessions and maintain stateful interactions.
 
-_Customer Pages_
+- [Bcryptjs](https://www.npmjs.com/package/bcryptjs): Bcryptjs is a library for securely hashing passwords. It is used to hash and store user passwords securely in the database.
 
--   Products (Home)
--   Order
--   Confirmation
-    _Sales Pages_
--   Order CRUD
-    _Stock Pages_
--   Products CRUD
-    _Admin Pages_
--   Users CRUD
--   Products CRUD
--   Orders CRUD
+- [Mysql2](https://www.npmjs.com/package/mysql2): Mysql2 is a Node.js-based MySQL client library that facilitates interaction with MySQL databases. It is utilised for database access and management in this project.
 
-### Screenshots
+## Screenshots and wireframe
+![products screen](screenshots/all_products.png)
 
-| Screenshots                                          |                                                            |
-| ---------------------------------------------------- | ---------------------------------------------------------- |
-| ![products screen](screenshots/all_products.png)     | ![buy product screen](screenshots/buy_product.png)         |
-| ![order status screen](screenshots/order_status.png) | ![search products screen](screenshots/search_products.png) |
-| ![login screen](screenshots/admin_login.png)         | ![product CRUD screen](screenshots/product_crud.png)       |
+![buy product screen](screenshots/buy_product.png) 
 
----
+![order status screen](screenshots/order_status.png)
 
-Copyright Jasper Riedel-Rutterford 2023
+![search products screen](screenshots/search_products.png)
+
+![login screen](screenshots/admin_login.png)
+
+![product CRUD screen](screenshots/product_crud.png)
+
+![Draft Wireframes](prototype/prototype%20wireframes.excalidraw.png)
+
+Copyright © Jasper Riedel-Rutterford 2023
