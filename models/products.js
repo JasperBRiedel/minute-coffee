@@ -103,6 +103,14 @@ export function update(product) {
     );
 }
 
+export function updateStockById(productID, difference) {
+    return db_conn.query(`
+    UPDATE products
+    SET product_stock = product_stock + ?
+    WHERE product_id = ?
+    `, [difference, productID])
+}
+
 export function deleteById(productID) {
     // Instead of actually deleting products we just flag them
     // as removed. This allows us to hide "deleted" products, while

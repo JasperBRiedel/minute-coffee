@@ -71,9 +71,21 @@ orderController.post("/create_order", (request, response) => {
         )
 
         // Call model function
-        Orders.create(newOrder).then(([result]) => {
-            response.redirect("/order_confirmation?id=" + result.insertId);
-        });
+        Products.updateStockById(formData.product_id, -1).then(() => {
+            Orders.create(newOrder).then(([result]) => {
+                response.redirect("/order_confirmation?id=" + result.insertId);
+            }).catch(() => {
+                response.render("status.ejs", {
+                    status: "Failed to create order",
+                    message: "Order creation failed, please contact staff."
+                })
+            })
+        }).catch(() => {
+            response.render("status.ejs", {
+                status: "Failed to update stock",
+                message: "Order creation failed due to stock update issue, please contact staff."
+            })
+        })
     }
 });
 
