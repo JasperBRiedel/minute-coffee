@@ -77,6 +77,9 @@ productController.post(
     access_control(["admin", "stock"]),
     (request, response) => {
         const formData = request.body
+        // TODO: Validation of input data  
+
+        // TODO: Sanitisation of input data  
 
         const editedProduct = Products.newProduct(
             formData.product_id,
@@ -90,15 +93,30 @@ productController.post(
         if (formData.action == "create") {
             Products.create(editedProduct).then(([result]) => {
                 response.redirect("/product_admin");
-            });
+            }).catch(error => {
+                response.render("status.ejs", {
+                    status: "Failed to create",
+                    message: "Database failed to create product."
+                })
+            })
         } else if (formData.action == "update") {
             Products.update(editedProduct).then(([result]) => {
                 response.redirect("/product_admin");
-            });
+            }).catch(error => {
+                response.render("status.ejs", {
+                    status: "Failed to update",
+                    message: "Database failed to update product."
+                })
+            })
         } else if (formData.action == "delete") {
             Products.deleteById(editedProduct.id).then(([result]) => {
                 response.redirect("/product_admin");
-            });
+            }).catch(error => {
+                response.render("status.ejs", {
+                    status: "Failed to delete",
+                    message: "Database failed to delete product, is it referenced somewhere?"
+                })
+            })
         }
     }
 );

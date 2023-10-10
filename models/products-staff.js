@@ -34,6 +34,7 @@ export function getAll() {
     return db_conn.query(`
         SELECT * FROM products INNER JOIN staff 
         ON products.last_updated_by_staff_id = staff.staff_id
+        WHERE product_removed = 0
       `)
         .then(([queryResult]) => {
             // convert each result into a model object

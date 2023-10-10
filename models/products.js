@@ -19,7 +19,7 @@ export function newProduct(
 }
 
 export function getAll() {
-    return db_conn.query("SELECT * FROM products")
+    return db_conn.query("SELECT * FROM products WHERE product_removed = 0")
         .then(([queryResult]) => {
             // convert each result into a model object
             return queryResult.map(
@@ -63,7 +63,7 @@ export function getById(productID) {
 
 export function getBySearch(searchTerm) {
     return db_conn.query(
-        "SELECT * FROM products WHERE product_name LIKE ? OR product_description LIKE ?",
+        "SELECT * FROM products WHERE product_removed = 0 AND (product_name LIKE ? OR product_description LIKE ?)",
         [`%${searchTerm}%`, `%${searchTerm}%`]
     ).then(([queryResult]) => {
         // convert each result into a model object
@@ -104,7 +104,16 @@ export function update(product) {
 }
 
 export function deleteById(productID) {
-    return db_conn.query("DELETE FROM products WHERE product_id = ?", [
-        productID,
-    ]);
+    // Instead of actually deleting products we just flag them
+    // as removed. This allows us to hide "deleted" products, while
+    // still maintaining referential integrity with the orders table.
+    return db_conn.query(`
+    UPDATE products
+    SET product_removed = 1
+    WHERE product_id = ?
+    `, [productID])
+
+    // return db_conn.query("DELETE FROM products WHERE product_id = ?", [
+    //     productID,
+    // ]);
 }
