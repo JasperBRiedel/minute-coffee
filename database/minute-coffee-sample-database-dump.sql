@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Linux (x86_64)
 --
--- Host: localhost    Database: minute_coffee
+-- Host: localhost    Database: minute-coffee
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
