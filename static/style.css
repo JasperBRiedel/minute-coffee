@@ -73,9 +73,22 @@ textarea {
 
 .search-form {
     width: 100%;
-    max-width: 700px;
+    max-width: 768px;
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr;
+}
+
+.search-form > a {
+    margin-left: auto;
+    border: 1px solid black;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: greenyellow;
+    color: black;
+    font-size: 20px;
 }
 
 .search-form * {
@@ -172,6 +185,18 @@ textarea {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
+}
+
+.sales-section h3 {
+    margin: 1rem 0;
+}
+
+.sales-section p {
+    margin: 0.5rem 0;
+}
+
+summary {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {
