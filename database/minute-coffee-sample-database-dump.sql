@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: minute-coffee
 -- ------------------------------------------------------
@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -76,7 +76,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (5,'Espresso Roberto ',96,10,'An espresso Roberto is a double shot espresso with a small amount of steamed milk on the side. Made properly a splash of steamed whole milk is added.',1,0),(6,'Espresso romano ',48,10,"An espresso romano is a shot of espresso with a slice of lemon served on the side. The lemon can be run along the rim of the cup as a way to accentuate the espresso\'s sweetness. Despite the name, it has no link to Italy nor Rome.",1,0),(7,'Flat white',120,5,'A flat white is an espresso with microfoam (steamed milk with small, fine bubbles and a glossy or velvety consistency). It is comparable to a latte, but smaller in volume and with less microfoam, therefore having a higher proportion of coffee to milk, and milk that is more velvety in consistency – allowing the espresso to dominate the flavour, while being supported by the milk. ',1,0),(8,'Caffè americano ',70,6,'An americano is prepared by adding hot water to espresso, giving a similar strength to but different flavor from brewed coffee. The drink consists of a single or double-shot of espresso combined with between 30 and 473 ml (1 and 16 US fluid ounces; 1 and 17 imperial fluid ounces) of hot water. The strength of an americano varies with the number of shots of espresso added. In the United States, americano is used broadly to mean combining hot water and espresso in either order. Variations include long black and lungo.',1,0),(9,'Manilo ',130,5,'A manilo consists of a regular espresso shot and less than 100 ml (3.4 US fluid ounces; 3.5 imperial fluid ounces) of silky milk. Popularised due to its strength and taste, without a lot of milk. Similar to a half flat white, but slightly smaller. ',1,0),(16,'Hot Chocolate',10,5,'A nice hot chocolate drink',1,0);
+INSERT INTO `products` VALUES (5,'Espresso Roberto ',96,10,'An espresso Roberto is a double shot espresso with a small amount of steamed milk on the side. Made properly a splash of steamed whole milk is added.',1,0),(6,'Espresso romano ',48,10,'An espresso romano is a shot of espresso with a slice of lemon served on the side. The lemon can be run along the rim of the cup as a way to accentuate the espresso\'s sweetness. Despite the name, it has no link to Italy nor Rome.',1,0),(7,'Flat white',120,5,'A flat white is an espresso with microfoam (steamed milk with small, fine bubbles and a glossy or velvety consistency). It is comparable to a latte, but smaller in volume and with less microfoam, therefore having a higher proportion of coffee to milk, and milk that is more velvety in consistency – allowing the espresso to dominate the flavour, while being supported by the milk. ',1,0),(8,'Caffè americano ',70,6,'An americano is prepared by adding hot water to espresso, giving a similar strength to but different flavor from brewed coffee. The drink consists of a single or double-shot of espresso combined with between 30 and 473 ml (1 and 16 US fluid ounces; 1 and 17 imperial fluid ounces) of hot water. The strength of an americano varies with the number of shots of espresso added. In the United States, americano is used broadly to mean combining hot water and espresso in either order. Variations include long black and lungo.',1,0),(9,'Manilo ',130,5,'A manilo consists of a regular espresso shot and less than 100 ml (3.4 US fluid ounces; 3.5 imperial fluid ounces) of silky milk. Popularised due to its strength and taste, without a lot of milk. Similar to a half flat white, but slightly smaller. ',1,0),(16,'Hot Chocolate',10,5,'A nice hot chocolate drink',1,0);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,15 +90,15 @@ DROP TABLE IF EXISTS `sales`;
 CREATE TABLE `sales` (
   `sale_id` int NOT NULL AUTO_INCREMENT,
   `product_id` int NOT NULL,
-  `percentage_off` decimal(3,2) DEFAULT NULL,
-  `sale_date` date DEFAULT NULL,
-  `start_time` time DEFAULT NULL,
-  `end_time` time DEFAULT NULL,
+  `percentage_off` decimal(3,2) NOT NULL,
+  `sale_date` date NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `product_id` (`product_id`),
-  CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE,
+  CONSTRAINT `sales_product_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE,
   CONSTRAINT `sales_chk_1` CHECK ((`percentage_off` < 1.00))
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,4 +150,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-18 17:04:48
+-- Dump completed on 2024-04-22 10:16:58
