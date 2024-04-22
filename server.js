@@ -38,6 +38,8 @@ app.use(express.static("static"));
 // Hook up each controller
 import productController from "./controllers/products.js";
 app.use(productController);
+import saleController from "./controllers/sales.js"
+app.use(saleController)
 import orderController from "./controllers/orders.js";
 app.use(orderController);
 import staffController from "./controllers/staff.js";

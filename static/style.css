@@ -73,13 +73,13 @@ textarea {
 
 .search-form {
     width: 100%;
-    max-width: 700px;
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr;
 }
 
-.search-form * {
-    width: 100%;
+.link-button.sales-button {
+    box-sizing: border-box;
+    background-color: greenyellow;
 }
 
 .coffee-list {
@@ -172,6 +172,18 @@ textarea {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
+}
+
+.sales-section h3 {
+    margin: 1rem 0;
+}
+
+.sales-section p {
+    margin: 0.5rem 0;
+}
+
+summary {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {
