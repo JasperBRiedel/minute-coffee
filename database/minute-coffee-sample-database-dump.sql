@@ -90,14 +90,13 @@ DROP TABLE IF EXISTS `sales`;
 CREATE TABLE `sales` (
   `sale_id` int NOT NULL AUTO_INCREMENT,
   `product_id` int NOT NULL,
-  `percentage_off` decimal(3,2) NOT NULL,
+  `sale_percentage_off` decimal(3,2) NOT NULL,
   `sale_date` date NOT NULL,
-  `start_time` time NOT NULL,
-  `end_time` time NOT NULL,
+  `sale_start_time` time NOT NULL,
+  `sale_end_time` time NOT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `product_id` (`product_id`),
-  CONSTRAINT `sales_product_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE,
-  CONSTRAINT `sales_chk_1` CHECK ((`percentage_off` < 1.00))
+  CONSTRAINT `sales_product_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -150,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-22 10:16:58
+-- Dump completed on 2024-04-22 10:43:43

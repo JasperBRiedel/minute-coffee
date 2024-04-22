@@ -1,10 +1,10 @@
 import { db_conn } from "../database.js";
 
 export function newSale(
-    sale_id,
+    id,
     product_id,
     percentage_off,
-    sale_date,
+    date,
 ) {
     return {
         sale_id,
@@ -22,7 +22,7 @@ export function getAll() {
                 result => newSale(
                     result.sale_id,
                     result.product_id,
-                    result.percentage_off,
+                    result.sale_percentage_off,
                     result.sale_date
                 )
             )
@@ -38,7 +38,7 @@ export function create(sale) {
         `,
         [
             sale.product_id,
-            sale.percentage_off,
+            sale.sale_percentage_off,
             sale.sale_date
         ]
     )
@@ -48,6 +48,7 @@ export function deleteById(saleId) {
     return db_conn.query("DELETE FROM sales WHERE sale_id = ?", [saleId])
 }
 
+
 export function getAllSalesThisWeek() {
     return db_conn.query(
         `
@@ -56,11 +57,11 @@ export function getAllSalesThisWeek() {
             product_description, 
             product_stock,
             product_price,
-            percentage_off, 
-            (product_price * (1 - percentage_off)) as sale_price, 
+            sale_percentage_off, 
+            (product_price * (1 - sale_percentage_off)) as sale_price, 
             (DAYOFWEEK(sale_date) - 1) as sale_day, 
-            start_time, 
-            end_time 
+            sale_start_time, 
+            sale_end_time 
         FROM sales 
         INNER JOIN products 
         ON sales.product_id = products.product_id 
