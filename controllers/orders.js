@@ -90,7 +90,7 @@ orderController.post("/create_order", (request, response) => {
 });
 
 orderController.get("/order_confirmation", (request, response) => {
-    if (!/[0-9]{1,}/.test(request.query.id)) {
+    if (!/^[0-9]{1,}$/.test(request.query.id)) {
         response.render("status.ejs", {
             status: "Invalid order ID",
             message: "Please contact support.",
