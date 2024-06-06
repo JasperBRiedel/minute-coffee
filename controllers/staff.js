@@ -69,7 +69,7 @@ staffController.post(
     (request, response) => {
         const formData = request.body;
 
-        if (!/[a-zA-Z-]{2,}/.test(formData.first_name)) {
+        if (!/^[a-zA-Z-]{2,}$/.test(formData.first_name)) {
             response.render("status.ejs", {
                 status: "Invalid first name",
                 message: "First name must be letters",
@@ -77,7 +77,7 @@ staffController.post(
             return;
         }
 
-        if (!/[a-zA-Z-]{2,}/.test(formData.last_name)) {
+        if (!/^[a-zA-Z-]{2,}$/.test(formData.last_name)) {
             response.render("status.ejs", {
                 status: "Invalid last name",
                 message: "Last name must be letters",
@@ -85,7 +85,7 @@ staffController.post(
             return;
         }
 
-        if (!/[a-zA-Z0-9-]{6,}/.test(formData.password)) {
+        if (!/^[a-zA-Z0-9-]{6,}$/.test(formData.password)) {
             response.render("status.ejs", {
                 status: "Invalid password",
                 message:

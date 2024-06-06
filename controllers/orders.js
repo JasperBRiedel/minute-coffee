@@ -12,7 +12,7 @@ orderController.post("/create_order", (request, response) => {
         let formData = request.body;
 
         // Validation
-        if (!/[0-9]{1,}/.test(formData.product_id)) {
+        if (!/^[0-9]{1,}$/.test(formData.product_id)) {
             response.render("status.ejs", {
                 status: "Invalid product ID",
                 message: "Please pick another product.",
@@ -20,7 +20,7 @@ orderController.post("/create_order", (request, response) => {
             return;
         }
 
-        if (!/[a-zA-Z-]{2,}/.test(formData.customer_first_name)) {
+        if (!/^[a-zA-Z-]{2,}$/.test(formData.customer_first_name)) {
             response.render("status.ejs", {
                 status: "Invalid first name",
                 message: "First name must be letters",
@@ -28,7 +28,7 @@ orderController.post("/create_order", (request, response) => {
             return;
         }
 
-        if (!/[a-zA-Z-]{2,}/.test(formData.customer_last_name)) {
+        if (!/^[a-zA-Z-]{2,}$/.test(formData.customer_last_name)) {
             response.render("status.ejs", {
                 status: "Invalid last name",
                 message: "Last name must be letters",
@@ -90,7 +90,7 @@ orderController.post("/create_order", (request, response) => {
 });
 
 orderController.get("/order_confirmation", (request, response) => {
-    if (!/[0-9]{1,}/.test(request.query.id)) {
+    if (!/^[0-9]{1,}$/.test(request.query.id)) {
         response.render("status.ejs", {
             status: "Invalid order ID",
             message: "Please contact support.",
