@@ -56,7 +56,7 @@ CREATE TABLE `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `product_id` int NOT NULL,
   `status` enum('pending','complete','cancelled') NOT NULL,
-  `created_date` datetime NOT NULL,
+  `created` datetime NOT NULL,
   `customer_first_name` varchar(60) NOT NULL,
   `customer_last_name` varchar(60) NOT NULL,
   `customer_phone` varchar(45) NOT NULL,
@@ -149,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-26 15:47:19
+-- Dump completed on 2024-08-26 16:08:23
