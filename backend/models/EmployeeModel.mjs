@@ -26,6 +26,34 @@ export class EmployeeModel extends DatabaseModel {
 
     /**
      * 
+     * @param {number} id 
+     * @returns {Promise<Array<EmployeeModel>>}
+     */
+    static getById(id) {
+        return this.query("SELECT * FROM employees WHERE id = ?", [id])
+            .then(result => 
+                result.length > 0 
+                ? this.rowToEmployee(result[0]) 
+                : Promise.reject("not found")
+            )
+    }
+
+    /**
+     * 
+     * @param {number} id 
+     * @returns {Promise<Array<EmployeeModel>>}
+     */
+    static getByUsername(id) {
+        return this.query("SELECT * FROM employees WHERE username = ?", [username])
+            .then(result => 
+                result.length > 0 
+                ? this.rowToEmployee(result[0]) 
+                : Promise.reject("not found")
+            )
+    }
+
+    /**
+     * 
      * @param {EmployeeModel} employee 
      * @returns {Promise<Array<EmployeeModel>>}
      */
