@@ -17,7 +17,7 @@ export class EmployeeModel extends DatabaseModel {
 
     //// Static 
 
-    static rowToModel(row) {
+    static tableToModel(row) {
         return new EmployeeModel(
             row["id"],
             row["first_name"],
@@ -34,7 +34,7 @@ export class EmployeeModel extends DatabaseModel {
      */
     static getAll() {
         return this.query("SELECT * FROM employees")
-            .then(result => result.map(row => this.rowToModel(row)))
+            .then(result => result.map(row => this.tableToModel(row.employees)))
     }
 
     /**
@@ -46,7 +46,7 @@ export class EmployeeModel extends DatabaseModel {
         return this.query("SELECT * FROM employees WHERE id = ?", [id])
             .then(result => 
                 result.length > 0 
-                ? this.rowToModel(result[0]) 
+                ? this.tableToModel(result[0].employees) 
                 : Promise.reject("not found")
             )
     }
@@ -60,7 +60,7 @@ export class EmployeeModel extends DatabaseModel {
         return this.query("SELECT * FROM employees WHERE username = ?", [username])
             .then(result => 
                 result.length > 0 
-                ? this.rowToModel(result[0]) 
+                ? this.tableToModel(result[0].employees) 
                 : Promise.reject("not found")
             )
     }

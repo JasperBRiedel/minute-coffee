@@ -19,7 +19,7 @@ export class OrderModel extends DatabaseModel {
 
     //// Static 
 
-    static rowToModel(row) {
+    static tableToModel(row) {
         return new OrderModel(
             row["id"],
             row["product_id"],
@@ -38,7 +38,7 @@ export class OrderModel extends DatabaseModel {
      */
     static getAll() {
         return this.query("SELECT * FROM orders")
-            .then(result => result.map(row => this.rowToModel(row)))
+            .then(result => result.map(row => this.tableToModel(row.orders)))
     }
 
     /**
@@ -50,7 +50,7 @@ export class OrderModel extends DatabaseModel {
         return this.query("SELECT * FROM orders WHERE id = ?", [id])
             .then(result =>
                 result.length > 0
-                    ? this.rowToModel(result[0])
+                    ? this.tableToModel(result[0].orders)
                     : Promise.reject("not found")
             )
     }

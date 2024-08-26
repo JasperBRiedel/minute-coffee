@@ -9,6 +9,7 @@ export class DatabaseModel {
             user: "root",
             password: "root",
             database: "minute-coffee-2025",
+            nestTables: true,
         })
     }
 

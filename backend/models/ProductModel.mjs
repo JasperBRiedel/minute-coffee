@@ -18,7 +18,7 @@ export class ProductModel extends DatabaseModel {
     
     //// Static 
 
-    static rowToModel(row) {
+    static tableToModel(row) {
         return new ProductModel(
             row["id"],
             row["name"],
@@ -36,7 +36,7 @@ export class ProductModel extends DatabaseModel {
      */
     static getAll() {
         return this.query("SELECT * FROM products where deleted = 0")
-            .then(result => result.map(row => this.rowToModel(row)))
+            .then(result => result.map(row => this.tableToModel(row.products)))
     }
 
     /**
@@ -51,7 +51,7 @@ export class ProductModel extends DatabaseModel {
         `,
             [`%${term}%`, `%${term}%`]
         )
-            .then(result => result.map(row => this.rowToModel(row)))
+            .then(result => result.map(row => this.tableToModel(row.products)))
     }
 
     /**
@@ -63,7 +63,7 @@ export class ProductModel extends DatabaseModel {
         return this.query("SELECT * FROM products WHERE id = ?", [id])
             .then(result =>
                 result.length > 0
-                    ? this.rowToModel(result[0])
+                    ? this.tableToModel(result[0].products)
                     : Promise.reject("not found")
             )
     }
