@@ -12,6 +12,12 @@ export class DatabaseModel {
         })
     }
 
+    /**
+     * 
+     * @param {string} sql query 
+     * @param {any | Array<string>} values 
+     * @returns {mysql.OkPacket | mysql.RowDataPacket } query result
+     */
     static query(sql, values) {
         return this.connection.query(sql, values).then(([result]) => result)
     }

@@ -1,10 +1,23 @@
 import { DatabaseModel } from "./DatabaseModel.mjs";
+import mysql from "mysql2/promise"
 
 export class EmployeeModel extends DatabaseModel {
     
-    //// Static Fields
+    //// Instance
 
-    static rowToEmployee(row) {
+    constructor(id, firstName, lastName, role, username, password) {
+        super()
+        this.id = id
+        this.firstName = firstName
+        this.lastName = lastName
+        this.role = role
+        this.username = username
+        this.password = password
+    }
+
+    //// Static 
+
+    static rowToModel(row) {
         return new EmployeeModel(
             row["id"],
             row["first_name"],
@@ -21,7 +34,7 @@ export class EmployeeModel extends DatabaseModel {
      */
     static getAll() {
         return this.query("SELECT * FROM employees")
-            .then(result => result.map(row => this.rowToEmployee(row)))
+            .then(result => result.map(row => this.rowToModel(row)))
     }
 
     /**
@@ -33,7 +46,7 @@ export class EmployeeModel extends DatabaseModel {
         return this.query("SELECT * FROM employees WHERE id = ?", [id])
             .then(result => 
                 result.length > 0 
-                ? this.rowToEmployee(result[0]) 
+                ? this.rowToModel(result[0]) 
                 : Promise.reject("not found")
             )
     }
@@ -47,7 +60,7 @@ export class EmployeeModel extends DatabaseModel {
         return this.query("SELECT * FROM employees WHERE username = ?", [username])
             .then(result => 
                 result.length > 0 
-                ? this.rowToEmployee(result[0]) 
+                ? this.rowToModel(result[0]) 
                 : Promise.reject("not found")
             )
     }
@@ -70,7 +83,7 @@ export class EmployeeModel extends DatabaseModel {
 
     /**
      * @param {EmployeeModel} employee 
-     * @returns {Promise<OkPacket>}
+     * @returns {Promise<mysql.OkPacket>}
      */
     static create(employee) {
         // TODO: Handle password hashing here?
@@ -85,7 +98,7 @@ export class EmployeeModel extends DatabaseModel {
 
     /**
      * @param {number} id 
-     * @returns {Promise<OkPacket>}
+     * @returns {Promise<mysql.OkPacket>}
      */
     static delete(id) {
         return this.query(
@@ -94,23 +107,4 @@ export class EmployeeModel extends DatabaseModel {
         )
     }
     
-    //// Member Fields
-
-    id;
-    firstName;
-    lastName;
-    role;
-    username;
-    password;
-
-    constructor(id, firstName, lastName, role, username, password) {
-        super()
-        this.id = id
-        this.firstName = firstName
-        this.lastName = lastName
-        this.role = role
-        this.username = username
-        this.password = password
-    }
-
 }
