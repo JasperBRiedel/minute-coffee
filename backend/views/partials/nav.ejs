@@ -1,0 +1,12 @@
+<nav>
+    <% if (role === "admin") { %>
+    <a href="/employee">Employees</a>
+    <a href="/product_admin">Products</a>
+    <a href="/order_admin">Orders</a>
+    <% } else if (role == "stock") { %>
+    <a href="/product_admin">Products</a>
+    <% } else if (role == "sales") { %>
+    <a href="/order_admin">Orders</a>
+    <% } %>
+    <a href="/staff_logout">Logout</a>
+</nav>

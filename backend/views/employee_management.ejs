@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("partials/head.ejs") %>
+        <title>Minute Coffee - Staff Admin</title>
+    </head>
+    <body>
+        <main>
+            <%- include("partials/header.ejs") %>
+            <%- include("partials/nav.ejs", { role }) %>
+            <section class="half-half-layout">
+                <section class="cols-4 data-list">
+                    <span class="data-list-heading">Name</span>
+                    <span class="data-list-heading">Username</span>
+                    <span class="data-list-heading">Role</span>
+                    <span></span>
+                    <% for (const employee of employees) { %>
+                    <span>
+                        <%= employee.firstName %>
+                        <%= employee.lastName %>
+                    </span>
+                    <span>
+                        <%= employee.username %>
+                    </span>
+                    <span>
+                        <%= employee.role %>
+                    </span>
+                    <a href="/employee/<%= employee.id %>" class="link-button">
+                        Edit
+                    </a>
+                    <% } %>
+                </section>
+                <form 
+                    action="/employee/<%= selectedEmployee.id %>" 
+                    method="post" 
+                    class="form-grid">
+
+                    <label for="first-name">First Name:</label>
+                    <input 
+                        type="text" 
+                        name="firstName" 
+                        id="first-name" 
+                        value="<%= selectedEmployee.firstName %>" />
+
+                    <label for="last-name">Last Name:</label>
+                    <input 
+                        type="text" 
+                        name="lastName" 
+                        id="last-name" 
+                        value="<%= selectedEmployee.lastName %>" />
+
+                    <label for="access-role">Role</label>
+                    <select name="role" id="access-role">
+                        <option <%=selectedEmployee.role=="admin" ? "selected" : "" %> value="admin">
+                            Admin
+                        </option>
+                        <option <%=selectedEmployee.role=="stock" ? "selected" : "" %> value="stock">
+                            Stock
+                        </option>
+                        <option <%=selectedEmployee.role=="sales" ? "selected" : "" %> value="sales">
+                            Sales
+                        </option>
+                    </select>
+
+                    <label for="username">Username:</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username" 
+                        value="<%= selectedEmployee.username %>" />
+
+                    <label for="password">Password:</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password" 
+                        value="<%= selectedEmployee.password %>" />
+
+                    <a href="/employee" class="link-button two-col">clear</a>
+                    <% if (selectedEmployee.id == 0 ) { %>
+                    <input class="two-col" type="submit" name="action" value="create" />
+                    <% } else { %>
+                    <input class="two-col" type="submit" name="action" value="update" />
+                    <% } %>
+                    <input class="two-col" type="submit" name="action" value="delete" />
+                </form>
+            </section>
+            <%- include("partials/footer.ejs") %>
+        </main>
+    </body>
+</html>

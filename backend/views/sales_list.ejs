@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <%- include("partials/head.ejs") %>
+      <title>Minute Coffee - Drinks</title>
+    </head>
+    <body>
+      <main>
+        <%- include("partials/header.ejs") %>
+        <section class="sales-section">
+            <h2>Upcoming sales this week</h2>
+            <% for (day in salesByDay) { 
+                const saleProductsOnDay=salesByDay[day] %>
+                <h3><%= day %></h3>
+                <% if(saleProductsOnDay.length> 0) {
+                    for(let saleProduct of saleProductsOnDay) { %>
+                    <details>
+                        <summary>
+                            <strong>
+                                <%= saleProduct.sale_percentage_off * 100 %>%
+                                off <%= saleProduct.product_name %>
+                            </strong>
+                        </summary>
+                        <p>
+                            <strong>
+                                <%= currencyFormatter.format(saleProduct.sale_price) %>
+                            </strong>
+                            (down from <%= currencyFormatter.format(saleProduct.product_price) %>)
+                        </p>
+                        <p>
+                            <strong>
+                                <%= saleProduct.sale_start_time %> - <%= saleProduct.sale_end_time %>
+                            </strong>
+                        </p>
+                        <p>
+                            <%= saleProduct.product_description %>
+                        </p>
+                    </details>
+                <% }
+                } else { %>
+                    <p>No sales on this day</p>
+                <% } %>
+            <% } %>
+        </section>
+        <%- include("partials/footer.ejs") %>
+      </main>
+    </body>
+</html>

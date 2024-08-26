@@ -1,24 +1,12 @@
 import { DatabaseModel } from "./DatabaseModel.mjs";
 
-class Employee {
-    firstName;
-    lastName;
-    role;
-    username;
-    password;
+export class EmployeeModel extends DatabaseModel {
+    
+    //// Static Fields
 
-    constructor(firstName, lastName, role, username, password) {
-        this.firstName = firstName
-        this.lastName = lastName
-        this.role = role
-        this.username = username
-        this.password = password
-    }
-}
-
-class EmployeeModel extends DatabaseModel {
     static rowToEmployee(row) {
-        return new Employee(
+        return new EmployeeModel(
+            row["id"],
             row["first_name"],
             row["last_name"],
             row["role"],
@@ -27,8 +15,74 @@ class EmployeeModel extends DatabaseModel {
         )
     }
 
+    /**
+     * 
+     * @returns {Promise<Array<EmployeeModel>>}
+     */
     static getAll() {
         return this.query("SELECT * FROM employees")
             .then(result => result.map(row => this.rowToEmployee(row)))
     }
+
+    /**
+     * 
+     * @param {EmployeeModel} employee 
+     * @returns {Promise<Array<EmployeeModel>>}
+     */
+    static update(employee) {
+        // TODO: Handle password hashing here?
+        return this.query(`
+            UPDATE employees
+            SET first_name = ?, last_name = ?, role = ?, username = ?, password = ?
+            WHERE id = ?
+        `,
+            [employee.firstName, employee.lastName, employee.role, employee.username, employee.password, employee.id]
+        )
+    }
+
+    /**
+     * @param {EmployeeModel} employee 
+     * @returns {Promise<OkPacket>}
+     */
+    static create(employee) {
+        // TODO: Handle password hashing here?
+        return this.query(`
+            INSERT INTO employees 
+            (first_name, last_name, role, username, password)
+            VALUES (?, ?, ?, ?, ?)
+        `,
+            [employee.firstName, employee.lastName, employee.role, employee.username, employee.password]
+        )
+    }
+
+    /**
+     * @param {number} id 
+     * @returns {Promise<OkPacket>}
+     */
+    static delete(id) {
+        return this.query(
+            `DELETE FROM employees WHERE id = ?`,
+            [id]
+        )
+    }
+    
+    //// Member Fields
+
+    id;
+    firstName;
+    lastName;
+    role;
+    username;
+    password;
+
+    constructor(id, firstName, lastName, role, username, password) {
+        super()
+        this.id = id
+        this.firstName = firstName
+        this.lastName = lastName
+        this.role = role
+        this.username = username
+        this.password = password
+    }
+
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("partials/head.ejs") %>
+        <title>Minute Coffee - Product Admin</title>
+    </head>
+    <body>
+        <main>
+            <%- include("partials/header.ejs") %> <%-
+            include("partials/admin_nav.ejs", { accessRole }) %>
+            <section class="half-half-layout">
+                <section class="cols-5 data-list">
+                    <span class="data-list-heading">Name</span>
+                    <span class="data-list-heading">Stock</span>
+                    <span class="data-list-heading">Price</span>
+                    <span class="data-list-heading">Updated By</span>
+                    <span></span>
+                    <% for (let productStaff of productsStaff) { %>
+                    <span><%= productStaff.product_name %></span>
+                    <span><%= productStaff.product_stock %></span>
+                    <span><%= productStaff.product_price %></span>
+                    <span><%= productStaff.staff_username %></span>
+                    <a href="/product_admin?edit_id=<%= productStaff.product_id %>" class="link-button">Edit</a>
+                    <% } %>
+                </section>
+                <form action="/edit_product" method="post" class="form-grid">
+                    <input type="hidden" name="product_id" value="<%= editProduct.id %>" />
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" value="<%= editProduct.name %>" />
+                    <label for="stock">Stock:</label>
+                    <input type="text" name="stock" id="stock" value="<%= editProduct.stock %>" />
+                    <label for="price">Price:</label>
+                    <input type="text" name="price" id="price" value="<%= editProduct.price %>" />
+                    <label for="description">Description:</label>
+                    <!-- Careful formatting to avoid whitespace in textarea  -->
+                    <textarea name="description" id="description"><%= 
+                        editProduct.description 
+                    %></textarea>
+                    <input type="submit" name="action" value="delete" />
+                    <% if (editProduct.id == "0") { %>
+                    <input type="submit" name="action" value="create" />
+                    <% } else { %>
+                    <input type="submit" name="action" value="update" />
+                    <% } %>
+                </form>
+            </section>
+            <%- include("partials/footer.ejs") %>
+        </main>
+    </body>
+</html>

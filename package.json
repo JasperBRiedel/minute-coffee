@@ -24,7 +24,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "ejs": "^3.1.8",
-    "express": "^4.18.1",
+    "express": "^4.19.2",
     "express-session": "^1.17.3",
     "mysql2": "^3.1.2",
     "validator": "^13.7.0"
