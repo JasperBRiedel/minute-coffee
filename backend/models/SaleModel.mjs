@@ -54,7 +54,7 @@ export class SaleModel extends DatabaseModel {
     /**
      * 
      * @param {SaleModel} sale 
-     * @returns {Promise<Array<mysql.OkPacket>>}
+     * @returns {Promise<mysql.OkPacket>}
      */
     static update(sale) {
         return this.query(`

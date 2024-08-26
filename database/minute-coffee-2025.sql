@@ -91,7 +91,7 @@ CREATE TABLE `products` (
   `stock` int NOT NULL,
   `price` decimal(10,0) NOT NULL,
   `description` varchar(600) NOT NULL,
-  `updated_by_employee_id` int NOT NULL,
+  `updated_by_employee_id` int DEFAULT NULL,
   `deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
@@ -106,7 +106,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (5,'Espresso Roberto ',96,10,'An espresso Roberto is a double shot espresso with a small amount of steamed milk on the side. Made properly a splash of steamed whole milk is added.',1,0),(6,'Espresso romano ',48,10,'An espresso romano is a shot of espresso with a slice of lemon served on the side. The lemon can be run along the rim of the cup as a way to accentuate the espresso\'s sweetness. Despite the name, it has no link to Italy nor Rome.',1,0),(7,'Flat white',120,5,'A flat white is an espresso with microfoam (steamed milk with small, fine bubbles and a glossy or velvety consistency). It is comparable to a latte, but smaller in volume and with less microfoam, therefore having a higher proportion of coffee to milk, and milk that is more velvety in consistency – allowing the espresso to dominate the flavour, while being supported by the milk. ',1,0),(8,'Caffè americano ',70,6,'An americano is prepared by adding hot water to espresso, giving a similar strength to but different flavor from brewed coffee. The drink consists of a single or double-shot of espresso combined with between 30 and 473 ml (1 and 16 US fluid ounces; 1 and 17 imperial fluid ounces) of hot water. The strength of an americano varies with the number of shots of espresso added. In the United States, americano is used broadly to mean combining hot water and espresso in either order. Variations include long black and lungo.',1,0),(9,'Manilo ',130,5,'A manilo consists of a regular espresso shot and less than 100 ml (3.4 US fluid ounces; 3.5 imperial fluid ounces) of silky milk. Popularised due to its strength and taste, without a lot of milk. Similar to a half flat white, but slightly smaller. ',1,0),(16,'Hot Chocolate',10,5,'A nice hot chocolate drink',1,0);
+INSERT INTO `products` VALUES (5,'Espresso Roberto ',96,10,'An espresso Roberto is a double shot espresso with a small amount of steamed milk on the side. Made properly a splash of steamed whole milk is added.',1,0),(6,'Espresso romano ',48,10,'An espresso romano is a shot of espresso with a slice of lemon served on the side. The lemon can be run along the rim of the cup as a way to accentuate the espresso\'s sweetness. Despite the name, it has no link to Italy nor Rome.',1,0),(7,'Flat white',120,5,'A flat white is an espresso with microfoam (steamed milk with small, fine bubbles and a glossy or velvety consistency). It is comparable to a latte, but smaller in volume and with less microfoam, therefore having a higher proportion of coffee to milk, and milk that is more velvety in consistency – allowing the espresso to dominate the flavour, while being supported by the milk. ',NULL,0),(8,'Caffè americano ',70,6,'An americano is prepared by adding hot water to espresso, giving a similar strength to but different flavor from brewed coffee. The drink consists of a single or double-shot of espresso combined with between 30 and 473 ml (1 and 16 US fluid ounces; 1 and 17 imperial fluid ounces) of hot water. The strength of an americano varies with the number of shots of espresso added. In the United States, americano is used broadly to mean combining hot water and espresso in either order. Variations include long black and lungo.',NULL,0),(9,'Manilo ',130,5,'A manilo consists of a regular espresso shot and less than 100 ml (3.4 US fluid ounces; 3.5 imperial fluid ounces) of silky milk. Popularised due to its strength and taste, without a lot of milk. Similar to a half flat white, but slightly smaller. ',1,0),(16,'Hot Chocolate',10,5,'A nice hot chocolate drink',1,0);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-26 14:55:13
+-- Dump completed on 2024-08-26 15:47:19
