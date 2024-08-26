@@ -23,8 +23,8 @@ export class SaleModel extends DatabaseModel {
             row["product_id"],
             row["discount_percentage"],
             row["date"],
-            row["startTime"],
-            row["endTime"]
+            row["start_time"],
+            row["end_time"]
         )
     }
 
