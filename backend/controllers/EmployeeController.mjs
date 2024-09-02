@@ -24,7 +24,7 @@ export class EmployeeController {
 
                 const selectedEmployee = employees.find(
                     e => e.id == selectedEmployeeId
-                ) ?? new EmployeeModel("", "", "", "", "")
+                ) ?? new EmployeeModel(null, "", "", "", "", "")
 
                 res.render("employee_management.ejs", {
                     employees,

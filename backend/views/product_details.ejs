@@ -9,7 +9,7 @@
             <%- include("partials/header.ejs") %>
             <section class="checkout-layout">
                 <article class="coffee-card">
-                    <img src="img/coffee.jpg" alt="Takeaway coffee cup" />
+                    <img src="/img/coffee.jpg" alt="Takeaway coffee cup" />
                     <h2><%= product.name %></h2>
                     <span>$<%= product.price %></span>
                     <p><%= product.description %></p>
@@ -25,7 +25,7 @@
                     <label for="customer-email">Email:</label>
                     <input type="email" name="customer_email" id="customer-email" />
                     <a href="/" class="link-button">Back</a>
-                    <input type="submit" value="Pay" />
+                    <input type="submit" value="Order now!" />
                 </form>
             </section>
             <%- include("partials/footer.ejs") %>

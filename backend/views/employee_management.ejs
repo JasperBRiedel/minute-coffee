@@ -77,7 +77,7 @@
                         value="<%= selectedEmployee.password %>" />
 
                     <a href="/employee" class="link-button two-col">clear</a>
-                    <% if (selectedEmployee.id == 0 ) { %>
+                    <% if (selectedEmployee.id == null) { %>
                     <input class="two-col" type="submit" name="action" value="create" />
                     <% } else { %>
                     <input class="two-col" type="submit" name="action" value="update" />

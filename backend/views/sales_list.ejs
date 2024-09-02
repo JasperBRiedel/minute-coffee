@@ -17,23 +17,23 @@
                     <details>
                         <summary>
                             <strong>
-                                <%= saleProduct.sale_percentage_off * 100 %>%
-                                off <%= saleProduct.product_name %>
+                                <%= saleProduct.sale.discountPercentage * 100 %>%
+                                off <%= saleProduct.product.name %>
                             </strong>
                         </summary>
                         <p>
                             <strong>
-                                <%= currencyFormatter.format(saleProduct.sale_price) %>
+                                <%= currencyFormatter.format(saleProduct.product.price * saleProduct.sale.discountPercentage) %>
                             </strong>
-                            (down from <%= currencyFormatter.format(saleProduct.product_price) %>)
+                            (down from <%= currencyFormatter.format(saleProduct.product.price) %>)
                         </p>
                         <p>
                             <strong>
-                                <%= saleProduct.sale_start_time %> - <%= saleProduct.sale_end_time %>
+                                <%= saleProduct.sale.startTime %> - <%= saleProduct.sale.endTime %>
                             </strong>
                         </p>
                         <p>
-                            <%= saleProduct.product_description %>
+                            <%= saleProduct.product.description %>
                         </p>
                     </details>
                 <% }

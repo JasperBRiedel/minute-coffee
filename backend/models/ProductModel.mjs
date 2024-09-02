@@ -46,8 +46,8 @@ export class ProductModel extends DatabaseModel {
     static getBySearch(term) {
         return this.query(`
             SELECT * FROM products 
-            WHERE product_removed = 0 
-            AND (product_name LIKE ? OR product_description LIKE ?
+            WHERE deleted = 0 
+            AND (name LIKE ? OR description LIKE ?)
         `,
             [`%${term}%`, `%${term}%`]
         )

@@ -1,6 +1,7 @@
 import express from "express";
 import session from "express-session";
 import { EmployeeController } from "./controllers/EmployeeController.mjs";
+import { ProductController } from "./controllers/ProductController.mjs";
 
 // Create an express app instance and define a port for later
 const app = express();
@@ -29,11 +30,12 @@ app.use(express.json())
 
 // Use routes (from controllers)
 app.use("/employee", EmployeeController.routes)
+app.use("/products", ProductController.routes)
 
 // Redirect request to root to the products page
-// app.get("/", (request, response) => {
-//     response.status(301).redirect("/product_list");
-// });
+app.get("/", (request, response) => {
+    response.status(301).redirect("/products");
+});
 
 // Serve static resources
 app.use(express.static("./backend/public"));
