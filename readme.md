@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This project is being updated for 2025 delivery. Functionality is likely broken and documentation out of date.
+
 # Minute Coffee
 
 **Minute Coffee** is a straightforward server-side rendered CRUD application designed to provide a basic understanding of how to implement a traditional server-side application in JavaScript. This project is primarily intended as a reference for first-semester web development students in the ICT50220 Diploma program.
@@ -19,18 +22,18 @@ Please be aware that this project does not conform to best practices or prioriti
 - [Mysql2](https://www.npmjs.com/package/mysql2): Mysql2 is a Node.js-based MySQL client library that facilitates interaction with MySQL databases. It is utilised for database access and management in this project.
 
 ## Screenshots and wireframe
-![products screen](screenshots/all_products.png)
+![products screen](docs/images/all_products.png)
 
-![buy product screen](screenshots/buy_product.png) 
+![buy product screen](docs/images/buy_product.png) 
 
-![order status screen](screenshots/order_status.png)
+![order status screen](docs/images/order_status.png)
 
-![search products screen](screenshots/search_products.png)
+![search products screen](docs/images/search_products.png)
 
-![login screen](screenshots/admin_login.png)
+![login screen](docs/images/admin_login.png)
 
-![product CRUD screen](screenshots/product_crud.png)
+![product CRUD screen](docs/images/product_crud.png)
 
-![Draft Wireframes](prototype/prototype%20wireframes.excalidraw.png)
+![Draft Wireframes](docs/images/wireframes.excalidraw.png)
 
 Copyright © Jasper Riedel-Rutterford 2023
