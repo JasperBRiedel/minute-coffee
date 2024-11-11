@@ -1,6 +1,11 @@
 import { DatabaseModel } from "./DatabaseModel.mjs";
 import mysql from "mysql2/promise"
 
+// Order status enum matching database field
+export const ORDER_STATUS_PENDING = "pending"
+export const ORDER_STATUS_COMPLETE = "complete"
+export const ORDER_STATUS_CANCELLED = "cancelled"
+
 export class OrderModel extends DatabaseModel {
 
     //// Instance
@@ -87,7 +92,7 @@ export class OrderModel extends DatabaseModel {
 
     /**
      * @param {OrderModel} order 
-     * @returns {Promise<OkPacket>}
+     * @returns {Promise<mysql.QueryResult>}
      */
     static create(order) {
         return this.query(`

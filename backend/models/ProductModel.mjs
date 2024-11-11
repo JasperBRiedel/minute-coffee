@@ -57,7 +57,7 @@ export class ProductModel extends DatabaseModel {
     /**
      * 
      * @param {number} id 
-     * @returns {Promise<Array<ProductModel>>}
+     * @returns {Promise<ProductModel>}
      */
     static getById(id) {
         return this.query("SELECT * FROM products WHERE id = ?", [id])

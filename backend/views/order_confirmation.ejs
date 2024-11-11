@@ -9,25 +9,25 @@
             <%- include("partials/header.ejs") %>
             <section class="checkout-layout">
                 <article class="coffee-card">
-                    <img src="img/coffee.jpg" alt="Takeaway coffee cup" />
-                    <h2><%= orderProduct.product_name %></h2>
-                    <p><%= orderProduct.product_description %></p>
+                    <img src="/img/coffee.jpg" alt="Takeaway coffee cup" />
+                    <h2><%= orderProduct.product.name %></h2>
+                    <p><%= orderProduct.product.description %></p>
                 </article>
                 <article class="form-grid">
                     <label for="time">Order Time:</label>
                     <span id="status">
-                        <%= orderProduct.order_datetime.toLocaleString()%>
+                        <%= orderProduct.order.created.toLocaleString()%>
                     </span>
                     <label for="name">Order Name:</label>
                     <span id="name">
-                        <%= orderProduct.customer_first_name %>
+                        <%= orderProduct.order.customerFirstName %>
                     </span>
                     <label for="status">Order Status:</label>
                     <span id="status">
-                        <%= orderProduct.order_status %>
+                        <%= orderProduct.order.status %>
                     </span>
                     <a href="/" class="link-button">Back</a>
-                    <a href="order_confirmation?id=<%= orderProduct.order_id %>" class="link-button">
+                    <a href="./<%= orderProduct.order.id %>" class="link-button">
                         Refresh
                     </a>
                 </article>

@@ -3,6 +3,7 @@ import express from "express";
 import session from "express-session";
 import { EmployeeController } from "./controllers/EmployeeController.mjs";
 import { ProductController } from "./controllers/ProductController.mjs";
+import { OrderController } from "./controllers/OrderController.mjs";
 
 // Create an express app instance and define a port for later
 const app = express();
@@ -32,10 +33,11 @@ app.use(express.urlencoded({ extended: true }));
 // Use routes (from controllers)
 app.use("/employee", EmployeeController.routes)
 app.use("/products", ProductController.routes)
+app.use("/orders", OrderController.routes)
 
 // Redirect request to root to the products page
-app.get("/", (request, response) => {
-    response.status(301).redirect("/products");
+app.get("/", (req, res) => {
+    res.status(301).redirect("/products");
 });
 
 // Serve static resources from the "public" folder relative to this file

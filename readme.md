@@ -1,6 +1,15 @@
 > [!CAUTION]
 > This project is being updated for 2025 delivery. Functionality is likely broken and documentation out of date.
 
+# Update tasks
+
+- [ ] Add validation and sanitisation to all controller methods and endpoints.
+- [ ] Ensure all controllers and endpoints return correct response codes. 
+- [ ] Order controller.
+    - [x] Implement ordering flow.
+    - [ ] Implement order management.
+- [ ] Staff authentication.
+
 # Minute Coffee
 
 **Minute Coffee** is a straightforward server-side rendered CRUD application designed to provide a basic understanding of how to implement a traditional server-side application in JavaScript. This project is primarily intended as a reference for first-semester web development students in the ICT50220 Diploma program.
