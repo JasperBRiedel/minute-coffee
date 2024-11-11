@@ -1,3 +1,4 @@
+import path from "path"
 import express from "express";
 import session from "express-session";
 import { EmployeeController } from "./controllers/EmployeeController.mjs";
@@ -21,12 +22,12 @@ app.use(
 
 // Enable the ejs view engine
 app.set("view engine", "ejs");
-app.set("views", "./backend/views")
+// Load views (ejs files) from the "views" folder relative to this file
+app.set("views", path.join(import.meta.dirname, "views"))
 
 // Enable parsing of JSON and FormData request bodies
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
-
+app.use(express.urlencoded({ extended: true }));
 
 // Use routes (from controllers)
 app.use("/employee", EmployeeController.routes)
@@ -37,11 +38,11 @@ app.get("/", (request, response) => {
     response.status(301).redirect("/products");
 });
 
-// Serve static resources
-app.use(express.static("./backend/public"));
+// Serve static resources from the "public" folder relative to this file
+app.use(express.static(path.join(import.meta.dirname, "public")));
 
 
-// Start the listening for requests
+// Start the listening for requests on the port defined earlier
 app.listen(port, () => {
     console.log(`Minute Coffee backend running on http://localhost:${port}`);
 });
