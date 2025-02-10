@@ -2,6 +2,7 @@ import express from "express"
 import { ORDER_STATUS_PENDING, OrderModel } from "../models/OrderModel.mjs"
 import { ProductModel } from "../models/ProductModel.mjs";
 import { OrderProductModel } from "../models/OrderProductModel.mjs";
+import validator from "validator"
 
 export class OrderController {
     static routes = express.Router()
@@ -18,17 +19,55 @@ export class OrderController {
     static createOrder(req, res) {
         let formData = req.body;
 
-        // TODO: Validation and sanitisation
+        if (!/^[0-9]+$/.test(formData["productId"])) {
+            res.status(400).render("status.ejs", {
+                status: "Invalid input provided.",
+                message: "Please select a valid product."
+            })
+            return;
+        }
+
+        if (!/^[a-z-A-Z\-\'\ ]{2,}$/.test(formData["customerFirstName"])) {
+            res.status(400).render("status.ejs", {
+                status: "Invalid input provided.",
+                message: "Please enter a valid first name, containing only a-z, -, ', and whitespace."
+            })
+            return;
+        }
+
+        if (!/^[a-z-A-Z\-\'\ ]{1,}$/.test(formData["customerLastName"])) {
+            res.status(400).render("status.ejs", {
+                status: "Invalid input provided.",
+                message: "Please enter a valid last name, containing only a-z, -, ', and whitespace."
+            })
+            return;
+        }
+
+        if (!validator.isMobilePhone(formData["customerPhone"])) {
+            res.status(400).render("status.ejs", {
+                status: "Invalid input provided.",
+                message: "Please enter a valid mobile number."
+            })
+            return;
+        }
+
+        if (!validator.isEmail(formData["customerEmail"])) {
+            res.status(400).render("status.ejs", {
+                status: "Invalid input provided.",
+                message: "Please enter a valid email address."
+            })
+            return;
+        }
 
         const order = new OrderModel(
             null,
-            formData["productId"],
+            validator.escape(formData["productId"]),
             ORDER_STATUS_PENDING,
             new Date(),
-            formData["customerFirstName"],
-            formData["customerLastName"],
-            formData["customerPhone"],
-            formData["customerEmail"],
+            validator.escape(formData["customerFirstName"]),
+            validator.escape(formData["customerLastName"]),
+            validator.escape(formData["customerPhone"]),
+            validator.escape(formData["customerEmail"]),
         )
         
         // Check and update stock levels
