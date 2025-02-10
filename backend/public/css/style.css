@@ -89,6 +89,10 @@ textarea {
     margin: 20px 0;
 }
 
+.coffee-list > .coffee-card p {
+    height: 10em;
+}
+
 .coffee-card {
     display: flex;
     flex-direction: column;
