@@ -4,6 +4,7 @@ import session from "express-session";
 import { EmployeeController } from "./controllers/EmployeeController.mjs";
 import { ProductController } from "./controllers/ProductController.mjs";
 import { OrderController } from "./controllers/OrderController.mjs";
+import { AuthenticationController } from "./controllers/AuthenticationController.mjs";
 
 // Create an express app instance and define a port for later
 const app = express();
@@ -26,14 +27,16 @@ app.set("view engine", "ejs");
 // Load views (ejs files) from the "views" folder relative to this file
 app.set("views", path.join(import.meta.dirname, "views"))
 
-// Enable parsing of JSON and FormData request bodies
+// Enable middleware for body parsing and authentication
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.use(AuthenticationController.middleware)
 
 // Use routes (from controllers)
 app.use("/employee", EmployeeController.routes)
 app.use("/products", ProductController.routes)
 app.use("/orders", OrderController.routes)
+app.use("/authenticate", AuthenticationController.routes)
 
 // Redirect request to root to the products page
 app.get("/", (req, res) => {

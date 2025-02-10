@@ -1,8 +1,12 @@
 import { DatabaseModel } from "./DatabaseModel.mjs";
 import mysql from "mysql2/promise"
 
+export const EMPLOYEE_ROLE_ADMIN = "admin"
+export const EMPLOYEE_ROLE_STOCK = "stock"
+export const EMPLOYEE_ROLE_SALES = "sales"
+
 export class EmployeeModel extends DatabaseModel {
-    
+
     //// Instance
 
     constructor(id, firstName, lastName, role, username, password) {
@@ -40,35 +44,35 @@ export class EmployeeModel extends DatabaseModel {
     /**
      * 
      * @param {number} id 
-     * @returns {Promise<Array<EmployeeModel>>}
+     * @returns {Promise<EmployeeModel>}
      */
     static getById(id) {
         return this.query("SELECT * FROM employees WHERE id = ?", [id])
-            .then(result => 
-                result.length > 0 
-                ? this.tableToModel(result[0].employees) 
-                : Promise.reject("not found")
+            .then(result =>
+                result.length > 0
+                    ? this.tableToModel(result[0].employees)
+                    : Promise.reject("not found")
             )
     }
 
     /**
      * 
      * @param {number} id 
-     * @returns {Promise<Array<EmployeeModel>>}
+     * @returns {Promise<EmployeeModel>}
      */
-    static getByUsername(id) {
+    static getByUsername(username) {
         return this.query("SELECT * FROM employees WHERE username = ?", [username])
-            .then(result => 
-                result.length > 0 
-                ? this.tableToModel(result[0].employees) 
-                : Promise.reject("not found")
+            .then(result =>
+                result.length > 0
+                    ? this.tableToModel(result[0].employees)
+                    : Promise.reject("not found")
             )
     }
 
     /**
      * 
      * @param {EmployeeModel} employee 
-     * @returns {Promise<Array<EmployeeModel>>}
+     * @returns {Promise<mysql.ResultSetHeader>}
      */
     static update(employee) {
         // TODO: Handle password hashing here?
@@ -106,5 +110,5 @@ export class EmployeeModel extends DatabaseModel {
             [id]
         )
     }
-    
+
 }

@@ -2,6 +2,7 @@ import express from "express"
 import { ProductModel } from "../models/ProductModel.mjs"
 import { SaleProductModel } from "../models/SaleProductModel.mjs"
 import { ProductEmployeeModel } from "../models/ProductEmployeeModel.mjs"
+import { AuthenticationController } from "./AuthenticationController.mjs"
 
 export class ProductController {
     static routes = express.Router()
@@ -10,10 +11,26 @@ export class ProductController {
         this.routes.get("/", this.viewProductList)
         this.routes.get("/sales", this.viewProductSales)
 
-        this.routes.get("/edit", this.viewProductManagement)
-        this.routes.get("/edit/:id", this.viewProductManagement)
-        this.routes.post("/edit", this.handleProductManagement)
-        this.routes.post("/edit/:id", this.handleProductManagement)
+        this.routes.get(
+            "/edit",
+            AuthenticationController.restrict(["admin", "stock"]),
+            this.viewProductManagement
+        )
+        this.routes.get(
+            "/edit/:id",
+            AuthenticationController.restrict(["admin", "stock"]),
+            this.viewProductManagement
+        )
+        this.routes.post(
+            "/edit",
+            AuthenticationController.restrict(["admin", "stock"]),
+            this.handleProductManagement
+        )
+        this.routes.post(
+            "/edit/:id",
+            AuthenticationController.restrict(["admin", "stock"]),
+            this.handleProductManagement
+        )
 
         // The most general routes must go last, otherwise they will capture
         // /edit and /sales, etc.
@@ -116,7 +133,7 @@ export class ProductController {
                 const selectedProduct = productsWithUpdatedByEmployees.find(
                     e => e.product.id == selectedProductId
                 )?.product ?? new ProductModel(null, "", 0, 0, "", null, false)
-                
+
                 res.render("product_management.ejs", {
                     productsWithUpdatedByEmployees: productsWithUpdatedByEmployees,
                     selectedProduct,
