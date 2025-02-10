@@ -65,7 +65,7 @@ CREATE TABLE `orders` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `product_orders_fk_idx` (`product_id`),
   CONSTRAINT `product_orders_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (23,6,'pending','2024-04-18 07:01:10','Jake','Bane','0445555666','jakebane@gmail.com');
+INSERT INTO `orders` VALUES (23,6,'pending','2025-02-10 07:01:10','Jake','Bane','0445555666','jakebane@email.com');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,7 +89,7 @@ CREATE TABLE `products` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `stock` int NOT NULL,
-  `price` decimal(10,0) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
   `description` varchar(600) NOT NULL,
   `updated_by_employee_id` int NOT NULL,
   `deleted` tinyint NOT NULL DEFAULT '0',
@@ -97,7 +97,7 @@ CREATE TABLE `products` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `user_products_fk_idx` (`updated_by_employee_id`),
   CONSTRAINT `user_products_fk` FOREIGN KEY (`updated_by_employee_id`) REFERENCES `employees` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (5,'Espresso Roberto ',96,10,'An espresso Roberto is a double shot espresso with a small amount of steamed milk on the side. Made properly a splash of steamed whole milk is added.',1,0),(6,'Espresso romano ',48,10,'An espresso romano is a shot of espresso with a slice of lemon served on the side. The lemon can be run along the rim of the cup as a way to accentuate the espresso\'s sweetness. Despite the name, it has no link to Italy nor Rome.',1,0),(7,'Flat white',120,5,'A flat white is an espresso with microfoam (steamed milk with small, fine bubbles and a glossy or velvety consistency). It is comparable to a latte, but smaller in volume and with less microfoam, therefore having a higher proportion of coffee to milk, and milk that is more velvety in consistency – allowing the espresso to dominate the flavour, while being supported by the milk. ',1,0),(8,'Caffè americano ',70,6,'An americano is prepared by adding hot water to espresso, giving a similar strength to but different flavor from brewed coffee. The drink consists of a single or double-shot of espresso combined with between 30 and 473 ml (1 and 16 US fluid ounces; 1 and 17 imperial fluid ounces) of hot water. The strength of an americano varies with the number of shots of espresso added. In the United States, americano is used broadly to mean combining hot water and espresso in either order. Variations include long black and lungo.',1,0),(9,'Manilo ',130,5,'A manilo consists of a regular espresso shot and less than 100 ml (3.4 US fluid ounces; 3.5 imperial fluid ounces) of silky milk. Popularised due to its strength and taste, without a lot of milk. Similar to a half flat white, but slightly smaller. ',1,0),(16,'Hot Chocolate',10,5,'A nice hot chocolate drink',1,0);
+INSERT INTO `products` VALUES (5,'Espresso Roberto ',96,4.50,'An espresso Roberto is a double shot espresso with a small amount of steamed milk on the side. Made properly a splash of steamed whole milk is added.',1,0),(6,'Espresso Romano ',46,4.40,'An espresso romano is a shot of espresso with a slice of lemon served on the side. The lemon can be run along the rim of the cup as a way to accentuate the espresso\'s sweetness. Despite the name, it has no link to Italy nor Rome.',1,0),(7,'Flat white',119,2.60,'A flat white is an espresso with microfoam (steamed milk with small, fine bubbles and a glossy or velvety consistency). It is comparable to a latte, but smaller in volume and with less microfoam, therefore having a higher proportion of coffee to milk, and milk that is more velvety in consistency – allowing the espresso to dominate the flavour, while being supported by the milk. ',1,0),(8,'Caffè americano ',70,3.20,'An americano is prepared by adding hot water to espresso, giving a similar strength to but different flavor from brewed coffee. The drink consists of a single or double-shot of espresso combined with between 30 and 473 ml (1 and 16 US fluid ounces; 1 and 17 imperial fluid ounces) of hot water. The strength of an americano varies with the number of shots of espresso added. In the United States, americano is used broadly to mean combining hot water and espresso in either order. Variations include long black and lungo.',1,0),(9,'Manilo ',130,4.00,'A manilo consists of a regular espresso shot and less than 100 ml (3.4 US fluid ounces; 3.5 imperial fluid ounces) of silky milk. Popularised due to its strength and taste, without a lot of milk. Similar to a half flat white, but slightly smaller. ',1,0),(16,'Hot Chocolate',10,2.00,'A nice hot chocolate drink',1,0);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +136,7 @@ CREATE TABLE `sales` (
 
 LOCK TABLES `sales` WRITE;
 /*!40000 ALTER TABLE `sales` DISABLE KEYS */;
-INSERT INTO `sales` VALUES (1,5,0.50,'2024-09-02','09:00:00','15:00:00'),(2,6,0.50,'2024-04-23','09:00:00','15:00:00'),(3,8,0.50,'2024-04-19','09:00:00','15:00:00'),(4,9,0.50,'2024-04-23','09:00:00','15:00:00'),(5,6,0.75,'2024-04-20','10:00:00','12:00:00');
+INSERT INTO `sales` VALUES (1,5,0.50,'2025-09-02','09:00:00','15:00:00'),(2,6,0.50,'2025-04-23','09:00:00','15:00:00'),(3,8,0.50,'2025-04-19','09:00:00','15:00:00'),(4,9,0.50,'2025-04-23','09:00:00','15:00:00'),(5,6,0.75,'2025-04-20','10:00:00','12:00:00');
 /*!40000 ALTER TABLE `sales` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -149,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-02 12:40:23
+-- Dump completed on 2025-02-10 11:51:02
