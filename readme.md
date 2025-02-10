@@ -1,14 +1,5 @@
 > [!CAUTION]
-> This project is being updated for 2025 delivery. Functionality is likely broken and documentation out of date.
-
-# Update tasks
-
-- [ ] Add validation and sanitisation to all controller methods and endpoints.
-- [ ] Ensure all controllers and endpoints return correct response codes. 
-- [ ] Order controller.
-    - [x] Implement ordering flow.
-    - [ ] Implement order management.
-- [ ] Staff authentication.
+> This project is being updated for 2025. Functionality is likely broken and the documentation (including this readme) is out of date.
 
 # Minute Coffee
 
@@ -45,4 +36,4 @@ Please be aware that this project does not conform to best practices or prioriti
 
 ![Draft Wireframes](docs/images/wireframes.excalidraw.png)
 
-Copyright © Jasper Riedel-Rutterford 2023
+Copyright © Jasper Riedel-Rutterford 2025
