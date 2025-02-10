@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(AuthenticationController.middleware)
 
 // Use routes (from controllers)
-app.use("/employee", EmployeeController.routes)
+app.use("/employees", EmployeeController.routes)
 app.use("/products", ProductController.routes)
 app.use("/orders", OrderController.routes)
 app.use("/authenticate", AuthenticationController.routes)
