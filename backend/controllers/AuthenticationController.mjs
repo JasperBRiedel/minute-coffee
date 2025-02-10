@@ -19,6 +19,9 @@ export class AuthenticationController {
 
         this.routes.get("/", this.viewAuthenticate)
         this.routes.post("/", this.handleAuthenticate)
+
+        this.routes.delete("/", this.handleDeauthenticate)
+        this.routes.get("/logout", this.handleDeauthenticate)
     }
 
     /**
@@ -105,6 +108,27 @@ export class AuthenticationController {
     }
 
     /**
+     * @type {express.RequestHandler}
+     */
+    static handleDeauthenticate(req, res) {
+        if (req.authenticatedUser) {
+            if (req.session.userId) {
+                req.session.destroy()
+                res.status(200).render("status.ejs", {
+                    status: "Logged out successfully.",
+                    message: "You have been logged out."
+                })
+            }
+            // TODO: Handle clearing API key from database
+        } else {
+            res.status(401).render("status.ejs", {
+                status: "Unauthenticated.",
+                message: "Please login to access the requested resource."
+            })
+        }
+    }
+
+    /**
      * 
      * @param {Array<"admin" | "stock" | "sales">} allowedRoles 
      * @returns {express.RequestHandler}
@@ -123,7 +147,7 @@ export class AuthenticationController {
             } else {
                 res.status(401).render("status.ejs", {
                     status: "Unauthenticated.",
-                    message: "Please login to access the request resource."
+                    message: "Please login to access the requested resource."
                 })
             }
         }
