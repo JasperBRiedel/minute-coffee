@@ -14,8 +14,8 @@ export class AuthenticationController {
             saveUninitialized: false,
             cookie: { secure: "auto" }
         }))
-        this.middleware.use(this._session_authentication)
-        this.middleware.use(this._api_key_authentication)
+        this.middleware.use(this.#session_authentication)
+        this.middleware.use(this.#api_key_authentication)
 
         this.routes.get("/", this.viewAuthenticate)
         this.routes.post("/", this.handleAuthenticate)
@@ -29,7 +29,7 @@ export class AuthenticationController {
      * if there is an active session containing an userId
      * @type {express.RequestHandler}
      */
-    static async _session_authentication(req, res, next) {
+    static async #session_authentication(req, res, next) {
         if (req.session.userId && !req.authenticatedUser) {
             try {
                 req.authenticatedUser = await EmployeeModel.getById(req.session.userId)
@@ -43,7 +43,7 @@ export class AuthenticationController {
     /**
      * @type {express.RequestHandler}
      */
-    static _api_key_authentication(req, res, next) {
+    static #api_key_authentication(req, res, next) {
         // TODO: Implement API key based authentication.
         next()
     }
