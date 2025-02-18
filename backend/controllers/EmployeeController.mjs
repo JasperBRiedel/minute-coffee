@@ -1,5 +1,6 @@
-import express from "express";
-import { EmployeeModel } from "../models/EmployeeModel.mjs";
+import express from "express"
+import bcrypt from "bcryptjs"
+import { EmployeeModel } from "../models/EmployeeModel.mjs"
 
 export class EmployeeController {
     static routes = express.Router()
@@ -56,11 +57,16 @@ export class EmployeeController {
             formData["username"],
             formData["password"]
         )
+        
+        // We need to hash the password if it is not hashed
+        if (!employee.password.startsWith("$2a")) {
+            employee.password = bcrypt.hashSync(employee.password)
+        }
 
         if (action == "create") {
             EmployeeModel.create(employee)
                 .then(result => {
-                    res.redirect("/employee")
+                    res.redirect("/employees")
                 })
                 .catch(error => {
                     res.render("status.ejs", {
@@ -73,7 +79,7 @@ export class EmployeeController {
             EmployeeModel.update(employee)
                 .then(result => {
                     if (result.affectedRows > 0) {
-                        res.redirect("/employee")
+                        res.redirect("/employees")
                     } else {
                         res.render("status.ejs", {
                             status: "Employee Update Failed",
@@ -92,7 +98,7 @@ export class EmployeeController {
             EmployeeModel.delete(employee.id)
                 .then(result => {
                     if (result.affectedRows > 0) {
-                        res.redirect("/employee")
+                        res.redirect("/employees")
                     } else {
                         res.render("status.ejs", {
                             status: "Employee Deletion Failed",

@@ -25,13 +25,13 @@
                     <span>
                         <%= employee.role %>
                     </span>
-                    <a href="/employee/<%= employee.id %>" class="link-button">
+                    <a href="/employees/<%= employee.id %>" class="link-button">
                         Edit
                     </a>
                     <% } %>
                 </section>
                 <form 
-                    action="/employee/<%= selectedEmployee.id %>" 
+                    action="/employees/<%= selectedEmployee.id %>" 
                     method="post" 
                     class="form-grid">
 
@@ -76,7 +76,7 @@
                         id="password" 
                         value="<%= selectedEmployee.password %>" />
 
-                    <a href="/employee" class="link-button two-col">clear</a>
+                    <a href="/employees" class="link-button two-col">clear</a>
                     <% if (selectedEmployee.id == null) { %>
                     <input class="two-col" type="submit" name="action" value="create" />
                     <% } else { %>
