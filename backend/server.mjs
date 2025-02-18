@@ -43,8 +43,9 @@ app.get("/", (req, res) => {
     res.status(301).redirect("/products");
 });
 
-// Serve static resources from the "public" folder relative to this file
+// Serve static resources from the "public" and "dist" folders relative to this file
 app.use(express.static(path.join(import.meta.dirname, "public")));
+app.use(express.static(path.join(import.meta.dirname, "dist")));
 
 
 // Start the listening for requests on the port defined earlier
