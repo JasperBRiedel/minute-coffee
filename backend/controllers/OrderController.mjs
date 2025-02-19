@@ -1,5 +1,5 @@
 import express from "express"
-import { ORDER_STATUS_PENDING, OrderModel } from "../models/OrderModel.mjs"
+import { ORDER_STATUS_CANCELLED, ORDER_STATUS_COMPLETE, ORDER_STATUS_PENDING, OrderModel } from "../models/OrderModel.mjs"
 import { ProductModel } from "../models/ProductModel.mjs";
 import { OrderProductModel } from "../models/OrderProductModel.mjs";
 import validator from "validator"
@@ -9,9 +9,13 @@ export class OrderController {
 
     static {
         this.routes.post("/", this.createOrder)
+
+        this.routes.get("/view", this.viewOrderManagement)
+        this.routes.post("/update", this.handleOrderManagement)
+
         this.routes.get("/:orderId", this.viewOrderConfirmation)
     }
-    
+
     /**
      * 
      * @type {express.RequestHandler}
@@ -69,7 +73,7 @@ export class OrderController {
             validator.escape(formData["customerPhone"]),
             validator.escape(formData["customerEmail"]),
         )
-        
+
         // Check and update stock levels
         ProductModel.getById(order.productId)
             .then(product => {
@@ -78,7 +82,7 @@ export class OrderController {
                         .then(() => {
                             OrderModel.create(order)
                                 .then(result => {
-                                    res.redirect("/orders/"+result.insertId)
+                                    res.redirect("/orders/" + result.insertId)
                                 })
                                 .catch(() => {
                                     res.status(500).render("status.ejs", {
@@ -106,9 +110,9 @@ export class OrderController {
                     message: "Order creation failed due to stock issue, please contact staff."
                 })
             })
-        
+
     }
-    
+
     /**
      * 
      * @type {express.RequestHandler}
@@ -117,7 +121,7 @@ export class OrderController {
         const orderId = req.params.orderId
 
         // TODO: Validation
-        
+
         OrderProductModel.getById(orderId)
             .then(orderProduct => {
                 res.render("order_confirmation.ejs", {
@@ -138,5 +142,62 @@ export class OrderController {
                 }
             })
     }
-    
+
+    /**
+     * 
+     * @type {express.RequestHandler}
+     */
+    static viewOrderManagement(req, res) {
+        // Determine the order status to filter by
+        let orderStatus = req.query.status;
+        if (!orderStatus) {
+            orderStatus = "pending";
+        }
+
+        OrderProductModel.getAllByStatus(orderStatus)
+            .then(ordersProducts => {
+                res.render("order_management.ejs", {
+                    ordersProducts,
+                    orderStatus,
+                    role: req.authenticatedUser.role,
+                });
+            });
+    }
+
+    /**
+     * 
+     * @type {express.RequestHandler}
+     */
+    static handleOrderManagement(req, res) {
+        const orderId = req.body.orderId
+        const status = req.body.status
+        
+        if (![ORDER_STATUS_PENDING, ORDER_STATUS_CANCELLED, ORDER_STATUS_COMPLETE]. includes(status)) {
+            res.status(400).render("status.ejs", {
+                status: "Invalid order status.",
+                message: "The selected order status is invalid."
+            })
+            return
+        }
+
+        OrderModel.updateStatusById(orderId, status)
+            .then(result => {
+                if (result.affectedRows > 0) {
+                    res.redirect("/orders/view");
+                } else {
+                    res.status(404).render("status.ejs", {
+                        status: "Order not found",
+                        message: "The order you attempted to update could not be found."
+                    })
+                }
+            })
+            .catch(error => {
+                console.error(error)
+                res.status(500).render("status.ejs", {
+                    status: "Error updating order status",
+                    message: "There was an error when updating the order status in the database."
+                })
+            })
+    }
+
 }

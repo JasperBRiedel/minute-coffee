@@ -67,7 +67,7 @@ export class OrderModel extends DatabaseModel {
      */
     static updateStatusById(id, status) {
         return this.query(`
-            orders
+            UPDATE orders
             SET status = ?
             WHERE id = ?
         `,
