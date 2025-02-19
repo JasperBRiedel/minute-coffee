@@ -37,7 +37,7 @@ export class EmployeeModel extends DatabaseModel {
      * @returns {Promise<Array<EmployeeModel>>}
      */
     static getAll() {
-        return this.query("SELECT * FROM employees")
+        return this.query("SELECT * FROM employees WHERE deleted = 0")
             .then(result => result.map(row => this.tableToModel(row.employees)))
     }
 
@@ -61,7 +61,7 @@ export class EmployeeModel extends DatabaseModel {
      * @returns {Promise<EmployeeModel>}
      */
     static getByUsername(username) {
-        return this.query("SELECT * FROM employees WHERE username = ?", [username])
+        return this.query("SELECT * FROM employees WHERE username = ? AND deleted = 0", [username])
             .then(result =>
                 result.length > 0
                     ? this.tableToModel(result[0].employees)
@@ -106,7 +106,7 @@ export class EmployeeModel extends DatabaseModel {
      */
     static delete(id) {
         return this.query(
-            `DELETE FROM employees WHERE id = ?`,
+            `UPDATE employees SET deleted = 1 WHERE id = ?`,
             [id]
         )
     }

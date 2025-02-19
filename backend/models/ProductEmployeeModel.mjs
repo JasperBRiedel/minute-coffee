@@ -29,7 +29,7 @@ export class ProductEmployeeModel extends DatabaseModel {
         return this.query(`
         SELECT * FROM products INNER JOIN employees 
         ON products.updated_by_employee_id = employees.id
-        WHERE deleted = 0
+        WHERE products.deleted = 0
         `, [])
             .then(result => result.map(row => this.tableToModel(row)))
     }
