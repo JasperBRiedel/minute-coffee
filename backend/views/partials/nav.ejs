@@ -1,12 +1,15 @@
 <nav>
-    <% if (role === "admin") { %>
-    <a href="/employees">Employees</a>
-    <a href="/products/edit">Products</a>
-    <a href="/orders">Orders</a>
-    <% } else if (role == "stock") { %>
-    <a href="/products/edit">Products</a>
-    <% } else if (role == "sales") { %>
-    <a href="/orders">Orders</a>
+    <% if (role == "admin") { %>
+        <a href="/employees">Employees</a>
     <% } %>
+
+    <% if (role == "stock" || role == "admin") { %>
+        <a href="/products/edit">Products</a>
+    <% } %>
+
+    <% if (role == "sales" || role == "admin") { %>
+        <a href="/orders">Orders</a>
+    <% } %>
+    
     <a href="/authenticate/logout">Logout</a>
 </nav>
