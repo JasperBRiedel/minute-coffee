@@ -1,16 +1,35 @@
 import express from "express"
 import bcrypt from "bcryptjs"
 import { EmployeeModel } from "../models/EmployeeModel.mjs"
+import { AuthenticationController } from "./AuthenticationController.mjs"
 
 export class EmployeeController {
     static routes = express.Router()
 
     static {
-        this.routes.get("/", this.viewEmployeeManagement)
-        this.routes.get("/:id", this.viewEmployeeManagement)
+        this.routes.get(
+            "/",
+            AuthenticationController.restrict(["admin"]),
+            this.viewEmployeeManagement
+        )
 
-        this.routes.post("/", this.handleEmployeeManagement)
-        this.routes.post("/:id", this.handleEmployeeManagement)
+        this.routes.get(
+            "/:id",
+            AuthenticationController.restrict(["admin"]),
+            this.viewEmployeeManagement
+        )
+
+        this.routes.post(
+            "/",
+            AuthenticationController.restrict(["admin"]),
+            this.handleEmployeeManagement
+        )
+
+        this.routes.post(
+            "/:id",
+            AuthenticationController.restrict(["admin"]),
+            this.handleEmployeeManagement
+        )
     }
 
     /**
@@ -57,7 +76,7 @@ export class EmployeeController {
             formData["username"],
             formData["password"]
         )
-        
+
         // We need to hash the password if it is not hashed
         if (!employee.password.startsWith("$2a")) {
             employee.password = bcrypt.hashSync(employee.password)

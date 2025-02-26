@@ -3,6 +3,7 @@ import { ORDER_STATUS_CANCELLED, ORDER_STATUS_COMPLETE, ORDER_STATUS_PENDING, Or
 import { ProductModel } from "../models/ProductModel.mjs";
 import { OrderProductModel } from "../models/OrderProductModel.mjs";
 import validator from "validator"
+import { AuthenticationController } from "./AuthenticationController.mjs";
 
 export class OrderController {
     static routes = express.Router()
@@ -10,8 +11,17 @@ export class OrderController {
     static {
         this.routes.post("/", this.createOrder)
 
-        this.routes.get("/view", this.viewOrderManagement)
-        this.routes.post("/update", this.handleOrderManagement)
+        this.routes.get(
+            "/view",
+            AuthenticationController.restrict(["admin", "sales"]),
+            this.viewOrderManagement
+        )
+
+        this.routes.post(
+            "/update", 
+            AuthenticationController.restrict(["admin", "sales"]), 
+            this.handleOrderManagement
+        )
 
         this.routes.get("/:orderId", this.viewOrderConfirmation)
     }
@@ -171,8 +181,8 @@ export class OrderController {
     static handleOrderManagement(req, res) {
         const orderId = req.body.orderId
         const status = req.body.status
-        
-        if (![ORDER_STATUS_PENDING, ORDER_STATUS_CANCELLED, ORDER_STATUS_COMPLETE]. includes(status)) {
+
+        if (![ORDER_STATUS_PENDING, ORDER_STATUS_CANCELLED, ORDER_STATUS_COMPLETE].includes(status)) {
             res.status(400).render("status.ejs", {
                 status: "Invalid order status.",
                 message: "The selected order status is invalid."

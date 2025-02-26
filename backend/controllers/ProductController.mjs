@@ -137,7 +137,7 @@ export class ProductController {
                 res.render("product_management.ejs", {
                     productsWithUpdatedByEmployees: productsWithUpdatedByEmployees,
                     selectedProduct,
-                    role: "admin",
+                    role: req.authenticatedUser.role,
                 })
             })
             .catch(error => {
