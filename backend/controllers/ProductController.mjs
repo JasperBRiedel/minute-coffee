@@ -150,7 +150,7 @@ export class ProductController {
      * @type {express.RequestHandler}
      */
     static handleProductManagement(req, res) {
-        const updatedByEmployeeId = 1 // TODO: Get from session
+        const updatedByEmployeeId = req.authenticatedUser.id
         const selectedProductId = req.params.id
         const formData = req.body
         const action = formData.action
