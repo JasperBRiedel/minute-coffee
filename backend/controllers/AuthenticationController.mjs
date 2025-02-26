@@ -1,6 +1,6 @@
 import express from "express"
 import session from "express-session"
-import { EmployeeModel } from "../models/EmployeeModel.mjs"
+import { EMPLOYEE_ROLE_ADMIN, EMPLOYEE_ROLE_SALES, EMPLOYEE_ROLE_STOCK, EmployeeModel } from "../models/EmployeeModel.mjs"
 import bcrypt from "bcryptjs"
 
 export class AuthenticationController {
@@ -70,8 +70,17 @@ export class AuthenticationController {
                 const isCorrectPassword = await bcrypt.compare(password, employee.password)
 
                 if (isCorrectPassword) {
+                    // Store the authenticated user's ID into the session
                     req.session.userId = employee.id
-                    res.redirect("/products/edit")
+                    
+                    // Redirect based on role
+                    if (employee.role == EMPLOYEE_ROLE_ADMIN) {
+                        res.redirect("/products/edit")
+                    } else if (employee.role == EMPLOYEE_ROLE_SALES) {
+                        res.redirect("/orders/view")
+                    } else if (employee.role == EMPLOYEE_ROLE_STOCK) {
+                        res.redirect("/products/edit")
+                    }
                 } else {
                     res.status(400).render("status.ejs", {
                         status: "Authentication Failed.",
