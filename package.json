@@ -10,7 +10,6 @@
   "license": "Copyright (c) 2025 - Jasper Riedel-Rutterford & TAFE Queensland",
   "workspaces": [
     "frontend",
-    "backend",
-    "legacy"
+    "backend"
   ]
 }
