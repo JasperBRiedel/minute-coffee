@@ -1,0 +1,96 @@
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - name
+        - stock
+        - price
+        - description
+        - updatedByEmployeeId
+        - deleted
+      properties:
+        id: 
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "Latte"
+        stock: 
+          type: number
+          example: 10
+        price: 
+          type: number
+          example: 10
+        description:
+          type: string
+          example: "A coffee with milk"
+        updatedByEmployeeId:
+          type: number
+          example: 1
+        deleted:
+          type: number
+          example: 0
+  responses:
+    Deleted:
+      description: Item deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+                example: "Item deleted"
+    Updated:
+      description: An item has been updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+                example: "New item created"
+    Created:
+      description: A new item has been created
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - id
+              - message
+            properties:
+              id:
+                type: number
+                example: 1
+              message: 
+                type: string
+                example: "New item created"
+    NotFound:
+      description: Item not found 
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+                example: "The requested item could not be found"
+    Error:
+      description: An error has occurred 
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+                example: "Error processing request"
+              errors:
+                type: array

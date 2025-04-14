@@ -20,12 +20,12 @@ export class ProductModel extends DatabaseModel {
 
     static tableToModel(row) {
         return new ProductModel(
-            row["id"],
+            Number(row["id"]),
             row["name"],
-            row["stock"],
-            row["price"],
+            Number(row["stock"]),
+            Number(row["price"]),
             row["description"],
-            row["updated_by_employee_id"],
+            Number(row["updated_by_employee_id"]),
             row["deleted"]
         )
     }
