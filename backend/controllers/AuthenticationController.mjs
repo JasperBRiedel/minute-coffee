@@ -43,8 +43,15 @@ export class AuthenticationController {
     /**
      * @type {express.RequestHandler}
      */
-    static #api_key_authentication(req, res, next) {
-        // TODO: Implement API key based authentication.
+    static async #api_key_authentication(req, res, next) {
+        const authenticationKey = req.headers["x-auth-key"]
+        if (authenticationKey) {
+            try {
+                req.authenticatedUser = await EmployeeModel.getByAuthenticationKey(authenticationKey)
+            } catch (error) {
+                console.error("Failed to authenticate using authentication key - " + error)
+            }
+        }
         next()
     }
 
@@ -60,7 +67,8 @@ export class AuthenticationController {
      * @openapi
      * /authenticate:
      *      post:
-     *          summary: "Create a new product"
+     *          summary: "Authenticate with username and password"
+     *          tags: [Authentication]
      *          requestBody:
      *              required: true
      *              content:
@@ -186,17 +194,41 @@ export class AuthenticationController {
 
     /**
      * @type {express.RequestHandler}
+     * @openapi
+     * /authenticate:
+     *      delete:
+     *          summary: "Deauthenticate"
+     *          tags: [Authentication]
+     *          security:
+     *              - ApiKey: [] 
+     *          responses:
+     *              '200':
+     *                  $ref: "#/components/responses/Updated"
+     *              '400':
+     *                  $ref: "#/components/responses/Error"
+     *              '500':
+     *                  $ref: "#/components/responses/Error"
      */
-    static handleDeauthenticate(req, res) {
+    static async handleDeauthenticate(req, res) {
         if (req.authenticatedUser) {
-            if (req.session.userId) {
-                req.session.destroy()
-                res.status(200).render("status.ejs", {
-                    status: "Logged out successfully.",
-                    message: "You have been logged out."
+            if (req.authenticatedUser.authenticationKey != null) {
+                // TODO: Clear authentication key from database
+                const employee = await EmployeeModel.getByAuthenticationKey(req.authenticatedUser.authenticationKey)
+                employee.authenticationKey = null
+                await EmployeeModel.update(employee)
+                res.status(200).json({
+                    message: "Deauthentication successful"
                 })
+            } else {
+                // Handle clearing session
+                if (req.session.userId) {
+                    req.session.destroy()
+                    res.status(200).render("status.ejs", {
+                        status: "Logged out successfully.",
+                        message: "You have been logged out."
+                    })
+                }
             }
-            // TODO: Handle clearing API key from database
         } else {
             res.status(401).render("status.ejs", {
                 status: "Unauthenticated.",

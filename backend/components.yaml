@@ -1,5 +1,13 @@
 components:
   schemas:
+    AuthenticationKey:
+      type: object
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          example: uuid
     UserCredentials:
       type: object
       required:
@@ -69,13 +77,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - key
-            properties:
-              key:
-                type: string
-                example: uuid
+            $ref: "#/components/schemas/AuthenticationKey"
     Created:
       description: A new item has been created
       content:

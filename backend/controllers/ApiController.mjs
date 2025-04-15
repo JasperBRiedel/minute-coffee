@@ -18,7 +18,7 @@ const options = {
                 ApiKey: {
                     type: "apiKey",
                     in: "header",
-                    name: "X-AUTH-KEY",
+                    name: "x-auth-key",
                 },
             }
         },
@@ -37,6 +37,7 @@ export class ApiController {
          * /api/docs:
          *      get:
          *          summary: "View automatically generated API documentation"
+         *          tags: [Documentation]
          *          responses:
          *            '200':
          *              description: 'Swagger documentation page'
@@ -76,6 +77,7 @@ export class ApiController {
      * /api/products:
      *      post:
      *          summary: "Create a new product"
+     *          tags: [Products]
      *          requestBody:
      *              required: true
      *              content:
@@ -122,6 +124,7 @@ export class ApiController {
      * /api/products:
      *      get:
      *          summary: "Get the list of all products"
+     *          tags: [Products]
      *          responses:
      *              '200':
      *                  description: 'Product list'
@@ -154,6 +157,7 @@ export class ApiController {
      * /api/products/{id}:
      *      get:
      *          summary: "Get the list of all products"
+     *          tags: [Products]
      *          parameters:
      *                - name: id
      *                  in: path
@@ -203,6 +207,7 @@ export class ApiController {
      * /api/products/{id}:
      *      patch:
      *          summary: "Update an existing product by ID"
+     *          tags: [Products]
      *          parameters:
      *                - name: id
      *                  in: path
@@ -265,6 +270,7 @@ export class ApiController {
      * /api/products/{id}:
      *      delete:
      *          summary: "Delete an existing product by ID"
+     *          tags: [Products]
      *          parameters:
      *                - name: id
      *                  in: path
