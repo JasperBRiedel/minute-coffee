@@ -9,7 +9,7 @@ export class EmployeeModel extends DatabaseModel {
 
     //// Instance
 
-    constructor(id, firstName, lastName, role, username, password) {
+    constructor(id, firstName, lastName, role, username, password, authenticationKey = null) {
         super()
         this.id = id
         this.firstName = firstName
@@ -17,6 +17,7 @@ export class EmployeeModel extends DatabaseModel {
         this.role = role
         this.username = username
         this.password = password
+        this.authenticationKey = authenticationKey
     }
 
     //// Static 
@@ -28,7 +29,8 @@ export class EmployeeModel extends DatabaseModel {
             row["last_name"],
             row["role"],
             row["username"],
-            row["password"]
+            row["password"],
+            row["authentication_key"]
         )
     }
 
@@ -71,17 +73,30 @@ export class EmployeeModel extends DatabaseModel {
 
     /**
      * 
+     * @param {number} id 
+     * @returns {Promise<EmployeeModel>}
+     */
+    static getByAuthenticationKey(authenticationKey) {
+        return this.query("SELECT * FROM employees WHERE authentication_key = ? AND deleted = 0", [authenticationKey])
+            .then(result =>
+                result.length > 0
+                    ? this.tableToModel(result[0].employees)
+                    : Promise.reject("not found")
+            )
+    }
+
+    /**
+     * 
      * @param {EmployeeModel} employee 
      * @returns {Promise<mysql.ResultSetHeader>}
      */
     static update(employee) {
-        // TODO: Handle password hashing here?
         return this.query(`
             UPDATE employees
-            SET first_name = ?, last_name = ?, role = ?, username = ?, password = ?
+            SET first_name = ?, last_name = ?, role = ?, username = ?, password = ?, authentication_key = ?
             WHERE id = ?
         `,
-            [employee.firstName, employee.lastName, employee.role, employee.username, employee.password, employee.id]
+            [employee.firstName, employee.lastName, employee.role, employee.username, employee.password, employee.authenticationKey, employee.id]
         )
     }
 
@@ -90,13 +105,12 @@ export class EmployeeModel extends DatabaseModel {
      * @returns {Promise<mysql.OkPacket>}
      */
     static create(employee) {
-        // TODO: Handle password hashing here?
         return this.query(`
             INSERT INTO employees 
-            (first_name, last_name, role, username, password)
+            (first_name, last_name, role, username, password, authentication_key)
             VALUES (?, ?, ?, ?, ?)
         `,
-            [employee.firstName, employee.lastName, employee.role, employee.username, employee.password]
+            [employee.firstName, employee.lastName, employee.role, employee.username, employee.password, employee.authenticationKey]
         )
     }
 

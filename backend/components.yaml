@@ -1,5 +1,17 @@
 components:
   schemas:
+    UserCredentials:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: "jane"
+        password:
+          type: string
+          example: "abc123"
     Product:
       type: object
       required:
@@ -52,6 +64,18 @@ components:
               message: 
                 type: string
                 example: "New item created"
+    LoginSuccessful:
+      description: Login successful
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - key
+            properties:
+              key:
+                type: string
+                example: uuid
     Created:
       description: A new item has been created
       content:

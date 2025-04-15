@@ -57,6 +57,45 @@ export class AuthenticationController {
 
     /**
      * @type {express.RequestHandler}
+     * @openapi
+     * /authenticate:
+     *      post:
+     *          summary: "Create a new product"
+     *          requestBody:
+     *              required: true
+     *              content:
+     *                  application/json:
+     *                      schema:
+     *                          $ref: "#/components/schemas/UserCredentials"
+     *                  application/x-www-form-urlencoded:
+     *                      schema:
+     *                          $ref: "#/components/schemas/UserCredentials"
+     *          responses:
+     *              '302':
+     *                  description: "Form based login successful, redirect to homepage."
+     *                  content: 
+     *                      text/html:
+     *                          schema:
+     *                              type: string
+     *              '200':
+     *                  $ref: "#/components/responses/LoginSuccessful"
+     *              '400':
+     *                  description: "Login failed"
+     *                  content:
+     *                      application/json:
+     *                          schema:
+     *                              type: object
+     *                              required:
+     *                                  - message
+     *                              properties:
+     *                                  message:
+     *                                      type: string
+     *                                      example: "Invalid credentials"
+     *                      text/html:
+     *                          schema:
+     *                              type: string
+     *              '500':
+     *                  $ref: "#/components/responses/Error"
      */
     static async handleAuthenticate(req, res) {
         const contentType = req.get("Content-Type")
@@ -72,7 +111,7 @@ export class AuthenticationController {
                 if (isCorrectPassword) {
                     // Store the authenticated user's ID into the session
                     req.session.userId = employee.id
-                    
+
                     // Redirect based on role
                     if (employee.role == EMPLOYEE_ROLE_ADMIN) {
                         res.redirect("/products/edit")
@@ -102,15 +141,44 @@ export class AuthenticationController {
                 }
             }
         } else if (contentType == "application/json") {
-            // TODO: Add validation here
-            // TODO: Implement API key based authentication.
-            res.status(501).render("status.ejs", {
-                status: "JSON Authentication Format Error.",
-                message: "JSON format not yet implemented."
-            })
+            try {
+
+                const employee = await EmployeeModel.getByUsername(username)
+                const isCorrectPassword = await bcrypt.compare(password, employee.password)
+
+                if (isCorrectPassword) {
+                    // Generate a cryptographically random UUID for use as the authentication key
+                    const authenticationKey = crypto.randomUUID()
+
+                    // Store the authenticated user authentication key into the database
+                    employee.authenticationKey = authenticationKey
+                    await EmployeeModel.update(employee)
+
+                    res.status(200).json({
+                        key: authenticationKey
+                    })
+                } else {
+                    res.status(400).json({
+                        message: "Invalid credentials"
+                    })
+                }
+            } catch (error) {
+                switch (error) {
+                    case "not found":
+                        res.status(400).json({
+                            message: "Invalid credentials",
+                        })
+                        break;
+                    default:
+                        console.error(error)
+                        res.status(500).json({
+                            message: "Failed to authenticate user",
+                        })
+                        break;
+                }
+            }
         } else {
-            res.status(501).render("status.ejs", {
-                status: "Unsupported Authentication Format.",
+            res.status(500).json({
                 message: "Credentials must be sent as url encoded form data or JSON."
             })
         }
