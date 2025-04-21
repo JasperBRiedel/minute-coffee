@@ -1,0 +1,69 @@
+import express from "express"
+import swaggerJSDoc from "swagger-jsdoc"
+import swaggerUI from "swagger-ui-express"
+import * as ApiValidator from "express-openapi-validator"
+import { ApiProductsController } from "./ApiProductsController.mjs"
+
+const options = {
+    failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            version: "1.0.0",
+            title: "Minute Coffee API",
+            description: "JSON REST API for interacting with the minute coffee backend",
+        },
+        components: {
+            securitySchemes: {
+                ApiKey: {
+                    type: "apiKey",
+                    in: "header",
+                    name: "x-auth-key",
+                },
+            }
+        },
+    },
+    apis: ["./controllers/**/*.{js,mjs,yaml}", "./components.yaml"],
+}
+
+const specification = swaggerJSDoc(options)
+
+export class ApiController {
+    static routes = express.Router()
+
+    static {
+        /**
+         * @openapi
+         * /api/docs:
+         *      get:
+         *          summary: "View automatically generated API documentation"
+         *          tags: [Documentation]
+         *          responses:
+         *            '200':
+         *              description: 'Swagger documentation page'
+         */
+        this.routes.use("/docs", swaggerUI.serve, swaggerUI.setup(specification))
+
+        // Setup OpenAPI specification validation middleware
+        this.routes.use(ApiValidator.middleware({
+            apiSpec: specification,
+            validateRequests: true,
+            validateResponses: true,
+        }))
+
+        // Setup error response for OpenAPI specification validation middleware
+        this.routes.use((err, req, res, next) => {
+            // format error
+            res.status(err.status || 500).json({
+                status: err.status,
+                message: err.message,
+                errors: err.errors,
+            })
+        })
+        
+        // Api controllers
+        this.routes.use("/products", ApiProductsController.routes)
+    }
+    
+
+}

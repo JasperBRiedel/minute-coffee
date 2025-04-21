@@ -1,72 +1,16 @@
 import express from "express"
-import swaggerJSDoc from "swagger-jsdoc"
-import swaggerUI from "swagger-ui-express"
-import * as ApiValidator from "express-openapi-validator"
-import { ProductModel } from "../models/ProductModel.mjs"
+import { ProductModel } from "../../models/ProductModel.mjs"
+import { AuthenticationController } from "../AuthenticationController.mjs"
 
-const options = {
-    failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            version: "1.0.0",
-            title: "Minute Coffee API",
-            description: "JSON REST API for interacting with the minute coffee backend",
-        },
-        components: {
-            securitySchemes: {
-                ApiKey: {
-                    type: "apiKey",
-                    in: "header",
-                    name: "x-auth-key",
-                },
-            }
-        },
-    },
-    apis: ["./controllers/**/*.{js,mjs,yaml}", "./components.yaml"],
-}
-
-const specification = swaggerJSDoc(options)
-
-export class ApiController {
+export class ApiProductsController {
     static routes = express.Router()
 
     static {
-        /**
-         * @openapi
-         * /api/docs:
-         *      get:
-         *          summary: "View automatically generated API documentation"
-         *          tags: [Documentation]
-         *          responses:
-         *            '200':
-         *              description: 'Swagger documentation page'
-         */
-        this.routes.use("/docs", swaggerUI.serve, swaggerUI.setup(specification))
-
-        // Setup OpenAPI specification validation middleware
-        this.routes.use(ApiValidator.middleware({
-            apiSpec: specification,
-            validateRequests: true,
-            validateResponses: true,
-        }))
-
-        // Setup error response for OpenAPI specification validation middleware
-        this.routes.use((err, req, res, next) => {
-            // format error
-            res.status(err.status || 500).json({
-                status: err.status,
-                message: err.message,
-                errors: err.errors,
-            })
-        })
-
-        // Define API endpoints routes
-        this.routes.get("/products", this.getProducts)
-        this.routes.get("/products/:id", this.getProductById)
-        this.routes.post("/products", this.createProduct)
-        this.routes.patch("/products/:id", this.updateProduct)
-        this.routes.delete("/products/:id", this.deleteProduct)
+        this.routes.get("/", this.getProducts)
+        this.routes.get("/:id", this.getProductById)
+        this.routes.post("/", AuthenticationController.restrict(["admin"]), this.createProduct)
+        this.routes.patch("/:id", AuthenticationController.restrict(["admin"]), this.updateProduct)
+        this.routes.delete("/:id", AuthenticationController.restrict(["admin"]), this.deleteProduct)
     }
     
     /**
@@ -78,6 +22,8 @@ export class ApiController {
      *      post:
      *          summary: "Create a new product"
      *          tags: [Products]
+     *          security:
+     *              - ApiKey: [] 
      *          requestBody:
      *              required: true
      *              content:
@@ -88,6 +34,10 @@ export class ApiController {
      *              '200':
      *                  $ref: "#/components/responses/Created"
      *              '500':
+     *                  $ref: "#/components/responses/Error"
+     *              '403':
+     *                  $ref: "#/components/responses/Error"
+     *              '401':
      *                  $ref: "#/components/responses/Error"
      */
     static async createProduct(req, res) {
@@ -308,5 +258,4 @@ export class ApiController {
             })
         }
     }
-
 }

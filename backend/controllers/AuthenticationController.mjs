@@ -1,7 +1,7 @@
 import express from "express"
 import session from "express-session"
-import { EMPLOYEE_ROLE_ADMIN, EMPLOYEE_ROLE_SALES, EMPLOYEE_ROLE_STOCK, EmployeeModel } from "../models/EmployeeModel.mjs"
 import bcrypt from "bcryptjs"
+import { EMPLOYEE_ROLE_ADMIN, EMPLOYEE_ROLE_SALES, EMPLOYEE_ROLE_STOCK, EmployeeModel } from "../models/EmployeeModel.mjs"
 
 export class AuthenticationController {
     static middleware = express.Router()
@@ -20,7 +20,7 @@ export class AuthenticationController {
         this.routes.get("/", this.viewAuthenticate)
         this.routes.post("/", this.handleAuthenticate)
 
-        this.routes.delete("/", this.handleDeauthenticate)
+        this.routes.delete("/", this.restrict(["admin", "sales", "stock"]), this.handleDeauthenticate)
         this.routes.get("/logout", this.handleDeauthenticate)
     }
 
@@ -210,9 +210,11 @@ export class AuthenticationController {
      *                  $ref: "#/components/responses/Error"
      */
     static async handleDeauthenticate(req, res) {
+        const usingJSON = req.authenticatedUser.authenticationKey != null || req.headers.contentType == "application/json"
+
         if (req.authenticatedUser) {
-            if (req.authenticatedUser.authenticationKey != null) {
-                // TODO: Clear authentication key from database
+            if (usingJSON) {
+                // Clear authentication key and send JSON response
                 const employee = await EmployeeModel.getByAuthenticationKey(req.authenticatedUser.authenticationKey)
                 employee.authenticationKey = null
                 await EmployeeModel.update(employee)
@@ -220,7 +222,7 @@ export class AuthenticationController {
                     message: "Deauthentication successful"
                 })
             } else {
-                // Handle clearing session
+                // Handle clearing session and send HTML status page
                 if (req.session.userId) {
                     req.session.destroy()
                     res.status(200).render("status.ejs", {
@@ -244,20 +246,38 @@ export class AuthenticationController {
      */
     static restrict(allowedRoles) {
         return function (req, res, next) {
+            const usingJSON = req.authenticatedUser?.authenticationKey != null 
+            || req.headers["x-auth-key"]
+            || req.headers.contentType == "application/json"
+
             if (req.authenticatedUser) {
                 if (allowedRoles.includes(req.authenticatedUser.role)) {
                     next()
                 } else {
-                    res.status(403).render("status.ejs", {
-                        status: "Access Forbidden.",
-                        message: "Role does not have access to the requested resource."
-                    })
+                    if (usingJSON) {
+                        res.status(403).json({
+                            message: "Access forbidden.",
+                            errors: ["Role does not have access to the requested resource."]
+                        })
+                    } else {
+                        res.status(403).render("status.ejs", {
+                            status: "Access Forbidden.",
+                            message: "Role does not have access to the requested resource."
+                        })
+                    }
                 }
             } else {
-                res.status(401).render("status.ejs", {
-                    status: "Unauthenticated.",
-                    message: "Please login to access the requested resource."
-                })
+                if (usingJSON) {
+                    res.status(401).json({
+                        status: "Unauthenticated.",
+                        errors: ["Please login to access the requested resource."]
+                    })
+                } else {
+                    res.status(401).render("status.ejs", {
+                        status: "Unauthenticated.",
+                        message: "Please login to access the requested resource."
+                    })
+                }
             }
         }
     }

@@ -5,7 +5,7 @@ import { EmployeeController } from "./controllers/EmployeeController.mjs";
 import { ProductController } from "./controllers/ProductController.mjs";
 import { OrderController } from "./controllers/OrderController.mjs";
 import { AuthenticationController } from "./controllers/AuthenticationController.mjs";
-import { ApiController } from "./controllers/ApiController.mjs";
+import { ApiController } from "./controllers/api/ApiController.mjs";
 
 // Create an express app instance and define a port for later
 const app = express();
