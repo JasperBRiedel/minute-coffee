@@ -7,7 +7,7 @@ components:
       properties:
         key:
           type: string
-          example: uuid
+          format: uuid
     UserCredentials:
       type: object
       required:
@@ -20,6 +20,39 @@ components:
         password:
           type: string
           example: "abc123"
+    Employee:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - role
+        - username
+        - password
+        - authenticationKey
+      properties:
+        id: 
+          type: number
+          example: 1
+        firstName:
+          type: string
+          example: "Jane"
+        lastName:
+          type: string
+          example: "Doe"
+        role:
+          type: string
+          example: "sales"
+          enum: [admin, stock, sales]
+        username:
+          type: string
+          example: "jane"
+        password:
+          type: string
+          example: "******"
+        authenticationKey:
+          type: string
+          format: uuid
     Product:
       type: object
       required:

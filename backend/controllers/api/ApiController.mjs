@@ -3,6 +3,7 @@ import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUI from "swagger-ui-express"
 import * as ApiValidator from "express-openapi-validator"
 import { APIProductsController } from "./APIProductsController.mjs"
+import { APIEmployeeController } from "./APIEmployeeController.mjs"
 
 const options = {
     failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
@@ -63,6 +64,7 @@ export class APIController {
         
         // Api controllers
         this.routes.use("/products", APIProductsController.routes)
+        this.routes.use("/employees", APIEmployeeController.routes)
     }
     
 
