@@ -1,5 +1,6 @@
 import path from "path"
 import express from "express";
+import cors from "cors"
 import session from "express-session";
 import { EmployeeController } from "./controllers/EmployeeController.mjs";
 import { ProductController } from "./controllers/ProductController.mjs";
@@ -10,6 +11,14 @@ import { APIController } from "./controllers/api/APIController.mjs";
 // Create an express app instance and define a port for later
 const app = express();
 const port = 8080;
+
+// Enable cross-origin resources sharing (CORS) and preflight OPTIONS requests
+app.use(
+    cors({
+        origin: true, // Allow all origins
+        // origin: "http://localhost:8080", // Allow only backend origin 
+    })
+)
 
 // Express session middleware automatically manages a session cookie
 // that is used to give persistent state between requests, making
