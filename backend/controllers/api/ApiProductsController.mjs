@@ -2,7 +2,7 @@ import express from "express"
 import { ProductModel } from "../../models/ProductModel.mjs"
 import { AuthenticationController } from "../AuthenticationController.mjs"
 
-export class ApiProductsController {
+export class APIProductsController {
     static routes = express.Router()
 
     static {

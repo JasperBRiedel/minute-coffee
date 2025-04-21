@@ -2,7 +2,7 @@ import express from "express"
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUI from "swagger-ui-express"
 import * as ApiValidator from "express-openapi-validator"
-import { ApiProductsController } from "./ApiProductsController.mjs"
+import { APIProductsController } from "./APIProductsController.mjs"
 
 const options = {
     failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
@@ -28,7 +28,7 @@ const options = {
 
 const specification = swaggerJSDoc(options)
 
-export class ApiController {
+export class APIController {
     static routes = express.Router()
 
     static {
@@ -62,7 +62,7 @@ export class ApiController {
         })
         
         // Api controllers
-        this.routes.use("/products", ApiProductsController.routes)
+        this.routes.use("/products", APIProductsController.routes)
     }
     
 

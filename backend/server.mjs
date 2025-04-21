@@ -5,7 +5,7 @@ import { EmployeeController } from "./controllers/EmployeeController.mjs";
 import { ProductController } from "./controllers/ProductController.mjs";
 import { OrderController } from "./controllers/OrderController.mjs";
 import { AuthenticationController } from "./controllers/AuthenticationController.mjs";
-import { ApiController } from "./controllers/api/ApiController.mjs";
+import { APIController } from "./controllers/api/APIController.mjs";
 
 // Create an express app instance and define a port for later
 const app = express();
@@ -38,7 +38,7 @@ app.use("/employees", EmployeeController.routes)
 app.use("/products", ProductController.routes)
 app.use("/orders", OrderController.routes)
 app.use("/authenticate", AuthenticationController.routes)
-app.use("/api", ApiController.routes)
+app.use("/api", APIController.routes)
 
 
 // Redirect request to root to the products page
