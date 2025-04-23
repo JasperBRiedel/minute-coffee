@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.mjs",
   "scripts": {
-    "dev": "nodemon server.mjs",
+    "dev": "nodemon -e \"js,mjs,cjs,json,yaml\" server.mjs",
     "start": "node server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
