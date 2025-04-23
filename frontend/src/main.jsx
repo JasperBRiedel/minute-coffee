@@ -1,9 +1,18 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from "react-router"
 import './index.css'
+import ProductListView from './products/ProductListView.jsx'
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: ProductListView
+  }
+])
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <h1 className='text-yellow-700 text-4xl font-serif'>Hello Minute Coffee!</h1>
+    <RouterProvider router={router} />
   </StrictMode>,
 )
