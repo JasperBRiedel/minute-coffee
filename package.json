@@ -11,11 +11,5 @@
   "workspaces": [
     "frontend",
     "backend"
-  ],
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express-openapi-validator": "^5.4.9",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
-  }
+  ]
 }
