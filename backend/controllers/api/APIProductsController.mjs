@@ -1,6 +1,5 @@
 import express from "express"
 import { ProductModel } from "../../models/ProductModel.mjs"
-import { APIController } from "./APIController.mjs"
 import { APIAuthenticationController } from "./APIAuthenticationController.mjs"
 
 export class APIProductsController {
@@ -13,7 +12,7 @@ export class APIProductsController {
         this.routes.patch("/:id", APIAuthenticationController.restrict(["admin"]), this.updateProduct)
         this.routes.delete("/:id", APIAuthenticationController.restrict(["admin"]), this.deleteProduct)
     }
-    
+
     /**
      * Handle creating a new product
      * 
@@ -76,6 +75,14 @@ export class APIProductsController {
      *      get:
      *          summary: "Get the list of all products"
      *          tags: [Products]
+     *          parameters:
+     *                - name: filter
+     *                  in: query
+     *                  description: Search filter on product names and descriptions
+     *                  required: false
+     *                  schema:
+     *                      type: string
+     *                      example: mocha
      *          responses:
      *              '200':
      *                  description: 'Product list'
@@ -90,7 +97,9 @@ export class APIProductsController {
      */
     static async getProducts(req, res) {
         try {
-            const products = await ProductModel.getAll()
+            const products = req.query.filter 
+                ? await ProductModel.getBySearch(req.query.filter) 
+                : await ProductModel.getAll()
             res.status(200).json(products)
         } catch (error) {
             res.status(500).json({
@@ -198,7 +207,7 @@ export class APIProductsController {
             )
 
             const result = await ProductModel.update(product)
-            
+
             if (result.affectedRows == 1) {
                 res.status(200).json({
                     message: "product updated"
@@ -249,7 +258,7 @@ export class APIProductsController {
     static async deleteProduct(req, res) {
         try {
             const result = await ProductModel.delete(req.params.id)
-            
+
             if (result.affectedRows == 1) {
                 res.status(200).json({
                     message: "product deleted"
