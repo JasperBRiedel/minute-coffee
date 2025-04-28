@@ -15,15 +15,15 @@ function ProductListView() {
         request
             .then(response => {
                 if (response.status == 200) {
-                    if (response.data.length > 0) {
-                        setProducts(response.data)
+                    if (response.body.length > 0) {
+                        setProducts(response.body)
                         setError(null)
                     } else {
                         setProducts([])
                         setError("No results")
                     }
                 } else {
-                    setError(response.data.message)
+                    setError(response.body.message)
                 }
             })
             .catch(error => {

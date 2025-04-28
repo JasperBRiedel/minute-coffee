@@ -26,11 +26,11 @@ export async function fetchAPI(method, route, body, authKey) {
 
         const status = response.status
 
-        const data = await response.json()
+        const responseBody = await response.json()
 
         return {
             status,
-            data
+            body: responseBody
         }
     } catch (error) {
         throw {

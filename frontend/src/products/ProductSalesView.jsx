@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { Fragment, useCallback, useEffect, useState } from "react"
 import { FaCoffee } from "react-icons/fa"
 import { fetchAPI } from "../api.mjs"
 
@@ -24,15 +24,15 @@ function ProductSalesView() {
         fetchAPI("GET", `/products/sales?start_date=${startDate}&end_date=${endDate}`)
             .then(response => {
                 if (response.status == 200) {
-                    if (response.data.length > 0) {
-                        setProductSalesByDay(partitionByDay(response.data))
+                    if (response.body.length > 0) {
+                        setProductSalesByDay(partitionByDay(response.body))
                         setError(null)
                     } else {
                         setProductSalesByDay({})
                         setError("No results")
                     }
                 } else {
-                    setError(response.data.message)
+                    setError(response.body.message)
                 }
             })
             .catch(error => {
@@ -51,7 +51,7 @@ function ProductSalesView() {
             ? <span className="loading loading-spinner loading-xl"></span>
             : <ul className="list bg-base-100 self-stretch">
                 {Object.entries(productSalesByDay).map(([day, productSales]) =>
-                    <>
+                    <Fragment key={day}>
                         <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">{day}</li>
                         {productSales.map(productSale =>
                             <li key={productSale.sale.id} className="list-row">
@@ -76,7 +76,7 @@ function ProductSalesView() {
                                 </button>
                             </li>
                         )}
-                    </>
+                    </Fragment>
                 )}
             </ul>
         }
