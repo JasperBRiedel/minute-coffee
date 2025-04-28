@@ -1,12 +1,14 @@
 import express from "express"
 import { ProductModel } from "../../models/ProductModel.mjs"
 import { APIAuthenticationController } from "./APIAuthenticationController.mjs"
+import { SaleProductModel } from "../../models/SaleProductModel.mjs"
 
 export class APIProductsController {
     static routes = express.Router()
 
     static {
         this.routes.get("/", this.getProducts)
+        this.routes.get("/sales", this.getProductSales)
         this.routes.get("/:id", this.getProductById)
         this.routes.post("/", APIAuthenticationController.restrict(["admin"]), this.createProduct)
         this.routes.patch("/:id", APIAuthenticationController.restrict(["admin"]), this.updateProduct)
@@ -104,6 +106,72 @@ export class APIProductsController {
         } catch (error) {
             res.status(500).json({
                 message: "Failed to load products from database",
+                errors: [error]
+            })
+        }
+    }
+    
+    /**
+     * Handle getting all products
+     * 
+     * @type {express.RequestHandler}
+     * @openapi
+     * /api/products/sales:
+     *      get:
+     *          summary: "Get the list of all product sales"
+     *          tags: [Products]
+     *          parameters:
+     *                - name: start_date
+     *                  in: query
+     *                  description: The start date to filter by
+     *                  required: true
+     *                  schema:
+     *                      type: string
+     *                      format: date
+     *                      example: 2025-01-01
+     *                - name: end_date
+     *                  in: query
+     *                  description: The end date to filter by
+     *                  required: true
+     *                  schema:
+     *                      type: string
+     *                      format: date
+     *                      example: 2025-03-01
+     *          responses:
+     *              '200':
+     *                  description: 'Product list'
+     *                  content:
+     *                      application/json:
+     *                          schema:
+     *                              type: array
+     *                              items:
+     *                                  type: object
+     *                                  required:
+     *                                      - product
+     *                                      - sale
+     *                                  properties:
+     *                                      product:
+     *                                          $ref: "#/components/schemas/Product"
+     *                                      sale:
+     *                                          $ref: "#/components/schemas/Sale"
+     *              '400':
+     *                  $ref: "#/components/responses/Error"
+     *              '500':
+     *                  $ref: "#/components/responses/Error"
+     *              default:
+     *                  $ref: "#/components/responses/Error"
+     */
+    static async getProductSales(req, res) {
+        try {
+            const saleProducts = await SaleProductModel.getByStartAndEndDate(
+                new Date(req.query.start_date), 
+                new Date(req.query.end_date)
+            )
+
+            res.status(200).json(saleProducts)
+        } catch (error) {
+            res.status(500).json({
+                message: "Failed to load sale products from database",
                 errors: [error]
             })
         }

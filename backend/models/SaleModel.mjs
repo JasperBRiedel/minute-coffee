@@ -19,9 +19,9 @@ export class SaleModel extends DatabaseModel {
 
     static tableToModel(row) {
         return new SaleModel(
-            row["id"],
-            row["product_id"],
-            row["discount_percentage"],
+            Number(row["id"]),
+            Number(row["product_id"]),
+            Number(row["discount_percentage"]),
             row["date"],
             row["start_time"],
             row["end_time"]

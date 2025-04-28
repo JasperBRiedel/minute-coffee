@@ -84,6 +84,32 @@ components:
         deleted:
           type: number
           example: 0
+    Sale:
+      type: object
+      required:
+        - id
+        - productId
+        - discountPercentage
+        - date
+        - startTime
+        - endTime
+      properties:
+        id: 
+          type: number
+          example: 1
+        productId: 
+          type: number
+          example: 1
+        discountPercentage: 
+          type: number
+          example: 0.5
+        date:
+          type: string
+          format: date
+        startTime:
+          type: string
+        endTime:
+          type: string
   responses:
     Deleted:
       description: Item deleted
