@@ -1,6 +1,7 @@
 import express from "express"
 import { ProductModel } from "../../models/ProductModel.mjs"
-import { AuthenticationController } from "../AuthenticationController.mjs"
+import { APIController } from "./APIController.mjs"
+import { APIAuthenticationController } from "./APIAuthenticationController.mjs"
 
 export class APIProductsController {
     static routes = express.Router()
@@ -8,9 +9,9 @@ export class APIProductsController {
     static {
         this.routes.get("/", this.getProducts)
         this.routes.get("/:id", this.getProductById)
-        this.routes.post("/", AuthenticationController.restrict(["admin"]), this.createProduct)
-        this.routes.patch("/:id", AuthenticationController.restrict(["admin"]), this.updateProduct)
-        this.routes.delete("/:id", AuthenticationController.restrict(["admin"]), this.deleteProduct)
+        this.routes.post("/", APIAuthenticationController.restrict(["admin"]), this.createProduct)
+        this.routes.patch("/:id", APIAuthenticationController.restrict(["admin"]), this.updateProduct)
+        this.routes.delete("/:id", APIAuthenticationController.restrict(["admin"]), this.deleteProduct)
     }
     
     /**
@@ -37,7 +38,7 @@ export class APIProductsController {
      *                  $ref: "#/components/responses/Error"
      *              '403':
      *                  $ref: "#/components/responses/Error"
-     *              '401':
+     *              default:
      *                  $ref: "#/components/responses/Error"
      */
     static async createProduct(req, res) {
@@ -158,6 +159,8 @@ export class APIProductsController {
      *      patch:
      *          summary: "Update an existing product by ID"
      *          tags: [Products]
+     *          security:
+     *              - ApiKey: [] 
      *          parameters:
      *                - name: id
      *                  in: path
@@ -178,6 +181,8 @@ export class APIProductsController {
      *              '404':
      *                  $ref: "#/components/responses/NotFound"
      *              '500':
+     *                  $ref: "#/components/responses/Error"
+     *              default:
      *                  $ref: "#/components/responses/Error"
      */
     static async updateProduct(req, res) {
@@ -221,6 +226,8 @@ export class APIProductsController {
      *      delete:
      *          summary: "Delete an existing product by ID"
      *          tags: [Products]
+     *          security:
+     *              - ApiKey: [] 
      *          parameters:
      *                - name: id
      *                  in: path
@@ -235,6 +242,8 @@ export class APIProductsController {
      *              '404':
      *                  $ref: "#/components/responses/NotFound"
      *              '500':
+     *                  $ref: "#/components/responses/Error"
+     *              default:
      *                  $ref: "#/components/responses/Error"
      */
     static async deleteProduct(req, res) {

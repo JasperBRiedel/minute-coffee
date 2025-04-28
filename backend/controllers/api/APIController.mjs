@@ -4,6 +4,7 @@ import swaggerUI from "swagger-ui-express"
 import * as ApiValidator from "express-openapi-validator"
 import { APIProductsController } from "./APIProductsController.mjs"
 import { APIEmployeeController } from "./APIEmployeeController.mjs"
+import { APIAuthenticationController } from "./APIAuthenticationController.mjs"
 
 const options = {
     failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
@@ -61,11 +62,14 @@ export class APIController {
                 errors: err.errors,
             })
         })
-        
-        // Api controllers
+
+        // API authentication middleware and endpoints
+        this.routes.use(APIAuthenticationController.middleware)
+        this.routes.use(APIAuthenticationController.routes)
+
+        // API controllers
         this.routes.use("/products", APIProductsController.routes)
         this.routes.use("/employees", APIEmployeeController.routes)
     }
-    
 
 }
