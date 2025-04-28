@@ -95,7 +95,7 @@ export class ProductController {
 
                 // Add each of the sale products to it's respective day
                 for (const saleProduct of productsOnSaleThisWeek) {
-                    const saleDayName = daysOfWeek[saleProduct.sale.date.getDay()]
+                    const saleDayName = daysOfWeek[new Date(saleProduct.sale.date).getDay()]
                     salesByDay[saleDayName].push(saleProduct)
                 }
 

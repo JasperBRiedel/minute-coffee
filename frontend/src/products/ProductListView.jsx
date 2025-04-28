@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { FaCoffee, FaSearch, FaShoppingBasket } from "react-icons/fa"
+import { FaCoffee, FaSearch } from "react-icons/fa"
 import { fetchAPI } from "../api.mjs"
 
 function ProductListView() {
