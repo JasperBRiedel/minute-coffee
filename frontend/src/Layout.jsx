@@ -39,7 +39,7 @@ function Layout() {
                 <span className="dock-label">Sales</span>
             </button>
             <button
-                onClick={() => navigate("/orders")}
+                disabled
                 className={location.pathname.startsWith("/orders") ? "dock-active" : ""}
             >
                 <FaClipboardList className="text-2xl" />

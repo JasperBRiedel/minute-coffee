@@ -6,7 +6,6 @@ import './index.css'
 import Layout from './Layout.jsx'
 import ProductListView from './products/ProductListView.jsx'
 import ProductSalesView from './products/ProductSalesView.jsx'
-import OrderListView from './orders/OrderListView.jsx'
 
 const router = createBrowserRouter([
   {
@@ -20,10 +19,6 @@ const router = createBrowserRouter([
         path: "/sales",
         Component: ProductSalesView
       },
-      {
-        path: "/orders",
-        Component: OrderListView
-      }
     ]
   }
 ])
