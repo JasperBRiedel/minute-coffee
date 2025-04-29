@@ -48,7 +48,7 @@ function ProductSalesView() {
     return <section className="flex flex-col items-center">
         {error && <span className="p-4 self-center">{error}</span>}
         {!error && Object.entries(productSalesByDay).length == 0
-            ? <span className="loading loading-spinner loading-xl"></span>
+            ? <span className="loading loading-spinner loading-xl block m-4"></span>
             : <ul className="list bg-base-100 self-stretch">
                 {Object.entries(productSalesByDay).map(([day, productSales]) =>
                     <Fragment key={day}>
