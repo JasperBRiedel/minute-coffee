@@ -33,8 +33,6 @@ export async function fetchAPI(method, route, body, authKey) {
             body: responseBody
         }
     } catch (error) {
-        throw {
-            message: String(error)
-        }
+        throw String(error)
     }
 }

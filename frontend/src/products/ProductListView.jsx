@@ -27,7 +27,7 @@ function ProductListView() {
                 }
             })
             .catch(error => {
-                setError(error.message)
+                setError(error)
             })
     }, [setProducts, filter])
 

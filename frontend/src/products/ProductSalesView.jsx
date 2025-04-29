@@ -36,7 +36,7 @@ function ProductSalesView() {
                 }
             })
             .catch(error => {
-                setError(error.message)
+                setError(error)
             })
     }, [setProductSalesByDay])
 

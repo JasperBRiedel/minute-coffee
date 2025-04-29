@@ -1,9 +1,12 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
+import { TbLogout } from "react-icons/tb"
 import { FaClipboardList, FaCoffee, FaLock, FaMoneyBillWave } from "react-icons/fa"
 
 function Layout() {
     const navigate = useNavigate()
     const location = useLocation()
+    
+    const user = null
 
     return <main className="max-w-[430px] min-h-screen mx-auto shadow ">
         <header>
@@ -14,12 +17,17 @@ function Layout() {
                 >
                     Minute Coffee
                 </button>
-                <button
-                    onClick={() => navigate("/staff/login")}
-                    className="btn btn-ghost text-xl"
-                >
-                    <FaLock />
-                </button>
+                {user
+                    ? <button
+                        onClick={() => {}}
+                        className="btn btn-ghost text-xl">
+                        <TbLogout />
+                    </button>
+                    : <button
+                        onClick={() => navigate("/staff/login")}
+                        className="btn btn-ghost text-xl">
+                        <FaLock />
+                    </button>}
             </div>
         </header>
         <Outlet />

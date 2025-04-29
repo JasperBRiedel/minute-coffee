@@ -6,6 +6,8 @@ import './index.css'
 import Layout from './Layout.jsx'
 import ProductListView from './products/ProductListView.jsx'
 import ProductSalesView from './products/ProductSalesView.jsx'
+import LoginView from './authentication/LoginView.jsx'
+import OrderManagementView from './orders/OrderManagementView.jsx'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
         path: "/sales",
         Component: ProductSalesView
       },
+      {
+        path: "/staff/login",
+        Component: LoginView
+      },
+      {
+        path: "/staff/orders",
+        Component: OrderManagementView
+      }
     ]
   }
 ])
