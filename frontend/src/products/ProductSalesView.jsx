@@ -90,9 +90,9 @@ const currencyFormatter = new Intl.NumberFormat('en-au', {
 })
 
 function toLocaleDateString(date) {
-    const year = date.toLocaleString('default', { year: 'numeric' });
-    const month = date.toLocaleString('default', { month: '2-digit' })
-    const day = date.toLocaleString('default', { day: '2-digit' });
+    const year = date.toLocaleString('en-AU', { year: 'numeric' });
+    const month = date.toLocaleString('en-AU', { month: '2-digit' })
+    const day = date.toLocaleString('en-AU', { day: '2-digit' });
 
     return [year, month, day].join('-');
 }
