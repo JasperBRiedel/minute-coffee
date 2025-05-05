@@ -1,5 +1,4 @@
 import express from "express"
-import { EmployeeModel } from "../../models/EmployeeModel.mjs"
 import { APIAuthenticationController } from "./APIAuthenticationController.mjs"
 
 export class APIEmployeeController {

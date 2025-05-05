@@ -5,6 +5,7 @@ import * as ApiValidator from "express-openapi-validator"
 import { APIProductsController } from "./APIProductsController.mjs"
 import { APIEmployeeController } from "./APIEmployeeController.mjs"
 import { APIAuthenticationController } from "./APIAuthenticationController.mjs"
+import { APIOrderController } from "./APIOrderController.mjs"
 
 const options = {
     failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
@@ -70,6 +71,7 @@ export class APIController {
         // API controllers
         this.routes.use("/products", APIProductsController.routes)
         this.routes.use("/employees", APIEmployeeController.routes)
+        this.routes.use("/orders", APIOrderController.routes)
     }
 
 }
