@@ -9,6 +9,7 @@ import ProductSalesView from './products/ProductSalesView.jsx'
 import LoginView from './authentication/LoginView.jsx'
 import OrderManagementView from './orders/OrderManagementView.jsx'
 import { AuthenticationProvider } from './authentication/useAuthenticate.jsx'
+import ProductDetailsView from './products/ProductDetailsView.jsx'
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: ProductListView
+      },
+      {
+        path: "/products/:productId",
+        Component: ProductDetailsView
       },
       {
         path: "/sales",

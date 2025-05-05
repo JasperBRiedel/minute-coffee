@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react"
 import { FaCoffee, FaSearch } from "react-icons/fa"
 import { fetchAPI } from "../api.mjs"
+import { useNavigate } from "react-router"
 
 function ProductListView() {
     const [filter, setFilter] = useState("")
     const [products, setProducts] = useState([])
     const [error, setError] = useState(null)
+    const navigate = useNavigate()
 
     const getProducts = useCallback(() => {
         const request = filter.length > 0
@@ -62,7 +64,9 @@ function ProductListView() {
                             <div>{product.name}</div>
                             <div className="text-xs uppercase font-semibold opacity-60">${product.price}</div>
                         </div>
-                        <button className="btn btn-ghost text-xl">
+                        <button 
+                            onClick={() => navigate("/products/"+product.id)}
+                            className="btn btn-ghost text-xl">
                             Buy
                         </button>
                     </li>
