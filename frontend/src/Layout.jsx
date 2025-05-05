@@ -48,8 +48,9 @@ function Layout() {
                 <span className="dock-label">Sales</span>
             </button>
             <button
-                disabled
-                className={location.pathname.startsWith("/orders") ? "dock-active" : ""}
+                disabled={!(user && user.role == "admin")}
+                onClick={() => navigate("/staff/orders")}
+                className={location.pathname.startsWith("/staff/orders") ? "dock-active" : ""}
             >
                 <FaClipboardList className="text-2xl" />
                 <span className="dock-label">Orders</span>

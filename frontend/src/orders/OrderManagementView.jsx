@@ -8,7 +8,7 @@ export function OrderManagementView() {
         <XMLDownloadButton 
         route="/orders/xml"
         filename="orders.xml"
-        authenticationKey={user.authenticationKey}
+        authenticationKey={user && user.authenticationKey}
         className="btn btn-warning">Export Orders</XMLDownloadButton>
         order management
         {status}
