@@ -26,7 +26,8 @@ function ProductDetailsView() {
     }, [productId, setProduct, setStatus])
 
     return <section className="flex flex-col items-center gap-4 p-4">
-        {status && <span className="self-center">{error}</span>}
+        {!status && !product && <span className="loading loading-spinner loading-xl"></span>}
+        {status && <span className="self-center">{status}</span>}
         {!status && product
             && <>
                 <h1 className="text-3xl">{product.name}</h1>
