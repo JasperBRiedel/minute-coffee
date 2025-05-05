@@ -30,7 +30,39 @@ export class APIOrderController {
      *                  content:
      *                      text/xml:
      *                          schema:
-     *                              type: string
+     *                              type: array
+     *                              xml:
+     *                                  name: orders
+     *                              items:
+     *                                  type: object
+     *                                  properties:
+     *                                      id:
+     *                                          type: string
+     *                                          example: 1
+     *                                      date:
+     *                                          type: string
+     *                                          format: date
+     *                                      customer:
+     *                                          type: object
+     *                                          properties:
+     *                                              name:
+     *                                                  type: string
+     *                                                  example: John Doe
+     *                                              phone:
+     *                                                  type: string
+     *                                                  example: 0000 000 000
+     *                                              email:
+     *                                                  type: string
+     *                                                  example: john@doe.mail
+     *                                      product:
+     *                                          type: object
+     *                                          properties:
+     *                                              name:
+     *                                                  type: string
+     *                                                  example: Latte
+     *                                              price:
+     *                                                  type: number
+     *                                                  example: 2.50
      *              default:
      *                  $ref: "#/components/responses/Error"
      */
