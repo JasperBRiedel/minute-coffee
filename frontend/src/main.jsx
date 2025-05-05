@@ -8,6 +8,7 @@ import ProductListView from './products/ProductListView.jsx'
 import ProductSalesView from './products/ProductSalesView.jsx'
 import LoginView from './authentication/LoginView.jsx'
 import OrderManagementView from './orders/OrderManagementView.jsx'
+import { AuthenticationProvider } from './authentication/useAuthenticate.jsx'
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthenticationProvider>
+      <RouterProvider router={router} />
+    </AuthenticationProvider>
   </StrictMode>,
 )

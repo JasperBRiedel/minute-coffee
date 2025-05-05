@@ -1,12 +1,13 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { TbLogout } from "react-icons/tb"
 import { FaClipboardList, FaCoffee, FaLock, FaMoneyBillWave } from "react-icons/fa"
+import { useAuthenticate } from "./authentication/useAuthenticate";
 
 function Layout() {
     const navigate = useNavigate()
     const location = useLocation()
     
-    const user = null
+    const {user, logout} = useAuthenticate()
 
     return <main className="max-w-[430px] min-h-screen mx-auto shadow ">
         <header>
@@ -19,7 +20,7 @@ function Layout() {
                 </button>
                 {user
                     ? <button
-                        onClick={() => {}}
+                        onClick={() => logout()}
                         className="btn btn-ghost text-xl">
                         <TbLogout />
                     </button>

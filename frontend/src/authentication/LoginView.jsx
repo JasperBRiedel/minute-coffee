@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import useAuthenticate from "./useAuthenticate.mjs"
+import {useAuthenticate} from "./useAuthenticate.jsx"
 import { useNavigate } from "react-router"
 
 function LoginView() {
