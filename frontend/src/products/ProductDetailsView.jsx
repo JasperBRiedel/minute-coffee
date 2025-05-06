@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { fetchAPI } from "../api.mjs"
 import { FaCoffee } from "react-icons/fa"
+import { currencyFormatter } from "../common/currency.mjs"
 
 function ProductDetailsView() {
     const { productId } = useParams()
     const [product, setProduct] = useState(null)
     const [status, setStatus] = useState(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (productId) {
@@ -32,16 +34,15 @@ function ProductDetailsView() {
             && <>
                 <h1 className="text-3xl">{product.name}</h1>
                 <FaCoffee className="aspect-square size-40" />
-                <button className="btn btn-outline btn-xl self-stretch">{currencyFormatter.format(product.price)} - Buy</button>
+                <button
+                onClick={() => navigate("/checkout/" + product.id)}
+                 className="btn btn-outline btn-xl self-stretch">
+                    {currencyFormatter.format(product.price)} - Buy
+                    </button>
                 <p className="text-lg">{product.description}</p>
             </>
         }
     </section>
 }
-
-const currencyFormatter = new Intl.NumberFormat('en-au', {
-    style: "currency",
-    currency: "AUD"
-})
 
 export default ProductDetailsView

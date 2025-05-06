@@ -10,6 +10,7 @@ import LoginView from './authentication/LoginView.jsx'
 import OrderManagementView from './orders/OrderManagementView.jsx'
 import { AuthenticationProvider } from './authentication/useAuthenticate.jsx'
 import ProductDetailsView from './products/ProductDetailsView.jsx'
+import ProductCheckoutView from './products/ProductCheckoutView.jsx'
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/products/:productId",
         Component: ProductDetailsView
+      },
+      {
+        path: "/checkout/:productId",
+        Component: ProductCheckoutView
       },
       {
         path: "/sales",

@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useState } from "react"
 import { FaCoffee } from "react-icons/fa"
 import { fetchAPI } from "../api.mjs"
+import { currencyFormatter } from "../common/currency.mjs"
 
 function ProductSalesView() {
     const [productSalesByDay, setProductSalesByDay] = useState({})
@@ -82,12 +83,6 @@ function ProductSalesView() {
         }
     </section>
 }
-
-// Create a currency formatter so we can convert numbers like 10 into $10.00
-const currencyFormatter = new Intl.NumberFormat('en-au', {
-    style: "currency",
-    currency: "AUD"
-})
 
 function toLocaleDateString(date) {
     const year = date.toLocaleString('en-AU', { year: 'numeric' });
