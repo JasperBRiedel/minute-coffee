@@ -29,13 +29,20 @@ function ProductCheckoutView() {
         }
     }, [productId, setProduct, setStatus])
 
-    // Handle order creation
+    // Order details state
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [phone, setPhone] = useState("")
     const [email, setEmail] = useState("")
+    
+    
+    // Form validation and submission state
     const [validationErrors, setValidationErrors] = useState({})
+    const [loading, setLoading] = useState(false)
+
     const submitOrder = useCallback(() => {
+        setLoading(true)
+
         const validationErrors = {}
         if (!/^[a-z-A-Z\-\'\ ]{2,}$/.test(firstName)) {
             validationErrors["firstName"] = "Missing or invalid first name."
@@ -53,13 +60,39 @@ function ProductCheckoutView() {
 
         // Early return if there was validation errors
         if (Object.keys(validationErrors).length > 0) {
-            return         
+            return
         }
 
-        console.log('Submitting order')
-
-
-    }, [firstName, lastName, phone, email, setValidationErrors])
+        fetchAPI("POST", "/orders", {
+            productId: product.id,
+            customerFirstName: firstName,
+            customerLastName: lastName,
+            customerPhone: phone,
+            customerEmail: email,
+        })
+            .then(response => {
+                if (response.status == 200) {
+                    navigate("/orders/"+response.body.id)
+                } else {
+                    setStatus("Failed to create order - " + response.body.message)
+                    setLoading(false)
+                }
+            })
+            .catch(error => {
+                setStatus("Failed to create order - " + error)
+                setLoading(false)
+            })
+    }, [
+        product, 
+        firstName, 
+        lastName, 
+        phone, 
+        email, 
+        setValidationErrors, 
+        setStatus, 
+        setLoading,
+        navigate
+    ])
 
     return <section className="flex flex-col items-center gap-4 p-4">
         {!status && !product && <span className="loading loading-spinner loading-xl"></span>}
@@ -116,8 +149,10 @@ function ProductCheckoutView() {
                 </fieldset>
                 <button
                     onClick={() => submitOrder()}
+                    disabled={loading}
                     className="btn btn-outline btn-xl self-stretch">
                     {currencyFormatter.format(product.price)} - Pay
+                    {loading && <span className="loading loading-spinner loading-sm"></span>}
                 </button>
             </>
         }
