@@ -14,6 +14,7 @@ export class APIOrderController {
             APIAuthenticationController.restrict("admin"),
             this.getOrdersXML
         )
+        this.routes.get("/:id", this.getOrderById)
     }
 
     /**
@@ -132,6 +133,56 @@ export class APIOrderController {
                 message: "failed to export xml for orders",
                 errors: [error]
             })
+        }
+    }
+    
+    /**
+     * Handle getting an order by id
+     * 
+     * @type {express.RequestHandler}
+     * @openapi
+     * /api/orders/{id}:
+     *      get:
+     *          summary: "Get an order by ID"
+     *          tags: [Orders]
+     *          parameters:
+     *                - name: id
+     *                  in: path
+     *                  description: Order ID
+     *                  required: true
+     *                  schema:
+     *                      type: number
+     *                      example: 1
+     *          responses:
+     *              '200':
+     *                  description: 'The order specified by the provided ID'
+     *                  content:
+     *                      application/json:
+     *                          schema:
+     *                              $ref: "#/components/schemas/Order"
+     *              '500':
+     *                  $ref: "#/components/responses/Error"
+     *              '404':
+     *                  $ref: "#/components/responses/NotFound"
+     */
+    static async getOrderById(req, res) {
+        try {
+            const order = await OrderModel.getById(req.params.id)
+            res.status(200).json(order)
+        } catch (error) {
+            switch (error) {
+                case "not found":
+                    res.status(404).json({
+                        message: "Order not found",
+                    })
+                    break;
+                default:
+                    res.status(500).json({
+                        message: "Failed to load order from database",
+                        errors: [error]
+                    })
+                    break;
+            }
         }
     }
 }

@@ -130,7 +130,7 @@ components:
           enum: ["pending", "complete", "cancelled"]
         created:
           type: string
-          format: date
+          example: "0000-00-00 00:00:00"
         customerFirstName:
           type: string
           example: "Jane"
