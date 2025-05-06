@@ -2,6 +2,7 @@ import express from "express"
 import { APIAuthenticationController } from "./APIAuthenticationController.mjs"
 import { OrderProductModel } from "../../models/OrderProductModel.mjs"
 import { ORDER_STATUS_PENDING, OrderModel } from "../../models/OrderModel.mjs"
+import { DatabaseModel } from "../../models/DatabaseModel.mjs"
 
 export class APIOrderController {
     static routes = express.Router()
@@ -122,9 +123,10 @@ export class APIOrderController {
      */
     static async getOrdersXML(req, res) {
         try {
+            const exportDate = DatabaseModel.toMySqlDate(new Date())
             const orderProducts = await OrderProductModel.getAllByStatus("complete")
             
-            res.status(200).render("xml/orders.xml.ejs", {orderProducts})
+            res.status(200).render("xml/orders.xml.ejs", {orderProducts, exportDate})
         } catch (error) {
             res.status(500).json({
                 message: "failed to export xml for orders",

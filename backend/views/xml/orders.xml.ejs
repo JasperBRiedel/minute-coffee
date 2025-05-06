@@ -14,7 +14,7 @@
 ]>
 <orders>
     <% for (const {order, product} of orderProducts) { %>
-    <order>
+    <order export-date="<%= exportDate %>">
         <id><%= order.id %></id>
         <date><%= order.created %></date>
         <customer>
