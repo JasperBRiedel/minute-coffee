@@ -110,6 +110,39 @@ components:
           type: string
         endTime:
           type: string
+    Order:
+      type: object
+      required:
+        - productId
+        - customerFirstName
+        - customerLastName
+        - customerPhone
+        - customerEmail
+      properties:
+        id: 
+          type: number
+          example: 1
+        productId: 
+          type: number
+          example: 1
+        status:
+          type: string
+          enum: ["pending", "complete", "cancelled"]
+        created:
+          type: string
+          format: date
+        customerFirstName:
+          type: string
+          example: "Jane"
+        customerLastName:
+          type: string
+          example: "Doe"
+        customerPhone:
+          type: string
+          example: "0400000000"
+        customerEmail:
+          type: string
+          example: "jane@doe.mail"
   responses:
     Deleted:
       description: Item deleted
