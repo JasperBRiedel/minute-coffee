@@ -12,9 +12,9 @@
     <!ELEMENT customer (name, phone, email)>
     <!ELEMENT product (name, price)>
 ]>
-<orders>
+<orders export-date="<%= exportDate %>">
     <% for (const {order, product} of orderProducts) { %>
-    <order export-date="<%= exportDate %>">
+    <order>
         <id><%= order.id %></id>
         <date><%= order.created %></date>
         <customer>
