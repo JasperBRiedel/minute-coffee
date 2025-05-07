@@ -16,8 +16,12 @@ export function AuthenticationProvider({ children }) {
         if (authenticationKey) {
             fetchAPI("GET", "/employees/self", null, authenticationKey)
                 .then(response => {
-                    setUser(response.body)
-                    setStatus("loaded")
+                    if (response.status == 200) {
+                        setUser(response.body)
+                        setStatus("loaded")
+                    } else {
+                        setStatus(response.body.message)
+                    }
                 })
                 .catch(error => {
                     setStatus(null)
