@@ -114,6 +114,20 @@ export class ProductModel extends DatabaseModel {
     }
 
     /**
+     * @param {ProductModel} product 
+     * @returns {Promise<mysql.OkPacket>}
+     */
+    static createWithExistingID(product) {
+        return this.query(`
+            INSERT INTO products
+            (id, name, stock, price, description, updated_by_employee_id, deleted)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `,
+            [product.id, product.name, product.stock, product.price, product.description, product.updatedByEmployeeId, product.deleted]
+        )
+    }
+
+    /**
      * @param {number} id 
      * @returns {Promise<mysql.OkPacket>}
      */
