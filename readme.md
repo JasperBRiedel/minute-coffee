@@ -1,5 +1,5 @@
 > [!CAUTION]
-> This project is being updated for 2025. Functionality is likely broken and the documentation (including this readme) is out of date.
+> This project has been updated for 2025. Functionality has not been thoroughly tested yet, and the documentation (including this readme) is out of date.
 
 # Minute Coffee
 
